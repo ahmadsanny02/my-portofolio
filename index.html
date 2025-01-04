@@ -2,241 +2,393 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portofolio</title>
-  <link rel="shortcut icon" href="/portofolio/image/Ahmad Sani Jabarulloh.jpg" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portofolio</title>
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css">
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="./public/css/output.css">
 
-  <!-- Icon Bootstrap -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/ecde4d1cd4.js" crossorigin="anonymous"></script>
 
-  <!-- Google Font -->
-  <style>
-    @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-    @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Pacifico&display=swap');
-  </style>
+    <!-- CSS Internal -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+        :root {
+            scroll-behavior: smooth;
+        }
+
+        * {
+            font-family: 'Poppins', Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: 500;
+
+        }
+
+        body {
+            overflow-y: scroll;
+        }
+
+        #home {
+            scroll-margin-top: 180px;
+        }
+
+        #about-me,
+        #my-skills,
+        #my-project,
+        #my-certificate {
+            scroll-margin-top: 80px;
+        }
+
+        @keyframes mobile-menu {
+            from {
+                transform: translateX(-50%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-menu-animation {
+            animation: mobile-menu .3s ease-in-out;
+        }
+
+        .snap-mandatory::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (max-width: 374px) {
+            .hero-section {
+                margin-top: 7rem;
+            }
+
+            .logo-hero {
+                width: 14rem;
+                height: 14rem;
+            }
+
+            .hero-h3 {
+                font-size: .75rem;
+                line-height: 1rem;
+            }
+
+            .hero-h1 {
+                font-size: 1.125rem;
+                line-height: 1.75rem;
+            }
+
+            .hero-h2 {
+                font-size: 1rem;
+                line-height: 1.5rem;
+            }
+        }
+    </style>
 </head>
 
-<body>
-  <section class="container">
+<body class="bg-primary">
 
-    <!-- Header -->
-    <header class="navbar navbar-expand-lg position-sticky top-0 bg-white ">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#home" style="color: #008fd7;">My Portofolio</a>
-        <button class="navbar-toggler navbar-light" type="button" data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <nav class="collapse navbar-collapse" id="navbarTogglerDemo03">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#home">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#about">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#skills">Skills</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#project">Project</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#certificate">Certificate</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#contact">Contact</a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+    <!-- Navbar -->
+    <header class="flex fixed top-0 z-50 w-full bg-primary">
+        <div class="container mx-auto mt-3">
+            <nav class="text-secondary px-4 lg:px-8">
+                <div class="flex items-center justify-between w-full">
+
+                    <!-- Logo -->
+                    <div class="logo">
+                        <h4 class="text-base font-bold">My Portofolio</h4>
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <ul class="hidden lg:flex gap-3">
+                        <li class="">
+                            <a href="#home" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">Home</a>
+                        </li>
+                        <li class="">
+                            <a href="#about-me" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">About Me</a>
+                        </li>
+                        <li class="">
+                            <a href="#my-skills" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My Skills</a>
+                        </li>
+                        <li class="">
+                            <a href="#my-project" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My Project</a>
+                        </li>
+                        <li class="">
+                            <a href="#my-certificate" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My Certificate</a>
+                        </li>
+                    </ul>
+
+                    <!-- Mobile Button -->
+                    <div class="lg:hidden" onclick="toggleMenu()">
+                        <button class="">
+                            <i class="fa-solid fa-bars text-white text-xl p-2 border-2 border-secondary hover:bg-secondary rounded transition-all ease-in-out duration-500"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu -->
+                <ul class="hidden lg:hidden mobile-menu-animation mt-1" id="menu">
+                    <li class="">
+                        <a href="#home" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded block">Home</a>
+                    </li>
+                    <li class="">
+                        <a href="#about-me" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded block">About Me</a>
+                    </li>
+                    <li class="">
+                        <a href="#my-skills" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded block">My Skills</a>
+                    </li>
+                    <li class="">
+                        <a href="#my-project" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded block">My Project</a>
+                    </li>
+                    <li class="">
+                        <a href="#my-certificate" class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded block">My Certificate</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="h-1 bg-secondary mt-2 rounded"></div>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="pt-5">
-      <div class="hero row d-lg-flex align-items-center">
-        <article class="hero-text col-lg-8 order-2 order-lg-1">
-          <h3 class="text-1">Halo Guys!</h3>
-          <h1 class="text-2">I'am, <span>AHMAD SANI JABARULLOH</span></h1>
-          <h2 class="text-3">Software Engineering</h2>
-          <a href="#" class="btn">Message</a>
-        </article>
-
-        <aside class="logo-hero col-lg-4 order-1 order-lg-2 d-flex justify-content-center">
-          <img src="image/Ahmad Sani Jabarulloh.jpg" alt="" width="300" height="300" class="aside-foto rounded-circle">
-        </aside>
-      </div>
-    </section>
-
-    <!-- About -->
-    <section class="about" id="about">
-      <div class="about justify-content-center p-5">
-        <header class="ha">
-          <h3 class="text-center">About</h3>
-        </header>
-        <article class="text-about">
-          <p class="p-about text-center">SANS PEDIA adalah sebuah platform bisnis yang menyediakan berbagai layanan
-            social media
-            marketing yang bergerak terutama di Indonesia. Dengan bergabung bersama kami Anda dapat menjadi penyedia
-            atau reseller Social Media, seperti jasa penambah followers, likes, views dan lain-lain.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Skills -->
-    <section id="skills" class="pt-5">
-      <div class="skills p-5 justify-content-center">
-        <header class="hs mb-3 border-bottom">
-          <h3 class="text-center">My Skills</h3>
-        </header>
-        <figure class="cs row d-lg-flex align-items-center">
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/HTML.png" alt="" class="img-s1">
-            <h5 class="ts-s1">HTML</h5>
-          </div>
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/HTML.png" alt="" class="img-s2">
-            <h5 class="ts-s1">HTML</h5>
-          </div>
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/HTML.png" alt="" class="img-s3">
-            <h5 class="ts-s1">HTML</h5>
-          </div>
-        </figure>
-
-        <figure class="cs row d-lg-flex align-items-center">
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/CSS.png" alt="" class="img-s1">
-            <h5 class="ts-s1">CSS</h5>
-          </div>
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/CSS.png" alt="" class="img-s2">
-            <h5 class="ts-s1">CSS</h5>
-          </div>
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/CSS.png" alt="" class="img-s3">
-            <h5 class="ts-s1">CSS</h5>
-          </div>
-        </figure>
-
-        <figure class="cs row d-lg-flex align-items-center">
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/JS.png" alt="" class="img-s1">
-            <h5 class="ts-s1">JS</h5>
-          </div>
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/JS.png" alt="" class="img-s2">
-            <h5 class="ts-s1">JS</h5>
-          </div>
-          <div class="cs-s1 col d-lg-flex justify-content-center align-items-center ">
-            <img src="image/JS.png" alt="" class="img-s3">
-            <h5 class="ts-s1">JS</h5>
-          </div>
-        </figure>
-      </div>
-    </section>
-
-    <!-- Project -->
-    <section id="project" class="pt-5">
-      <div class="project p-5 justify-content-center mt-5">
-        <div class="hp mb-3 border-bottom">
-          <h3 class="text-center">My Project</h3>
+    <!-- Hero -->
+    <section class="hero-section mt-[11rem]" id="home">
+        <div class="container mx-auto">
+            <div class="px-4 lg:px-8 lg:flex text-center lg:justify-between items-center">
+                <div class="text-left text-secondary">
+                    <h3 class="hero-h3 text-base md:text-2xl">Halo Guys!</h3>
+                    <h1 class="hero-h1 text-xl md:text-4xl">
+                        I'am, <span class="text-white font-bold">AHMAD SANI JABARULLOH</span>
+                    </h1>
+                    <h2 class="hero-h2 text-lg md:text-3xl">Software Engineering</h2>
+                    <div class="mt-1">
+                        <button class="inline-block">
+                            <a href="" class="p-2 bg-secondary hover:bg-blue-900 transition-all ease-in-out duration-500 text-white rounded">Download CV</a>
+                        </button>
+                        <a href="" class="">
+                            <i class="fa fa-instagram lg:text-lg border-2 border-secondary text-white hover:bg-secondary p-2 before:w-10 before:h-10 transition-all ease-in-out duration-500 rounded-full"></i>
+                        </a>
+                        <a href="" class="">
+                            <i class="fa fa-github lg:text-lg border-2 border-secondary text-white hover:bg-secondary p-2 before:w-10 before:h-10 transition-all ease-in-out duration-500 rounded-full"></i>
+                        </a>
+                        <a href="" class="">
+                            <i class="fa fa-linkedin lg:text-lg border-2 border-secondary text-white hover:bg-secondary p-2 before:w-10 before:h-10 transition-all ease-in-out duration-500 rounded-full"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="inline-block border-4 border-secondary mt-10 rounded-full">
+                    <div class="inline-block border-4 border-white rounded-full">
+                        <div class="inline-block border-4 border-primary align-middle rounded-full">
+                            <img src="./public/image/Ahmad Sani Jabarulloh.jpg" alt="" class="logo-hero w-64 md:w-[27rem] lg:w-80 h-64 md:h-[27rem] lg:h-80 object-cover rounded-full">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <figure class="content-p d-lg-flex align-items-center row">
-          <div class="img-p col-lg text-center">
-            <img src="image/landing-page-dicoding.png" alt="" class="img-p1">
-          </div>
-          <div class="img-p col-lg text-center">
-            <img src="image/portofolio.png" alt="" class="img-p2 mt-5 mt-lg-0">
-          </div>
-        </figure>
-      </div>
     </section>
 
-    <!-- Certificate -->
-    <section id="certificate" class="pt-5">
-      <div class="certificate p-5 justify-content-center mt-5">
-        <div class="hc mb-3 border-bottom">
-          <h3 class="text-center">My Certificate</h3>
+    <!-- About Me -->
+    <section class="about-me mt-10" id="about-me">
+        <div class="container mx-auto">
+            <div class="flex items-center px-4 lg:px-8 gap-5">
+                <div class="hidden lg:flex justify-center w-[96rem]">
+                    <img src="./public/image/Ahmad Sani Jabarulloh.jpg" alt="" class="w-96">
+                </div>
+                <div class="flex justify-center">
+                    <div class="">
+                        <h1 class="text-2xl text-white text-center">
+                            About <span class="text-secondary">Me</span>
+                        </h1>
+                        <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
+                        <div class="border border-secondary bg-white/10 mt-5 p-1 text-gray-200 rounded">
+                            <p class="text-justify">
+                                Siswa SMK dengan jurusan Rekayasa Perangkat Lunak yang memiliki antusiasme yang tinggi dalam teknologi informasi dan pengembangan perangkat Lunak. Paham akan konsep pemrograman dan pengembangan perangkat lunak. Saya adalah individu yang memiliki semangat untuk terus belajar dan berkembang dalam bidang IT.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <figure class="content-c d-lg-flex align-items-center row">
-          <div class="img-c col-lg text-center">
-            <img src="image/Mengenal Pemrograman Komputer.png" alt="" class="img-c1">
-          </div>
-          <div class="text-c col-lg text-center mt-1 mt-lg-0">
-            <h4 class="h4-c">Mengenal Pemrograman Komputer</h4>
-            <h5 class="h5-c">By Codepolitan</h5>
-            <p class="p-c">Valid 25 Juli 2027</p>
-          </div>
-        </figure>
-        <figure class="cc d-lg-flex align-items-center row">
-          <div class="e-certificate col-lg order-lg-2 text-center">
-            <img src="image/Alibaba Cloud Certificate.png" alt="" width="450" height="300" class="img-c2">
-          </div>
-          <div class="tc-2 col-lg text-center order-lg-1 mt-1 mt-lg-0">
-            <h4 class="h4-c">Alibaba Certified Developer</h4>
-            <h5 class="h5-c">By Alibaba Cloud</h5>
-            <p class="p-c">Valid 11 Agustus 2026</p>
-          </div>
-        </figure>
-        <figure class="cc d-lg-flex align-items-center row">
-          <div class="e-certificate col-lg text-center">
-            <img src="image/Belajar Dasar HTML dan CSS.png" alt="" width="450" height="300" class="img-c3">
-          </div>
-          <div class="tc-1 col-lg text-center mt-1 mt-lg-0">
-            <h4 class="h4-c">Belajar Dasar HTML dan CSS</h4>
-            <h5 class="h5-c">By Codepolitan</h5>
-            <p class="p-c">Valid 23 Juli 2027</p>
-          </div>
-        </figure>
-      </div>
     </section>
 
-    <!-- Contact -->
-    <section id="contact" class="contact p-5 rounded shadow-lg mt-5">
-      <div class="text-center p-2 border-bottom">
-        <h3 class="hc">Contact</h3>
-      </div>
-
-      <section class="image justify-content-evenly align-items-center d-lg-flex">
-        <div class="img-contact text-center justify-content-center">
-          <img src="image/Ahmad Sani Jabarulloh.jpg" alt="" width="300" height="300" class="img-contact rounded-circle">
-          <h2 class="tc">AHMAD SANI JABARULLOH</h2>
-          <i><a href="https://instagram.com/ahmadsanny02" class="bi-instagram"> ahmadsanny02</a></i> <br>
-          <i><a href="" class="bi-whatsapp"> 08139572133</a></i> <br>
-          <i><a href="" class="bi-github"> ahmadsanny02</a></i>
+    <!-- My Skills -->
+    <section class="my-skills mt-10" id="my-skills">
+        <div class="container mx-auto">
+            <div class="px-4 lg:px-8 rounded">
+                <div class="">
+                    <h1 class="text-2xl text-white text-center">
+                        My <span class="text-secondary">Skills</span>
+                    </h1>
+                    <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10">
+                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded">
+                        <div class="">
+                            <i class="fa-solid fa-laptop-code text-4xl"></i>
+                            <h1 class="text-xl">Programming</h1>
+                        </div>
+                        <div class="mt-3">
+                            <div class="">
+                                <h3 class="">HTML</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                            <div class="mt-2">
+                                <h3 class="">CSS</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                            <div class="mt-2">
+                                <h3 class="">JavaScript</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded">
+                        <div class="">
+                            <i class="fa-solid fa-file-lines text-4xl"></i>
+                            <h1 class="text-xl">Microsoft Office</h1>
+                        </div>
+                        <div class="mt-3">
+                            <div class="">
+                                <h3 class="">Word</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                            <div class="mt-2">
+                                <h3 class="">Excel</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                            <div class="mt-2">
+                                <h3 class="">PowerPoint</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded">
+                        <div class="">
+                            <i class="fa-solid fa-database text-4xl"></i>
+                            <h1 class="text-xl">Database</h1>
+                        </div>
+                        <div class="mt-3">
+                            <div class="">
+                                <h3 class="">MySQL</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                            <div class="mt-2">
+                                <h3 class="">PostgreSQL</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                            <div class="mt-2">
+                                <h3 class="">Maria DB</h3>
+                                <div class="h-1 bg-secondary"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <form class="form mx-2">
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Nama Lengkap</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Nomor Whatsapp</label>
-            <input type="text" class="form-control" id="exampleInputPassword1">
-          </div>
-          <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Message</label>
-            <input type="text" class="form-control p-5" id="#">
-          </div>
-          <button type="submit" class="btn btn-primary">Send Message</button>
-        </form>
-      </section>
     </section>
-  </section>
 
-  <!-- JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-    crossorigin="anonymous"></script>
+    <!-- My Project -->
+    <section class="my-project mt-10" id="my-project">
+        <div class="container mx-auto">
+            <div class="px-4 lg:px-8">
+                <div class="">
+                    <h1 class="text-2xl text-white text-center">
+                        My <span class="text-secondary">Project</span>
+                    </h1>
+                    <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+                    <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 rounded">
+                        <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="object-cover rounded">
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- My Certificate -->
+    <section class="my-cetificate mt-10" id="my-certificate">
+        <div class="container mx-auto">
+            <div class="px-4 lg:px-8">
+                <div class="">
+                    <h1 class="text-2xl text-white text-center">
+                        My <span class="text-secondary">Certificate</span>
+                    </h1>
+                    <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
+                </div>
+                <div class="flex snap-mandatory overflow-x-scroll mt-10 rounded">
+                    <div class="flex shrink-0 gap-5">
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-1.jpg" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-2.png" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-3.png" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-4.png" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-5.jpg" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-6.png" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-7.jpg" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-8.png" alt="" class="w-full h-52 rounded">
+                        </div>
+                        <div class="w-80 rounded">
+                            <img src="./public/image/certificate/certificate-9.png" alt="" class="w-full h-52 rounded">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer mt-10">
+        <div class="container mx-auto">
+            <div class="h-1 bg-secondary"></div>
+            <div class="py-3 px-4 lg:px-8">
+                <p class="text-white text-center text-sm">&copy; Copyright 2024 Sannn Developer. All Right Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.classList.toggle('hidden');
+        }
+    </script>
+
 </body>
 
 </html>
