@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keyword" content="portofolio, my portofolio, portofolio website, portofolio html, portofolio simple, website portofolio menggunakan html dan css">
+    <meta name="description" content="portofolio, my portofolio, portofolio website, portofolio html, portofolio simple, website portofolio menggunakan html dan css">
     <title>My Portofolio</title>
 
     <!-- Tailwind CSS -->
@@ -11,6 +13,9 @@
 
     <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/ecde4d1cd4.js" crossorigin="anonymous"></script>
+
+    <!-- AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- CSS Internal -->
     <style>
@@ -87,7 +92,7 @@
     </style>
 </head>
 
-<body class="bg-primary">
+<body class="bg-primary overflow-x-hidden max-w-[100%]">
 
     <!-- Navbar -->
     <header class="flex fixed top-0 z-50 w-full bg-primary">
@@ -154,7 +159,8 @@
     <section class="hero-section mt-[11rem]" id="home">
         <div class="container mx-auto">
             <div class="px-4 lg:px-10 xl:px-20 lg:flex text-center lg:justify-between items-center">
-                <div class="text-left text-secondary">
+
+                <div class="text-left text-secondary" data-aos="fade-right">
                     <h3 class="hero-h3 text-base md:text-2xl">Halo Guys!</h3>
                     <h1 class="hero-h1 text-xl md:text-4xl">
                         I'am, <span class="text-white font-bold">AHMAD SANI JABARULLOH</span>
@@ -175,7 +181,8 @@
                         </a>
                     </div>
                 </div>
-                <div class="inline-block border-4 border-secondary mt-10 rounded-full">
+
+                <div class="inline-block border-4 border-secondary mt-10 rounded-full" data-aos="fade-up">
                     <div class="inline-block border-4 border-white rounded-full">
                         <div class="inline-block border-4 border-primary align-middle rounded-full">
                             <img src="./public/image/Ahmad Sani Jabarulloh.jpg" alt="" class="logo-hero w-64 md:w-[27rem] lg:w-80 h-64 md:h-[27rem] lg:h-80 object-cover rounded-full">
@@ -192,11 +199,11 @@
             <div class="flex items-center px-4 lg:px-10 xl:px-20 gap-5">
                 <div class="flex justify-center">
                     <div class="text-center">
-                        <h1 class="text-2xl text-white text-center">
+                        <h1 class="text-2xl text-white text-center" data-aos="fade-left">
                             About <span class="text-secondary">Me</span>
                         </h1>
                         <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
-                        <div class="border border-secondary bg-white/10 mt-5 p-1 text-gray-200 rounded">
+                        <div class="border border-secondary bg-white/10 mt-5 p-1 text-gray-200 rounded" data-aos="fade-up">
                             <p class="text-xs sm:text-base">
                                 Siswa SMK dengan jurusan Rekayasa Perangkat Lunak yang memiliki antusiasme yang tinggi dalam teknologi informasi dan pengembangan perangkat Lunak. Paham akan konsep pemrograman dan pengembangan perangkat lunak. Saya adalah individu yang memiliki semangat untuk terus belajar dan berkembang dalam bidang IT.
                             </p>
@@ -212,13 +219,14 @@
         <div class="container mx-auto">
             <div class="px-4 lg:px-10 xl:px-20 rounded">
                 <div class="">
-                    <h1 class="text-2xl text-white text-center">
+                    <h1 class="text-2xl text-white text-center" data-aos="fade-right">
                         My <span class="text-secondary">Skills</span>
                     </h1>
                     <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10">
-                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded">
+
+                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded" data-aos="fade-right">
                         <div class="">
                             <i class="fa-solid fa-laptop-code text-4xl"></i>
                             <h1 class="text-xl">Programming</h1>
@@ -238,7 +246,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded">
+
+                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded" data-aos="fade-up">
                         <div class="">
                             <i class="fa-solid fa-file-lines text-4xl"></i>
                             <h1 class="text-xl">Microsoft Office</h1>
@@ -258,7 +267,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded">
+
+                    <div class="border border-secondary bg-white/10 text-white px-2 py-3 text-center hover:shadow-md hover:shadow-white transition-all ease-in-out duration-500 rounded" data-aos="fade-left">
                         <div class="">
                             <i class="fa-solid fa-database text-4xl"></i>
                             <h1 class="text-xl">Database</h1>
@@ -288,12 +298,12 @@
         <div class="container mx-auto">
             <div class="px-4 lg:px-10 xl:px-20">
                 <div class="">
-                    <h1 class="text-2xl text-white text-center">
+                    <h1 class="text-2xl text-white text-center" data-aos="fade-left">
                         My <span class="text-secondary">Project</span>
                     </h1>
                     <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
                 </div>
-                <div class="flex snap-mandatory overflow-x-scroll mt-10 rounded">
+                <div class="flex snap-mandatory overflow-x-scroll mt-10 rounded" data-aos="fade-left">
                     <div class="flex shrink-0 gap-5">
                         <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
                             <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded">
@@ -313,7 +323,7 @@
                         <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
                             <img src="./public/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded">
                         </a>
-                        
+
                     </div>
                 </div>
             </div>
@@ -332,6 +342,7 @@
                     <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
+
                     <div class="rounded">
                         <img src="./public/image/certificate/certificate (1).png" alt="" class="w-full h-full rounded">
                     </div>
@@ -383,7 +394,7 @@
                     <div class="rounded">
                         <img src="./public/image/certificate/certificate (17).jpg" alt="" class="w-full h-full rounded">
                     </div>
-        
+
 
                 </div>
             </div>
@@ -407,6 +418,12 @@
         }
     </script>
 
+    <!-- Data AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        AOS.init();
+    </script>
 </body>
 
 </html>
