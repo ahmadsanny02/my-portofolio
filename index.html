@@ -341,24 +341,6 @@
         </div>
         <div class="flex snap-mandatory overflow-x-scroll mt-10 rounded" data-aos="fade-left">
           <div class="flex shrink-0 gap-5">
-            <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
-              <img src="./assets/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded" />
-            </a>
-            <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
-              <img src="./assets/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded" />
-            </a>
-            <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
-              <img src="./assets/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded" />
-            </a>
-            <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
-              <img src="./assets/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded" />
-            </a>
-            <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
-              <img src="./assets/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded" />
-            </a>
-            <a href="" class="hover:saturate-0 transition-all ease-in-out duration-500 w-80 rounded">
-              <img src="./assets/image/membuat-website-portofolio.jpg" alt="" class="w-full h-52 rounded" />
-            </a>
           </div>
         </div>
       </div>
@@ -376,63 +358,6 @@
           <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-10">
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (1).png" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (2).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (3).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (4).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (5).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (6).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (7).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (8).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (9).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (10).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (11).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="row-span-2 rounded">
-            <img src="./assets/image/certificate/certificate (12).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (13).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (14).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (15).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (16).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (17).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (18).jpg" alt="" class="w-full h-full rounded" />
-          </div>
-          <div class="rounded">
-            <img src="./assets/image/certificate/certificate (19).jpg" alt="" class="w-full h-full rounded" />
-          </div>
         </div>
       </div>
     </div>
@@ -455,6 +380,48 @@
       const menu = document.getElementById("menu");
       menu.classList.toggle("hidden");
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const myProject = document.querySelector('#my-project .shrink-0')
+
+      for (let i = 1; i <= 20; i++) {
+        const containerImageProject = document.createElement('a')
+        containerImageProject.classList.add('hover:saturate', 'w-80', 'rounded')
+
+        const imageProject = document.createElement('img')
+        imageProject.src = './assets/image/membuat-website-portofolio.jpg'
+        imageProject.classList.add('w-full', 'h-52', 'rounded')
+
+        myProject.appendChild(containerImageProject)
+        containerImageProject.appendChild(imageProject)
+      }
+
+      const myCertificate = document.querySelector('#my-certificate .grid');
+      const srcImageCertificate = ['./assets/image/certificate/certificate (1).png'];
+
+      for (let i = 2; i <= 21; i++) {
+        const sourceCertificate = `./assets/image/certificate/certificate (${i}).jpg`;
+        srcImageCertificate.push(sourceCertificate);
+      }
+
+      srcImageCertificate.forEach((src, index) => {
+        const containerImageCertificate = document.createElement('div');
+        containerImageCertificate.classList.add('rounded');
+
+        if (index == 11) {
+          containerImageCertificate.classList.add('row-span-2')
+        }
+
+        const imageCertificate = document.createElement('img');
+        imageCertificate.src = src;
+        imageCertificate.classList.add('w-full', 'h-full', 'rounded')
+
+        containerImageCertificate.appendChild(imageCertificate);
+        myCertificate.appendChild(containerImageCertificate);
+      });
+
+
+    })
   </script>
 
   <!-- Data AOS -->
