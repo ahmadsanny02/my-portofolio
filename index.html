@@ -11,7 +11,7 @@
   <title>My Portofolio</title>
 
   <!-- Tailwind CSS -->
-  <link rel="stylesheet" href="./assets/css/output.css" />
+  <link rel="stylesheet" href="./src/css/output.css" />
 
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/ecde4d1cd4.js" crossorigin="anonymous"></script>
@@ -96,43 +96,53 @@
 </head>
 
 <body class="bg-primary">
+
   <!-- Navbar -->
   <header class="flex max-w-[100%] fixed top-0 z-50 w-full bg-primary">
     <div class="container mx-auto mt-3">
       <nav class="text-secondary px-4 lg:px-10 xl:px-20 py-3">
         <div class="flex items-center justify-between w-full">
+
           <!-- Logo -->
           <div class="logo">
             <h4 class="text-base font-bold">My Portofolio</h4>
           </div>
 
-          <!-- Desktop Menu -->
-          <ul class="hidden lg:flex gap-3">
-            <li class="">
-              <a href="#home"
-                class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">Home</a>
-            </li>
-            <li class="">
-              <a href="#about-me"
-                class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">About
-                Me</a>
-            </li>
-            <li class="">
-              <a href="#my-skills"
-                class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My
-                Skills</a>
-            </li>
-            <li class="">
-              <a href="#my-project"
-                class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My
-                Project</a>
-            </li>
-            <li class="">
-              <a href="#my-certificate"
-                class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My
-                Certificate</a>
-            </li>
-          </ul>
+          <div class="">
+
+            <!-- Desktop Menu -->
+            <ul class="hidden lg:flex gap-3">
+              <li class="">
+                <a href="#home"
+                  class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">Home</a>
+              </li>
+              <li class="">
+                <a href="#about-me"
+                  class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">About
+                  Me</a>
+              </li>
+              <li class="">
+                <a href="#my-skills"
+                  class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My
+                  Skills</a>
+              </li>
+              <li class="">
+                <a href="#my-project"
+                  class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My
+                  Project</a>
+              </li>
+              <li class="">
+                <a href="#my-certificate"
+                  class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded">My
+                  Certificate</a>
+              </li>
+              <div class="">
+                <a href="#contact-me" class="border-2 border-secondary hover:bg-secondary text-white p-2 rounded">
+                  Contact Me
+                </a>
+              </div>
+            </ul>
+          </div>
 
           <!-- Mobile Button -->
           <div class="lg:hidden" onclick="toggleMenu()">
@@ -169,6 +179,11 @@
               class="p-2 hover:text-white hover:bg-secondary transition-all ease-in-out duration-500 rounded block">My
               Certificate</a>
           </li>
+          <div class="text-center mt-5">
+            <a href="#contact-me" class="border-2 border-secondary hover:bg-secondary text-white p-2 rounded">
+              Contact Me
+            </a>
+          </div>
         </ul>
       </nav>
       <div class="h-1 bg-secondary mt-2 rounded"></div>
@@ -210,7 +225,7 @@
         <div class="inline-block border-4 border-secondary mt-10 rounded-full" data-aos="fade-up">
           <div class="inline-block border-4 border-white rounded-full">
             <div class="inline-block border-4 border-primary align-middle rounded-full">
-              <img src="./assets/image/Ahmad Sani Jabarulloh.jpg" alt=""
+              <img src="./public/assets/image/Ahmad Sani Jabarulloh.jpg" alt=""
                 class="logo-hero w-64 md:w-[27rem] lg:w-80 h-64 md:h-[27rem] lg:h-80 object-cover rounded-full" />
             </div>
           </div>
@@ -363,6 +378,33 @@
     </div>
   </section>
 
+  <section class="contact-me mt-10" id="contact-me">
+    <div class="container mx-auto">
+      <div class="px-4 lg:px-10 xl:px-20">
+        <div class="lg:flex items-center justify-between gap-5">
+          <div class="hidden lg:flex">
+            <img src="./public/assets/image/Ahmad Sani Jabarulloh.jpg" alt="" class="w-80 h-80 rounded-full">
+          </div>
+          <div class="">
+            <div class="">
+              <h1 class="text-2xl text-white text-center">
+                Contact <span class="text-secondary">Me</span>
+              </h1>
+              <div class="h-1 bg-secondary mx-auto w-[5rem] rounded"></div>
+            </div>
+            <form action="" method="get" class="mt-10">
+              <input class="w-full p-1 rounded" type="text" name="" placeholder="Nama Lengkap">
+              <textarea rows="5" class="w-full p-1 mt-2 rounded" name="" placeholder="Message"></textarea>
+              <button class="bg-secondary hover:bg-blue-900 text-white p-2 rounded">Send Message!</button>
+            </form>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Footer -->
   <footer class="footer mt-10">
     <div class="container mx-auto">
@@ -389,7 +431,7 @@
         containerImageProject.classList.add('hover:saturate', 'w-80', 'rounded')
 
         const imageProject = document.createElement('img')
-        imageProject.src = './assets/image/membuat-website-portofolio.jpg'
+        imageProject.src = './public/assets/image/membuat-website-portofolio.jpg'
         imageProject.classList.add('w-full', 'h-52', 'rounded')
 
         myProject.appendChild(containerImageProject)
@@ -397,10 +439,10 @@
       }
 
       const myCertificate = document.querySelector('#my-certificate .grid');
-      const srcImageCertificate = ['./assets/image/certificate/certificate (1).png'];
+      const srcImageCertificate = ['./public/assets/image/certificate/certificate (1).png'];
 
       for (let i = 2; i <= 21; i++) {
-        const sourceCertificate = `./assets/image/certificate/certificate (${i}).jpg`;
+        const sourceCertificate = `./public/assets/image/certificate/certificate (${i}).jpg`;
         srcImageCertificate.push(sourceCertificate);
       }
 
