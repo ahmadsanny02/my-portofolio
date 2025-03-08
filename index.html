@@ -13,6 +13,9 @@
   <!-- Tailwind CSS -->
   <link rel="stylesheet" href="./src/css/output.css" />
 
+  <!-- Favicon -->
+   <link rel="shortcut icon" href="./public/assets/image/Ahmad Sani Jabarulloh.jpg" type="image/x-icon">
+
   <!-- Font Awesome -->
   <script src="https://kit.fontawesome.com/ecde4d1cd4.js" crossorigin="anonymous"></script>
 
@@ -398,8 +401,6 @@
               <button class="bg-secondary hover:bg-blue-900 text-white p-2 rounded">Send Message!</button>
             </form>
           </div>
-
-
         </div>
       </div>
     </div>
@@ -428,7 +429,8 @@
 
       for (let i = 1; i <= 20; i++) {
         const containerImageProject = document.createElement('a')
-        containerImageProject.classList.add('hover:saturate', 'w-80', 'rounded')
+        containerImageProject.href= 'https://ahmadsanny2.github.io/my-portofolio'
+        containerImageProject.classList.add('hover:saturate-0', 'w-80', 'rounded')
 
         const imageProject = document.createElement('img')
         imageProject.src = './public/assets/image/membuat-website-portofolio.jpg'
