@@ -1,25 +1,29 @@
 {
-  "name": "portofolio",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "my-portofolio",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "npx tailwindcss -i ./src/css/input.css -o ./public/css/output.css --watch"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ahmadsanny2/my-portofolio.git"
+  "dependencies": {
+    "lucide-react": "^0.525.0",
+    "next": "15.4.2",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-type-animation": "^3.2.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ahmadsanny2/my-portofolio/issues"
-  },
-  "homepage": "https://github.com/ahmadsanny2/my-portofolio#readme",
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.5.3",
-    "tailwindcss": "^3.4.17"
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
