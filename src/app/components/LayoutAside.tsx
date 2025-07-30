@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Profil from "@/../public/assets/profil.png"
 import Link from "next/link";
-import { Github, icons, Instagram, Linkedin } from "lucide-react";
-import { platform } from "os";
+import { Github, Instagram, Linkedin } from "lucide-react";
 
 export default function Aside() {
     const socialMedia = [
@@ -32,7 +31,7 @@ export default function Aside() {
                 <div className="mt-5">
                     <div className="flex flex-col items-center">
                         <h1 className="text-2xl font-bold">AHMAD SANI JABARULLOH</h1>
-                        <p className="bg-white/10 p-2 rounded-full">Frontend Web Developer</p>
+                        <p className="bg-white/10 p-2 mt-2 rounded-full">Frontend Web Developer</p>
                     </div>
                     <div className="mt-5">
                         {socialMedia.map((socmed, index) => (

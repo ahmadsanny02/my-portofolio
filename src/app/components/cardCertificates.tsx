@@ -36,7 +36,7 @@ export default function cardCertificates() {
         <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-5">
             {dataCertificates.map((certificate, index) => (
                 <div className={`bg-white/10 p-2 w-full border-2 border-transparent hover:border-white transition-all duration-300 ease-in-out rounded-2xl ${certificate.image === "/assets/certificates/certificateMiniBootcampJavascriptDanDom.jpg" ? "h-full row-span-2" : "h-52"}`} key={index}>
-                    <Image src={certificate.image} alt="Certificates" width={0} height={0} className="w-full h-full rounded-2xl" />
+                    <Image src={certificate.image} priority alt="Certificates" width="720" height="1600" className="w-full h-full rounded-2xl" />
                 </div>
             ))}
 
