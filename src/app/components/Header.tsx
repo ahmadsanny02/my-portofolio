@@ -7,7 +7,6 @@ export default function Header() {
 
     const navLinks = [
         { name: "Home", href: "/", icon: <House /> },
-        { name: "About", href: "/About", icon: <User /> },
         { name: "Resume", href: "/Resume", icon: <FileText /> },
         { name: "Portfolio", href: "/Portfolio", icon: <AppWindow /> },
     ]
@@ -17,7 +16,7 @@ export default function Header() {
             <div className="">
                 <nav className="flex lg:justify-between justify-center items-center">
                     <h1 className="text-2xl hidden lg:block font-semibold ps-5">
-                        {pathname == "/About" ? "About Me" : pathname == "/skills" ? "My Skills" : pathname == "/Portfolio" ? "Portfolio" : pathname == "/certificates" ? "Certificates" : "My Portfolio"}
+                        {pathname == "/skills" ? "My Skills" : pathname == "/Portfolio" ? "Portfolio" : pathname == "/certificates" ? "Certificates" : "My Portfolio"}
                     </h1>
                     <ul className="flex gap-5 bg-white/10 p-5 rounded-bl-2xl rounded-tr-2xl max-lg:rounded-2xl">
                         {navLinks.map((link, index) => (

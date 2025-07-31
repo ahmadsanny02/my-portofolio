@@ -2,6 +2,7 @@ import Image from "next/image";
 import Profil from "@/../public/assets/profil.png"
 import Link from "next/link";
 import { Github, Instagram, Linkedin } from "lucide-react";
+import { TypeAnimation } from "react-type-animation";
 
 export default function Aside() {
     const socialMedia = [
@@ -31,7 +32,18 @@ export default function Aside() {
                 <div className="mt-5">
                     <div className="flex flex-col items-center">
                         <h1 className="text-2xl font-bold">AHMAD SANI JABARULLOH</h1>
-                        <p className="bg-white/10 p-2 mt-2 rounded-full">Frontend Web Developer</p>
+                        <p className="bg-white/10 p-2 mt-2 rounded-full">
+                            <TypeAnimation
+                                sequence={[
+                                    'Frontend Web Developer',
+                                    1000,
+                                    '',
+                                    200 // Jeda setelah selesai mengetik (ms)
+                                ]}
+                                wrapper="span"
+                                speed={50}
+                                repeat={Infinity} // Mengulang tanpa henti
+                            /></p>
                     </div>
                     <div className="mt-5">
                         {socialMedia.map((socmed, index) => (

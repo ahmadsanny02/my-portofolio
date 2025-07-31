@@ -1,6 +1,7 @@
+import { Award } from "lucide-react";
 import Image from "next/image";
 
-export default function cardCertificates() {
+export default function Certificates() {
     const dataCertificates = [
         { image: "/assets/certificates/certificateCertifiedDeveloper.png" },
         { image: "/assets/certificates/certificateBelajarDasarAIEN.jpg" },
@@ -31,15 +32,20 @@ export default function cardCertificates() {
         { image: "/assets/certificates/certificatePengenalanDatabaseMenggunakanMysql.jpg" }
 
     ]
-
     return (
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-5">
-            {dataCertificates.map((certificate, index) => (
-                <div className={`bg-white/10 p-2 w-full border-2 border-transparent hover:border-white transition-all duration-300 ease-in-out rounded-2xl ${certificate.image === "/assets/certificates/certificateMiniBootcampJavascriptDanDom.jpg" ? "h-full row-span-2" : "h-52"}`} key={index}>
-                    <Image src={certificate.image} priority alt="Certificates" width="720" height="1600" className="w-full h-full rounded-2xl" />
-                </div>
-            ))}
+        <div className="mt-10">
+            <div className="flex items-center gap-1 font-semibold">
+                <Award />
+                <h1 className="text-2xl">Certificates</h1>
+            </div>
+            <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-5 mt-5">
+                {dataCertificates.map((certificate, index) => (
+                    <div className={`bg-white/10 p-2 w-full border-2 border-transparent hover:border-white transition-all duration-300 ease-in-out rounded-2xl ${certificate.image === "/assets/certificates/certificateMiniBootcampJavascriptDanDom.jpg" ? "h-full row-span-2" : "h-52"}`} key={index}>
+                        <Image src={certificate.image} priority alt="Certificates" width="720" height="1600" className="w-full h-full rounded-2xl" />
+                    </div>
+                ))}
 
+            </div>
         </div>
     )
 }

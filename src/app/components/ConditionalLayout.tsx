@@ -3,32 +3,20 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Aside from "./LayoutAside";
-import Header from "./LayoutHeader";
+import Aside from "./Aside";
+import Header from "./Header";
 
 export default function ConditionalLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const pathname = usePathname();
-    const hidden = ['/'];
 
     return (
         // Biarkan div ini menjadi flex container
         <div className="flex flex-col max-lg:gap-5 lg:flex-row bg-black text-white container mx-auto h-screen gap-10 p-5 rounded-2xl">
 
-            {/* Sidebar yang muncul/hilang */}
-            {!hidden.includes(pathname) && (
-                <Aside />
-            )}
-
-            {/* ✅ PERBAIKAN: 
-        Ganti `w-[90%]` menjadi `flex-1`.
-        `flex-1` akan membuatnya mengisi sisa ruang yang tersedia. 
-        Jika sidebar tidak ada, ia akan mengisi 100% ruang. 
-        Jika sidebar ada, ia akan mengisi sisa ruang di sebelahnya.
-      */}
+            <Aside />
             <div className="bg-white/10 min-lg:flex-1 rounded-2xl flex flex-col"> {/* Tambahkan flex-1 dan flex-col */}
 
                 <Header />

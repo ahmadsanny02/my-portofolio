@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function GET() {
     // Ini adalah data dummy Anda
@@ -7,28 +7,42 @@ export async function GET() {
             id: 1,
             name_project: "Books Marketplace",
             image: "/assets/projects/books-marketplace.png",
-            description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
             tech_stack: ["Next JS", "Tailwind CSS"],
             code: "https://github.com/ahmadsanny2/books-marketplace.git",
-            visit: ""
+            visit: "",
         },
         {
             id: 2,
             name_project: "Chatbot",
             image: "/assets/projects/chat-ai.png",
-            description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
             tech_stack: ["Next JS", "Tailwind CSS", "Supabase"],
             code: "https://github.com/ahmadsanny2/chat-ai.git",
-            visit: ""
+            visit: "",
         },
         {
             id: 3,
             name_project: "Landing Page Adiwiyata",
             image: "/assets/projects/adiwiyata.png",
-            description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
             tech_stack: ["HTML", "Tailwind CSS"],
-            code: "https://github.com/fahmiilmawan/adiwiyata.git"
-        }
+            code: "https://github.com/fahmiilmawan/adiwiyata.git",
+            visit: ""
+        },
+        {
+            id: 4,
+            name_project: "Kalkulator",
+            image: "/assets/projects/kalkulator.png",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            tech_stack: ["HTML", "CSS", "Javascript"],
+            code: "https://github.com/ahmadsanny2/kalkulator.git",
+            visit: "https://ahmadsanny2.github.io/kalkulator"
+        },
     ];
 
     // Mengembalikan data sebagai respons JSON
