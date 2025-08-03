@@ -2,21 +2,6 @@ import Image from "next/image";
 import { Code, ExternalLink } from "lucide-react";
 import Link from "next/link";
 
-// Fungsi untuk mengambil data dari API kita
-async function getProjects() {
-    // Fetch data di sisi server
-    // Opsi { cache: 'no-store' } digunakan agar data selalu baru setiap kali halaman di-request
-    const res = await fetch("http://localhost:3000/api/projects", {
-        cache: "no-store",
-    });
-
-    if (!res.ok) {
-        throw new Error("Gagal mengambil data produk");
-    }
-
-    return res.json();
-}
-
 interface Project {
     id: number
     image: string,
@@ -26,13 +11,55 @@ interface Project {
     code: string
 }
 
-export default async function CardProjects() {
-    const { data: projects } = await getProjects();
+export default function CardProjects() {
     const characterLimit = 50;
+
+    const Projects = [
+        {
+            id: 1,
+            name_project: "Books Marketplace",
+            image: "/assets/projects/books-marketplace.png",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            tech_stack: ["Next JS", "Tailwind CSS"],
+            code: "https://github.com/ahmadsanny2/books-marketplace.git",
+            visit: "",
+        },
+        {
+            id: 2,
+            name_project: "Chatbot",
+            image: "/assets/projects/chat-ai.png",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            tech_stack: ["Next JS", "Tailwind CSS", "Supabase"],
+            code: "https://github.com/ahmadsanny2/chat-ai.git",
+            visit: "",
+        },
+        {
+            id: 3,
+            name_project: "Landing Page Adiwiyata",
+            image: "/assets/projects/adiwiyata.png",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            tech_stack: ["HTML", "Tailwind CSS"],
+            code: "https://github.com/fahmiilmawan/adiwiyata.git",
+            visit: ""
+        },
+        {
+            id: 4,
+            name_project: "Kalkulator",
+            image: "/assets/projects/kalkulator.png",
+            description:
+                "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            tech_stack: ["HTML", "CSS", "Javascript"],
+            code: "https://github.com/ahmadsanny2/kalkulator.git",
+            visit: "https://ahmadsanny2.github.io/kalkulator"
+        },
+    ];
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 mt-10">
-            {projects.map((projects: Project) => (
+            {Projects.map((projects: Project) => (
                 <div
                     className="bg-white/10 border-2 border-transparent group hover:border-white transition-all duration-300 rounded-2xl"
                     key={projects.id}
