@@ -2,7 +2,6 @@
 
 "use client";
 
-import { usePathname } from "next/navigation";
 import Aside from "./Aside";
 import Header from "./Header";
 

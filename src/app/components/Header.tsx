@@ -1,4 +1,4 @@
-import { AppWindow, FileText, House, User } from "lucide-react";
+import { AppWindow, FileText, House } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
