@@ -11,7 +11,9 @@ export default function Home() {
         <h1 className="text-2xl font-semibold">About Me</h1>
       </div>
       <p className="mt-5">
-        Siswa SMK yang memiliki minat dan bakat di bidang teknologi. Memahami dasar-dasar konsep pemrograman web. Senang belajar hal baru, khususnya di bidang teknologi.
+        I am a Software Engineering graduate with experience in front-end website development using Next.js, React.js, Laravel, and Tailwind CSS. I am
+        comfortable working in a team, quick to adapt, and skilled in building responsive UIs. I am interested in a Front-End Developer position that
+        focuses on modern web technologies.
       </p>
       <Skills />
       <Certificates />

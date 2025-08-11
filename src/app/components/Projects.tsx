@@ -43,7 +43,7 @@ export default function CardProjects() {
                 "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
             tech_stack: ["HTML", "Tailwind CSS"],
             code: "https://github.com/fahmiilmawan/adiwiyata.git",
-            visit: ""
+            visit: "https://adiwiyata.smktarpan1.sch.id"
         },
         {
             id: 4,
@@ -97,7 +97,7 @@ export default function CardProjects() {
                                         <p className="">Code</p>
                                     </div>
                                 </Link>
-                                <Link href="">
+                                <Link href={projects.visit}>
                                     <div className="flex gap-2">
                                         <ExternalLink />
                                         <p className="">Visit</p>
