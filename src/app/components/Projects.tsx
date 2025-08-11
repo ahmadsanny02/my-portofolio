@@ -9,6 +9,7 @@ interface Project {
     description: string,
     tech_stack: string[],
     code: string
+    visit: string
 }
 
 export default function CardProjects() {
