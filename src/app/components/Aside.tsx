@@ -26,7 +26,7 @@ export default function Aside() {
         }
     ]
     return (
-        <aside className="bg-white/10 p-5 lg:p-10 w-[410px] rounded-2xl">
+        <aside className="bg-white/10 p-5 lg:p-10 lg:w-[410px] rounded-2xl">
             <div className="">
                 <Image alt="" src={Profil} width="200" height="200" className="flex justify-self-center bg-white/10 p-2 rounded-full" />
                 <div className="mt-5">
