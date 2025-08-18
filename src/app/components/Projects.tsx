@@ -72,6 +72,19 @@ export default function CardProjects() {
             code: "https://github.com/ahmadsanny2/kalkulator.git",
             visit: "https://ahmadsanny2.github.io/kalkulator"
         },
+        {
+            id: 5,
+            name_project: "Landing Page Saribunga Group",
+            image: "/assets/projects/saribunga.png",
+            description: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
+            tech_stack: [
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"
+            ],
+            code: "https://github.com/fahmiilmawan/saribunga-landing.git",
+            visit: ""
+        }
     ];
 
     return (
@@ -90,7 +103,7 @@ export default function CardProjects() {
                         className="w-full h-52 group-hover:saturate-0 rounded-t-2xl"
                     />
                     <div className="p-5">
-                        <h1 className="text-xl font-bold">{projects.name_project}</h1>
+                        <h1 className="text-xl font-bold">{projects.name_project.slice(0, 25)}</h1>
                         <div className="text-gray-300 mt-2">
                             <p className="text-justify">
                                 {projects.description.length >= characterLimit
@@ -100,7 +113,7 @@ export default function CardProjects() {
                             <div className="flex gap-2 mt-5">
                                 {projects.tech_stack.map((tech, index) => (
                                     <div className="bg-white/10 p-2 hover:bg-white transition-all ease-in-out duration-300 rounded-full" key={index}>
-                                        <Image src={tech} width={25} height={25} alt="Tech Stack"/>
+                                        <Image src={tech} width={20} height={20} alt="Tech Stack" />
                                     </div>
                                 ))}
                             </div>
