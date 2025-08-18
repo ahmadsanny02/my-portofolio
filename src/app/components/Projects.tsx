@@ -110,14 +110,14 @@ export default function CardProjects() {
                                     ? projects.description.slice(0, characterLimit) + "..."
                                     : projects.description}
                             </p>
-                            <div className="flex gap-2 mt-2">
+                            <div className="flex gap-2 mt-3">
                                 {projects.tech_stack.map((tech, index) => (
                                     <div className="bg-white/10 p-2 hover:bg-white transition-all ease-in-out duration-300 rounded-full" key={index}>
                                         <Image src={tech} width={20} height={20} alt="Tech Stack" />
                                     </div>
                                 ))}
                             </div>
-                            <div className="flex gap-5 justify-end mt-5">
+                            <div className="flex gap-5 justify-end mt-10">
                                 <Link href={projects.code}>
                                     <div className="flex gap-2">
                                         <Code />
