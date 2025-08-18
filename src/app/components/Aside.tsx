@@ -26,16 +26,15 @@ export default function Aside() {
         }
     ]
     return (
-        <aside className="bg-white/10 p-5 lg:p-10 min-w-fit rounded-2xl">
+        <aside className="bg-white/10 p-5 lg:p-10 w-[410px] rounded-2xl">
             <div className="">
                 <Image alt="" src={Profil} width="200" height="200" className="flex justify-self-center bg-white/10 p-2 rounded-full" />
                 <div className="mt-5">
                     <div className="flex flex-col items-center">
-                        <h1 className="text-2xl font-bold">AHMAD SANI JABARULLOH</h1>
-                        <p className="bg-white/10 p-2 mt-2 rounded-full">
+                        <h1 className="text-2xl font-bold">
                             <TypeAnimation
                                 sequence={[
-                                    'Frontend Web Developer',
+                                    'AHMAD SANI JABARULLOH',
                                     1000,
                                     '',
                                     200 // Jeda setelah selesai mengetik (ms)
@@ -43,7 +42,11 @@ export default function Aside() {
                                 wrapper="span"
                                 speed={50}
                                 repeat={Infinity} // Mengulang tanpa henti
-                            /></p>
+                            />
+                        </h1>
+                        <p className="bg-white/10 p-2 mt-2 rounded-full">
+                            Frontend Developer
+                        </p>
                     </div>
                     <div className="mt-5">
                         {socialMedia.map((socmed, index) => (

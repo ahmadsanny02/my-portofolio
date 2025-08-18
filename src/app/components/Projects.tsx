@@ -22,7 +22,11 @@ export default function CardProjects() {
             image: "/assets/projects/books-marketplace.png",
             description:
                 "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
-            tech_stack: ["Next JS", "Tailwind CSS"],
+            tech_stack: [
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg"
+            ],
             code: "https://github.com/ahmadsanny2/books-marketplace.git",
             visit: "",
         },
@@ -32,7 +36,11 @@ export default function CardProjects() {
             image: "/assets/projects/chat-ai.png",
             description:
                 "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
-            tech_stack: ["Next JS", "Tailwind CSS", "Supabase"],
+            tech_stack: [
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg"
+            ],
             code: "https://github.com/ahmadsanny2/chat-ai.git",
             visit: "",
         },
@@ -42,7 +50,11 @@ export default function CardProjects() {
             image: "/assets/projects/adiwiyata.png",
             description:
                 "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
-            tech_stack: ["HTML", "Tailwind CSS"],
+            tech_stack: [
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg"
+            ],
             code: "https://github.com/fahmiilmawan/adiwiyata.git",
             visit: "https://adiwiyata.smktarpan1.sch.id"
         },
@@ -52,7 +64,11 @@ export default function CardProjects() {
             image: "/assets/projects/kalkulator.png",
             description:
                 "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus. Officia, dicta ratione quidem reiciendis itaque placeat id quibusdam maiores consectetur exercitationem, atque esse fugiat? Optio, voluptatibus dicta.",
-            tech_stack: ["HTML", "CSS", "Javascript"],
+            tech_stack: [
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg",
+                "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
+            ],
             code: "https://github.com/ahmadsanny2/kalkulator.git",
             visit: "https://ahmadsanny2.github.io/kalkulator"
         },
@@ -83,12 +99,9 @@ export default function CardProjects() {
                             </p>
                             <div className="flex gap-2 mt-5">
                                 {projects.tech_stack.map((tech, index) => (
-                                    <p
-                                        className="bg-white/10 p-2 text-xs rounded-full"
-                                        key={index}
-                                    >
-                                        {tech}
-                                    </p>
+                                    <div className="bg-white/10 p-2 hover:bg-white transition-all ease-in-out duration-300 rounded-full" key={index}>
+                                        <Image src={tech} width={25} height={25} alt="Tech Stack"/>
+                                    </div>
                                 ))}
                             </div>
                             <div className="flex gap-5 justify-end mt-5">

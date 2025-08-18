@@ -20,7 +20,7 @@ export default function ConditionalLayout({
 
                 <Header />
 
-                <main className="overflow-auto p-5 lg:p-10 min-lg:flex-1"> {/* Tambahkan flex-1 agar main content mengisi sisa tinggi */}
+                <main className="overflow-auto p-5 lg:p-10 min-lg:flex-1 mt-5"> {/* Tambahkan flex-1 agar main content mengisi sisa tinggi */}
                     {children}
                 </main>
             </div>
