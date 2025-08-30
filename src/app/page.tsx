@@ -14,19 +14,7 @@ export default function Home() {
         <h1 className="text-2xl font-semibold">About Me</h1>
       </div>
       <p className="mt-5">
-
-
-        <TypeAnimation
-          sequence={[
-            'I am a Software Engineering graduate with experience in front-end website development using Next.js, React.js, Laravel, and Tailwind CSS. I am comfortable working in a team, quick to adapt, and skilled in building responsive UIs. ',
-            1000,
-            '',
-            200 // Jeda setelah selesai mengetik (ms)
-          ]}
-          wrapper="span"
-          speed={50}
-          repeat={Infinity} // Mengulang tanpa henti
-        />
+        I am a Software Engineering graduate with experience in front-end website development using Next.js, React.js, Laravel, and Tailwind CSS. I am comfortable working in a team, quick to adapt, and skilled in building responsive UIs.
       </p>
       <Skills />
       <Certificates />
