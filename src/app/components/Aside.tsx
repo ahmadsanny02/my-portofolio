@@ -52,8 +52,8 @@ export default function Aside() {
                         {socialMedia.map((socmed, index) => (
                             <div className="my-3" key={index}>
                                 <Link href={socmed.link}>
-                                    <div className="flex gap-2 items-center">
-                                        <p className="bg-white/10 p-3 rounded-full">
+                                    <div className="flex gap-2 items-center group">
+                                        <p className="bg-white/10 group-hover:bg-white group-hover:text-blue-500 p-3 transition-all ease-in-out duration-300 rounded-full">
                                             {socmed.icon}
                                         </p>
                                         <div className="">
