@@ -3,7 +3,6 @@
 import { User } from "lucide-react";
 import Certificates from "./components/Certificates";
 import Skills from "./components/Skills";
-import { TypeAnimation } from "react-type-animation";
 
 
 export default function Home() {

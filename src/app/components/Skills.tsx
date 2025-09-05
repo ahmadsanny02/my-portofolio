@@ -68,7 +68,7 @@ export default function Skills() {
                 <Code />
                 <h1 className="text-2xl font-semibold">My Skills</h1>
             </div>
-            <div className="flex flex-wrap gap-5 mt-5">
+            <div className="flex max-md:justify-center flex-wrap gap-5 mt-5">
 
                 {dataSkills.map((skills: Skills) => (
                     <div className="bg-white/10 group p-2 rounded" key={skills.id}>

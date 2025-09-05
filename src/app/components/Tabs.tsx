@@ -236,16 +236,3 @@ function CertificateCard({ cert }: { cert: Certificate }) {
     );
 }
 
-function formatDate(d: string) {
-    try {
-        const date = new Date(d);
-        if (isNaN(date.getTime())) return d;
-        return date.toLocaleDateString(undefined, {
-            year: "numeric",
-            month: "short",
-            day: "2-digit",
-        });
-    } catch (_) {
-        return d;
-    }
-}
