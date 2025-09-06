@@ -157,7 +157,7 @@ const CERTIFICATES: Certificate[] = [
         image: "/assets/certificates/certificatesPraktikKerjaIndustriPTSampulKreatifTeknologi.jpg",
         category: "internship"
     },
-    
+
 ];
 
 // Define your tabs. The `key` maps to the category/ID filter.
@@ -198,7 +198,7 @@ export default function Tabs({
                                     aria-selected={selected}
                                     aria-controls={`panel-${t.key}`}
                                     onClick={() => setActiveTab(t.key)}
-                                    className={`border border-white hover:bg-white hover:text-blue-500 ${selected ? "bg-white text-blue-500" : ""} p-2 rounded-full`}
+                                    className={`hover:bg-blue-500 hover:text-white cursor-pointer ${selected ? "bg-blue-500" : "bg-white/10"} px-7 py-1 rounded-full`}
                                 >
                                     {t.label}
                                 </button>

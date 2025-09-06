@@ -44,8 +44,8 @@ export default function Aside() {
                                 repeat={Infinity} // Mengulang tanpa henti
                             />
                         </h1>
-                        <p className="bg-white/10 p-2 mt-2 rounded-full">
-                            Frontend Developer
+                        <p className="bg-white/10 px-7 py-1 mt-2 rounded-full">
+                            Front-End Developer
                         </p>
                     </div>
                     <div className="mt-5">
@@ -53,7 +53,7 @@ export default function Aside() {
                             <div className="my-3" key={index}>
                                 <Link href={socmed.link}>
                                     <div className="flex gap-2 items-center group">
-                                        <p className="bg-white/10 group-hover:bg-white group-hover:text-blue-500 p-3 transition-all ease-in-out duration-300 rounded-full">
+                                        <p className="bg-white/10 group-hover:bg-blue-500 p-3 transition-all ease-in-out duration-300 rounded-full">
                                             {socmed.icon}
                                         </p>
                                         <div className="">
