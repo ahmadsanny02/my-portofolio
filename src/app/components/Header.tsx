@@ -16,7 +16,7 @@ export default function Header() {
             <div className="">
                 <nav className="flex lg:justify-between justify-center items-center">
                     <h1 className="text-2xl hidden lg:block font-semibold ps-5">
-                        {pathname == "/skills" ? "My Skills" : pathname == "/Portfolio" ? "Portfolio" : pathname == "/certificates" ? "Certificates" : "My Portfolio"}
+                        My Portofolio
                     </h1>
                     <ul className="flex gap-5 bg-white/10 p-5 rounded-bl-2xl rounded-tr-2xl max-lg:rounded-2xl">
                         {navLinks.map((link, index) => (

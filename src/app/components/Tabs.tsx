@@ -188,7 +188,7 @@ export default function Tabs({
             {/* Tabs */}
             <div className="flex snap-mandatory overflow-auto">
                 <div className="flex shrink-0 gap-5">
-                    <div role="tablist" aria-label="Kategori Sertifikat" className="flex gap-2 rounded-2xl p-1 mt-2">
+                    <div role="tablist" aria-label="Kategori Sertifikat" className="flex gap-2 rounded-2xl p-1">
                         {TABS.map((t) => {
                             const selected = activeTab === t.key;
                             return (

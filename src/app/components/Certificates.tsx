@@ -9,7 +9,7 @@ export default function Certificates() {
                 <Award />
                 <h1 className="text-2xl">Certificates</h1>
             </div>
-            <div className="">
+            <div className="mt-5">
                 <Tabs />
             </div>
 

@@ -5,6 +5,33 @@ export const dynamic = "force-dynamic";
 const GITHUB_API = "https://api.github.com/graphql";
 const TOKEN = process.env.GITHUB_TOKEN;
 
+// ==== Types ====
+type ContributionDay = {
+  date: string;
+  contributionCount: number;
+  color: string;
+  weekday: number;
+};
+type ContributionCalendar = {
+  totalContributions: number;
+  colors: string[];
+  weeks: { contributionDays: ContributionDay[] }[];
+};
+type ContributionsNode = {
+  restrictedContributionsCount: number;
+  contributionCalendar: ContributionCalendar;
+};
+type GraphQLErrorItem = { message?: string };
+type GraphQLData = {
+  user?: { contributionsCollection?: ContributionsNode };
+};
+type GraphQLResponse = { data?: GraphQLData; errors?: GraphQLErrorItem[] };
+
+type VarsDefault = { login: string };
+type VarsWithRange = { login: string; from: string; to: string };
+type GraphQLRequestBody = { query: string; variables: VarsDefault | VarsWithRange };
+
+// ==== Queries ====
 const QUERY_DEFAULT = `
   query ($login: String!) {
     user(login: $login) {
@@ -14,12 +41,7 @@ const QUERY_DEFAULT = `
           totalContributions
           colors
           weeks {
-            contributionDays {
-              date
-              contributionCount
-              color
-              weekday
-            }
+            contributionDays { date contributionCount color weekday }
           }
         }
       }
@@ -36,12 +58,7 @@ const QUERY_WITH_RANGE = `
           totalContributions
           colors
           weeks {
-            contributionDays {
-              date
-              contributionCount
-              color
-              weekday
-            }
+            contributionDays { date contributionCount color weekday }
           }
         }
       }
@@ -55,23 +72,28 @@ export async function GET(req: Request) {
   }
 
   const { searchParams } = new URL(req.url);
-  const login = searchParams.get("user") || "octocat";
+  const rawUser = searchParams.get("user");
+  const login =
+    !rawUser || rawUser === "undefined" || rawUser === "null" || rawUser.trim() === ""
+      ? "octocat"
+      : rawUser.trim();
+
   const from = searchParams.get("from");
   const to = searchParams.get("to");
-
   const useRange = Boolean(from && to);
   const query = useRange ? QUERY_WITH_RANGE : QUERY_DEFAULT;
 
-  if (useRange && (isNaN(Date.parse(from!)) || isNaN(Date.parse(to!)))) {
+  if (useRange && (Number.isNaN(Date.parse(from!)) || Number.isNaN(Date.parse(to!)))) {
     return NextResponse.json({ error: "Invalid 'from' or 'to' datetime" }, { status: 400 });
   }
 
-  const body: any = { query, variables: { login } };
+  const body: GraphQLRequestBody = { query, variables: { login } };
+
   if (useRange) {
     const end = new Date(to!);
     end.setUTCHours(23, 59, 59, 999);
-    body.variables.from = new Date(from!).toISOString();
-    body.variables.to = end.toISOString();
+    (body.variables as VarsWithRange).from = new Date(from!).toISOString();
+    (body.variables as VarsWithRange).to = end.toISOString();
   }
 
   try {
@@ -90,21 +112,26 @@ export async function GET(req: Request) {
       return NextResponse.json({ error: `GitHub ${resp.status}: ${text}` }, { status: resp.status });
     }
 
-    const json = await resp.json();
-    if (Array.isArray(json.errors) && json.errors.length) {
-      const messages = json.errors.map((e: any) => e?.message ?? JSON.stringify(e));
+    const json = (await resp.json()) as GraphQLResponse;
+
+    if (Array.isArray(json.errors) && json.errors.length > 0) {
+      const messages = json.errors.map((e) => e.message ?? JSON.stringify(e));
       return NextResponse.json({ error: `GraphQL error: ${messages.join(" | ")}` }, { status: 502 });
     }
 
-    const node = json?.data?.user?.contributionsCollection;
+    const node = json.data?.user?.contributionsCollection;
     const payload = node?.contributionCalendar;
-    if (!payload) return NextResponse.json({ error: "No contribution data" }, { status: 502 });
+
+    if (!payload) {
+      return NextResponse.json({ error: "No contribution data" }, { status: 502 });
+    }
 
     return NextResponse.json(
       { ...payload, restrictedContributionsCount: node.restrictedContributionsCount },
-      { headers: { "Cache-Control": "s-maxage=600, stale-while-revalidate=3600" } }
+      { headers: { "Cache-Control": "s-maxage=600, stale-while-revalidate=3600" } },
     );
-  } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

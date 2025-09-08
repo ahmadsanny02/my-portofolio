@@ -17,8 +17,8 @@ export default function Home() {
         I am a Software Engineering graduate with experience in front-end website development using Next.js, React.js, Laravel, and Tailwind CSS. I am comfortable working in a team, quick to adapt, and skilled in building responsive UIs.
       </p>
       <Skills />
+      <GitHubContribHeatmap user="ahmadsanny2" />
       <Certificates />
-      <GitHubContribHeatmap user="ahmadsanny2"/>
     </div>
   );
 }
