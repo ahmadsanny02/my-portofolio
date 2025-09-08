@@ -1,5 +1,4 @@
 "use client";
-import { GitBranch } from "lucide-react";
 import React from "react";
 
 type Day = { date: string; contributionCount: number; color: string; weekday: number };
