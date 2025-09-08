@@ -12,7 +12,7 @@ interface Project {
     visit: string
 }
 
-export default function CardProjects() {
+export default function ProjectComponent() {
     const characterLimit = 50;
 
     const Projects = [
