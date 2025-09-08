@@ -3,6 +3,7 @@
 import { User } from "lucide-react";
 import Certificates from "./components/Certificates";
 import Skills from "./components/Skills";
+import GitHubContribHeatmap from "./components/GitHubContribHeatmap";
 
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       </p>
       <Skills />
       <Certificates />
+      <GitHubContribHeatmap user="ahmadsanny2"/>
     </div>
   );
 }
