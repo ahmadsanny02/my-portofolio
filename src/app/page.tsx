@@ -1,6 +1,6 @@
 "use client"
 
-import { User } from "lucide-react";
+import { GitBranch, User } from "lucide-react";
 import Certificates from "./components/Certificates";
 import Skills from "./components/Skills";
 import GitHubContribHeatmap from "./components/GitHubContribHeatmap";
@@ -17,7 +17,14 @@ export default function Home() {
         I am a Software Engineering graduate with experience in front-end website development using Next.js, React.js, Laravel, and Tailwind CSS. I am comfortable working in a team, quick to adapt, and skilled in building responsive UIs.
       </p>
       <Skills />
-      <GitHubContribHeatmap user="ahmadsanny2" />
+
+      <div className="mt-10">
+        <div className="flex items-center gap-1 font-semibold">
+          <GitBranch />
+          <h1 className="text-2xl">Github Contributions</h1>
+        </div>
+        <GitHubContribHeatmap user="ahmadsanny2" />
+      </div>
       <Certificates />
     </div>
   );

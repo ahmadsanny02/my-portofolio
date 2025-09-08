@@ -65,17 +65,14 @@ export default function GitHubContribHeatmap({
         return () => mq.removeEventListener?.("change", apply);
     }, [emptyDark, emptyLight]);
 
-    if (err) return <div className="text-red-500 text-sm">Error: {err}</div>;
-    if (!cal) return <div className="text-sm opacity-70">Loading contributions…</div>;
+    if (err) return <div className="text-red-500 text-sm mt-5">Error: {err}</div>;
+    if (!cal) return <div className="text-sm opacity-70 mt-5">Loading contributions…</div>;
 
     const todayLocal = toLocalDay(new Date());
 
     return (
-        <div className="mt-10">
-            <div className="flex items-center gap-1 font-semibold">
-                <GitBranch />
-                <h1 className="text-2xl">Github Contributions</h1>
-            </div>
+        <div className="">
+            
             <div className="overflow-auto mt-5">
                 <div className="flex flex-col gap-2">
                     <div className="text-sm opacity-80">
