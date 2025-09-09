@@ -29,7 +29,7 @@ const CERTIFICATES: Certificate[] = [
     },
     {
         id: 3,
-        image: "/assets/certificates/certificateCompetitionWebDesignInvofest2024.jpg",
+        image: "/assets/certificates/certificateCompetitionWebDesignInvofest.jpg",
         category: "competition"
     },
     {
