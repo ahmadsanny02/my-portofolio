@@ -231,7 +231,7 @@ export default function Tabs({
 function CertificateCard({ cert }: { cert: Certificate }) {
     return (
         <div className={`bg-white/10 p-2 w-full border-2 border-transparent hover:border-white transition-all duration-300 ease-in-out rounded-2xl ${cert.image === "/assets/certificates/certificateMiniBootcampJavascriptDanDom.jpg" ? "h-full row-span-2" : "h-52"}`}>
-            <Image src={cert.image} priority alt="Certificates" width={1600} height={720} className="w-full h-full rounded-2xl" />
+            <Image src={cert.image} priority alt="Certificates" width={cert.image === "/assets/certificates/certificateMiniBootcampJavascriptDanDom.jpg" ? "720" : "1600"} height={cert.image === "/assets/certificates/certificateMiniBootcampJavascriptDanDom.jpg" ? "1600" : "720"} className="w-full h-full rounded-2xl" placeholder="blur" />
         </div>
     );
 }
