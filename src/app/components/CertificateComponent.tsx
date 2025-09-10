@@ -170,7 +170,7 @@ const TABS: { key: string; label: string }[] = [
     // Tambahkan tab lain di sini bila perlu, pastikan key sama dengan nilai `category`
 ];
 
-export default function Tabs({
+export default function CertificateComponent({
     items = CERTIFICATES,
 }: {
     items?: Certificate[];

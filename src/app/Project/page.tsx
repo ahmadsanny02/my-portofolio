@@ -1,9 +1,9 @@
-import ProjectComponent from "../components/ProjectsComponent";
+import ProjectsComponent from "../components/ProjectComponent";
 
 export default function ProjectPage() {
     return (
         <div className="">
-            <ProjectComponent />
+            <ProjectsComponent />
         </div>
     )
 }

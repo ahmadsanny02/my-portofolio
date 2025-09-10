@@ -1,9 +1,9 @@
 "use client"
 
-import { GitBranch, User } from "lucide-react";
-import Certificates from "./components/Certificates";
+import { Award, GitBranch, User } from "lucide-react";
 import Skills from "./components/Skills";
 import GitHubContribHeatmap from "./components/GitHubContribHeatmap";
+import CertificateComponent from "./components/CertificateComponent";
 
 
 export default function Home() {
@@ -25,7 +25,17 @@ export default function Home() {
         </div>
         <GitHubContribHeatmap user="ahmadsanny2" />
       </div>
-      <Certificates />
+
+      <div className="mt-10">
+        <div className="flex items-center gap-1 font-semibold">
+          <Award />
+          <h1 className="text-2xl">Certificates</h1>
+        </div>
+        <div className="mt-5">
+          <CertificateComponent />
+        </div>
+
+      </div>
     </div>
   );
 }
