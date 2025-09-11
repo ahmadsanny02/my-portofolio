@@ -162,7 +162,7 @@ const CERTIFICATES: Certificate[] = [
 
 // Define your tabs. The `key` maps to the category/ID filter.
 const TABS: { key: string; label: string }[] = [
-    { key: "all", label: "Semua" },
+    { key: "all", label: "All" },
     { key: "programming", label: "Programming" },
     { key: "ai", label: "Artificial Intelligence" },
     { key: "competition", label: "Competition" },
