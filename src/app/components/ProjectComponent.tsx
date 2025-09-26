@@ -35,7 +35,7 @@ const PROJECT: Project[] = [
             "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg",
         ],
         code: "https://github.com/ahmadsanny2/books-marketplace.git",
-        visit: "",
+        visit: "https://books-marketplace-sable.vercel.app/",
         category: "programming",
     },
     {
@@ -50,7 +50,7 @@ const PROJECT: Project[] = [
             "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg",
         ],
         code: "https://github.com/ahmadsanny2/chat-ai.git",
-        visit: "",
+        visit: "https://chat-ai-five-bice.vercel.app/",
         category: "programming",
     },
     {
