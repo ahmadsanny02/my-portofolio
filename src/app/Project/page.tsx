@@ -1,4 +1,5 @@
-import ProjectsComponent from "../components/ProjectComponent";
+import ProjectsComponent from "./ProjectComponent/page";
+
 
 export default function ProjectPage() {
     return (
