@@ -7,7 +7,7 @@ export default function Header() {
 
     const navLinks = [
         { name: "Home", href: "/", icon: <House /> },
-        { name: "Project", href: "/Project", icon: <AppWindow /> },
+        { name: "Projects", href: "/Projects", icon: <AppWindow /> },
         { name: "Download CV", href: "/assets/cv/CV_Ahmad_Sani_Jabarulloh_Frontend_Developer.pdf", icon: <FileText /> },
     ]
 

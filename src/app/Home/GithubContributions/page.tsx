@@ -1,5 +1,5 @@
 import { GitBranch } from "lucide-react"
-import GithubContributionComponent from "./GithubContributionComponent/page"
+import GithubContributionComponent from "./GithubContributionComponent/GithubContributionComponent"
 
 const GithubContributions = () => {
     return (

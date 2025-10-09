@@ -1,18 +1,11 @@
 "use client"
 
-import About from "./About/page";
-import Skills from "./Skills/page";
-import GithubContributions from "./GithubContributions/page";
-import Certificates from "./Certificates/page";
+import Home from "./Home/page";
 
 
-export default function Home() {
+
+export default function HomePage() {
   return (
-    <div className="">
-      <About />
-      <Skills />
-      <GithubContributions />
-      <Certificates />
-    </div>
+    <Home />
   );
 }

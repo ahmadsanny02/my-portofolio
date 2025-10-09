@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 
 // karena file GitHubContribHeatmap.tsx ada di folder yang sama (src/app/components)
-const GitHubContributionComponent = dynamic(() => import("./../page"), {
+const GitHubContributionComponent = dynamic(() => import("../GithubContributionComponent"), {
     ssr: false,
 });
 

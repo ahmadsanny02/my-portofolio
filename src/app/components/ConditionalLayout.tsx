@@ -2,6 +2,7 @@
 
 "use client";
 
+import { usePathname } from "next/navigation";
 import Aside from "./Aside";
 import Header from "./Header";
 
@@ -10,6 +11,19 @@ export default function ConditionalLayout({
 }: {
     children: React.ReactNode;
 }) {
+
+    const pathname = usePathname()
+    const isDashboardPage = pathname.startsWith('/Dashboard')
+
+    if (isDashboardPage) {
+        return (
+            <>
+                {children}
+            </>
+        )
+    }
+
+
 
     return (
         // Biarkan div ini menjadi flex container

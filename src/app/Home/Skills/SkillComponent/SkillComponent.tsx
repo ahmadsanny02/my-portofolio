@@ -88,7 +88,7 @@ const SkillComponent = () => {
                     programming languages, frameworks/libraries, and databases.
                 </p>
                 <div className="flex max-md:justify-center flex-wrap gap-5 mt-5">
-                    {dataSkills.map((skills: Skills) => (
+                    {dataSkills.map((skills: SkillComponent) => (
                         <div className="bg-white/10 group p-2 rounded" key={skills.id}>
                             <div className="group-hover:flex group-hover:items-center group-hover:gap-2">
                                 <Image

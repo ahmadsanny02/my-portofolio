@@ -1,4 +1,4 @@
-import CertificateComponent from "./CertificateComponent/page"
+import CertificateComponent from "./CertificateComponent/CertificateComponent"
 
 const Certificates = () => {
     return (
