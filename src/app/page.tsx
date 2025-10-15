@@ -1,6 +1,6 @@
 "use client"
 
-import Home from "./Home/page";
+import Home from "./home/page";
 
 
 
