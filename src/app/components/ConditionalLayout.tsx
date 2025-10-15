@@ -13,7 +13,7 @@ export default function ConditionalLayout({
 }) {
 
     const pathname = usePathname()
-    const isDashboardPage = pathname.startsWith('/Dashboard')
+    const isDashboardPage = pathname.startsWith('/dashboard')
 
     if (isDashboardPage) {
         return (
