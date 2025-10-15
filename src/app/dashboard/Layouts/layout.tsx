@@ -15,12 +15,12 @@ const LayoutsDashboard = ({
     const link = [
         {
             name: "Dashboard",
-            href: "/Dashboard",
+            href: "/dashboard",
             icon: <Home />
         },
         {
             name: "Projects",
-            href: "/Dashboard/manage-projects",
+            href: "/dashboard/manage-projects",
             icon: <Code />
         },
         {
