@@ -1,8 +1,8 @@
-import DashboardComponent from "./DashboardComponent/page"
+import DashboardComponent from "./dashboardComponent/dashboardComponent"
 
-const Dashboard = () => {
-    return (
-        <DashboardComponent />
+const Dashboard=()=>{
+    return(
+        <DashboardComponent/>
     )
 }
 
