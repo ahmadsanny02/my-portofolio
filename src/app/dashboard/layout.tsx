@@ -1,3 +1,5 @@
+"use client"
+
 import { supabase } from "lib/supabaseClient";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
