@@ -1,8 +1,7 @@
 "use client"
 
 import { supabase } from "lib/supabaseClient";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect } from "react";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -81,6 +80,12 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/70">
                     <span className="text-sm font-semibold">Dashboard</span>
                     <div className="flex gap-2">
+                        <button
+                            onClick={() => router.push('/dashboard/projects')}
+                            className="text-xs px-2 py-1 rounded bg-slate-800"
+                        >
+                            
+                        </button>
                         <button
                             onClick={() => router.push('/dashboard/projects')}
                             className="text-xs px-2 py-1 rounded bg-slate-800"
