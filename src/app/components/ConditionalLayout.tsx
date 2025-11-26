@@ -26,7 +26,7 @@ export default function ConditionalLayout({
 
     return (
         // Biarkan div ini menjadi flex container
-        <div className="flex flex-col max-lg:gap-5 lg:flex-row bg-black text-white container mx-auto h-screen gap-10 p-5 rounded-2xl">
+        <div className="flex flex-col max-lg:gap-5 lg:flex-row bg-black text-white h-screen gap-10 p-5 rounded-2xl">
 
             <Aside />
             <div className="bg-white/10 lg:flex-1 rounded-2xl flex flex-col"> {/* Tambahkan flex-1 dan flex-col */}

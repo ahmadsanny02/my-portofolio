@@ -1,148 +1,119 @@
 "use client";
+import { useState, useEffect, useMemo } from "react";
+import { supabase } from "lib/supabaseClient";
 import { Code, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, useMemo } from "react";
-
-// ————————————————————————————————
-// Next.js Tabs (App Router compatible) untuk proyek
-// Tab 1: Semua item; Tab 2..n: filter by category (bertindak seperti ID)
-// ————————————————————————————————
-
-export type Project = {
-    id: number;
-    name_project: string;
-    image: string; // local /public path (mis: "/assets/projects/..")
-    description: string;
-    tech_stack: string[]; // CDN icon URLs
-    code: string; // repo URL
-    visit: string; // live URL (boleh kosong)
-    category: "programming" | "ai" | "competition" | "internship" | string;
-};
 
 const characterLimit = 50;
 
-const PROJECT: Project[] = [
-    {
-        id: 1,
-        name_project: "Books Marketplace",
-        image: "/assets/projects/books-marketplace.png",
-        description:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Repudiandae similique possimus minus...",
-        tech_stack: [
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg",
-        ],
-        code: "https://github.com/ahmadsanny2/books-marketplace.git",
-        visit: "https://books-marketplace-sable.vercel.app/",
-        category: "internship",
-    },
-    {
-        id: 2,
-        name_project: "Chatbot",
-        image: "/assets/projects/chat-ai.png",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia dicta ratione...",
-        tech_stack: [
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/supabase/supabase-original.svg",
-        ],
-        code: "https://github.com/ahmadsanny2/chat-ai.git",
-        visit: "https://chat-ai-five-bice.vercel.app/",
-        category: "internship",
-    },
-    {
-        id: 3,
-        name_project: "Landing Page Adiwiyata",
-        image: "/assets/projects/adiwiyata.png",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae similique...",
-        tech_stack: [
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
-        ],
-        code: "https://github.com/fahmiilmawan/adiwiyata.git",
-        visit: "https://adiwiyata.smktarpan1.sch.id",
-        category: "collaboration",
-    },
-    {
-        id: 4,
-        name_project: "Kalkulator",
-        image: "/assets/projects/kalkulator.png",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae similique...",
-        tech_stack: [
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg",
-        ],
-        code: "https://github.com/ahmadsanny2/kalkulator.git",
-        visit: "https://ahmadsanny2.github.io/kalkulator",
-        category: "personal projects",
-    },
-    {
-        id: 5,
-        name_project: "Landing Page Saribunga Group",
-        image: "/assets/projects/saribunga.png",
-        description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae similique...",
-        tech_stack: [
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/laravel/laravel-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg",
-            "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tailwindcss/tailwindcss-original.svg",
-        ],
-        code: "https://github.com/fahmiilmawan/saribunga-landing.git",
-        visit: "",
-        category: "collaboration",
-    },
-];
+// Tipe Project sesuai data dashboard
+type Tech = {
+    name: string;
+    icon_url: string | null;
+};
 
-const TABS: { key: string; label: string }[] = [
-    { key: "all", label: "All" },
-    { key: "personal projects", label: "Personal Projects" },
-    { key: "academic projects", label: "Academic Projects" },
-    { key: "collaboration", label: "Collaborations" },
-    { key: "internship", label: "Internship" },
-    { key: "competition", label: "Competition" },
-];
+type Project = {
+    id: string;
+    title?: string | null;
+    description?: string | null;
+    category?: string | null;
+    image_url?: string | null;
+    tech_stack?: Tech[] | null;
+    github_url?: string | null;
+    project_url?: string | null;
+    created_at?: string;
+};
 
-export default function ProjectsComponent({ items = PROJECT }: { items?: Project[] }) {
-    const [activeTab, setActiveTab] = useState<string>(TABS[0].key);
+export default function ProjectsComponent() {
+    const [activeTab, setActiveTab] = useState<string>("all");
+    const [dataProjects, setDataProjects] = useState<Project[]>([]);
+    const [categories, setCategories] = useState<string[]>([]);
+    const [loading, setLoading] = useState(true);
 
+    useEffect(() => {
+        const fetchProjects = async () => {
+            const { data, error } = await supabase
+                .from("projects")
+                .select("*")
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                console.log("Supabase Error:", error);
+                setDataProjects([]);
+            } else {
+                const projects = data || [];
+                setDataProjects(projects);
+
+                // Ambil kategori unik dari data proyek
+                const uniqueCategories = Array.from(
+                    new Set(projects.map((p) => p.category).filter(Boolean))
+                );
+                setCategories(uniqueCategories);
+            }
+
+            setLoading(false);
+        };
+
+        fetchProjects();
+    }, []);
+
+    // Filter projects berdasarkan kategori tab
     const filtered = useMemo(() => {
-        if (activeTab === "all") return items;
-        return items.filter((it) => String(it.category) === activeTab);
-    }, [items, activeTab]);
+        if (activeTab === "all") return dataProjects;
+        return dataProjects.filter((p) => p.category === activeTab);
+    }, [dataProjects, activeTab]);
+
+    if (loading) {
+        return (
+            <div className="text-center py-10 text-gray-500">Loading projects...</div>
+        );
+    }
 
     return (
-        <div className="">
+        <div>
             <p className="my-5">
-                Here are some projects I have worked on as evidence of my skills and experience in web development.
+                Here are some projects I have worked on as evidence of my skills and
+                experience in web development.
             </p>
+
             {/* Tabs */}
             <div className="flex snap-mandatory overflow-auto">
                 <div className="flex shrink-0 gap-5">
-                    <div role="tablist" aria-label="Kategori Proyek" className="flex gap-2 rounded-2xl p-1">
-                        {TABS.map((t) => {
-                            const selected = activeTab === t.key;
-                            return (
-                                <button
-                                    key={t.key}
-                                    id={`tab-${t.key}`}
-                                    role="tab"
-                                    aria-selected={selected}
-                                    aria-controls={`panel-${t.key}`}
-                                    onClick={() => setActiveTab(t.key)}
-                                    className={`cursor-pointer px-7 py-1 rounded-full transition hover:bg-blue-500 hover:text-white ${selected ? "bg-blue-500 text-white" : "bg-white/10"
-                                        }`}
-                                >
-                                    {t.label}
-                                </button>
-                            );
-                        })}
+                    <div
+                        role="tablist"
+                        aria-label="Kategori Proyek"
+                        className="flex gap-2 rounded-2xl p-1"
+                    >
+                        {/* Tab "All" */}
+                        <button
+                            key="all"
+                            id="tab-all"
+                            role="tab"
+                            aria-selected={activeTab === "all"}
+                            aria-controls="panel-all"
+                            onClick={() => setActiveTab("all")}
+                            className={`cursor-pointer px-7 py-1 rounded-full transition hover:bg-blue-500 hover:text-white ${activeTab === "all" ? "bg-blue-500 text-white" : "bg-white/10"
+                                }`}
+                        >
+                            All
+                        </button>
+
+                        {/* Tabs kategori */}
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                id={`tab-${cat}`}
+                                role="tab"
+                                aria-selected={activeTab === cat}
+                                aria-controls={`panel-${cat}`}
+                                onClick={() => setActiveTab(cat)}
+                                className={`cursor-pointer px-7 py-1 rounded-full transition hover:bg-blue-500 hover:text-white ${activeTab === cat ? "bg-blue-500 text-white" : "bg-white/10"
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
                     </div>
                 </div>
             </div>
@@ -166,46 +137,95 @@ export default function ProjectsComponent({ items = PROJECT }: { items?: Project
     );
 }
 
+// Komponen Project Card
 function ProjectCard({ project }: { project: Project }) {
+    const name = project.title || "Untitled Project";
+    const desc = project.description || "No description available";
+    const techStack = project.tech_stack || [];
+    const imgSrc = project.image_url || "/placeholder.png";
+    const placeholderTech = "/placeholder-tech.png";
+
     return (
         <div className="group rounded-2xl border-2 border-transparent bg-white/10 transition-all duration-300 hover:border-white">
+            {/* Project Image */}
             <Image
-                src={project.image}
-                alt={project.name_project}
+                src={imgSrc}
+                alt={name}
                 priority
                 width={720}
                 height={400}
-                className="h-52 w-full rounded-t-2xl object-cover group-hover:saturate-0"
+                className="h-52 w-full rounded-t-2xl object-fill group-hover:saturate-0"
+                unoptimized // untuk local image dan supabase image tanpa loader config
             />
+
             <div className="p-5 text-gray-300">
-                <h2 className="text-xl font-bold">{project.name_project.slice(0, 25)}</h2>
+                {/* Project Name */}
+                <h2 className="text-xl font-bold">{name.slice(0, 25)}</h2>
+
+                {/* Project Description */}
                 <p className="mt-2 text-justify">
-                    {project.description.length > characterLimit
-                        ? project.description.slice(0, characterLimit) + "..."
-                        : project.description}
+                    {desc.length > characterLimit ? desc.slice(0, characterLimit) + "..." : desc}
                 </p>
 
-                <div className="mt-3 flex gap-2">
-                    {project.tech_stack.map((tech, index) => (
-                        <div
-                            className="rounded-full bg-white/10 p-2 transition-all duration-300 ease-in-out hover:bg-white"
-                            key={index}
-                        >
-                            {/* Icon dari CDN: gunakan unoptimized agar tidak perlu edit next.config */}
-                            <Image src={tech} width={20} height={20} alt="Tech Stack" unoptimized />
-                        </div>
-                    ))}
+                {/* Tech Stack */}
+                <div className="mt-3 flex gap-2 flex-wrap">
+                    {techStack.length === 0 && (
+                        <span className="text-sm text-gray-500">
+                            Belum ada tech stack. Klik "+ Add Tech".
+                        </span>
+                    )}
+                    {techStack.map((tech, index) =>
+                        tech.icon_url ? (
+                            <div
+                                className="rounded-full bg-white/10 p-2 transition-all duration-300 ease-in-out hover:bg-white"
+                                key={index}
+                                title={tech.name}
+                            >
+                                <Image
+                                    src={tech.icon_url}
+                                    width={20}
+                                    height={20}
+                                    alt={tech.name}
+                                    unoptimized
+                                />
+                            </div>
+                        ) : (
+                            <div
+                                className="rounded-full bg-white/10 p-2 transition-all duration-300 ease-in-out hover:bg-white"
+                                key={index}
+                            >
+                                <Image
+                                    src={placeholderTech}
+                                    width={20}
+                                    height={20}
+                                    alt="Tech Stack"
+                                    unoptimized
+                                />
+                            </div>
+                        )
+                    )}
                 </div>
 
+                {/* Links: Code & Visit */}
                 <div className="mt-10 flex justify-end gap-5">
-                    {project.code && (
-                        <Link href={project.code} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                    {project.github_url && (
+                        <Link
+                            href={project.github_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2"
+                        >
                             <Code />
                             <span>Code</span>
                         </Link>
                     )}
-                    {project.visit && (
-                        <Link href={project.visit} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                    {project.project_url && (
+                        <Link
+                            href={project.project_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2"
+                        >
                             <ExternalLink />
                             <span>Visit</span>
                         </Link>

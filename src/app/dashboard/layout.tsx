@@ -1,36 +1,37 @@
-"use client"
+// app/dashboard/layout.tsx
+'use client';
 
-import { supabase } from "lib/supabaseClient";
-import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { supabase } from 'lib/supabaseClient';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
-    const router = useRouter()
-    const pathname = usePathname()
+    const router = useRouter();
+    const pathname = usePathname();
 
     useEffect(() => {
         const checkAuth = async () => {
-            const flag = typeof window !== "undefined"
-                ? localStorage.getItem("dashboard-auth")
-                : null
+            const flag = typeof window !== 'undefined'
+                ? localStorage.getItem('dashboard-auth')
+                : null;
 
-            const { data } = await supabase.auth.getUser()
+            const { data } = await supabase.auth.getUser();
 
             if (!flag || !data.user) {
-                router.replace("/login")
+                router.replace('/login');
             }
-        }
+        };
 
-        checkAuth()
-    }, [router])
+        checkAuth();
+    }, [router]);
 
     const handleLogout = async () => {
-        await supabase.auth.signOut()
-        if (typeof window !== "undefined") {
-            localStorage.removeItem("dashboard-auth")
+        await supabase.auth.signOut();
+        if (typeof window !== 'undefined') {
+            localStorage.removeItem('dashboard-auth');
         }
-        router.push("/login")
-    }
+        router.push('/login');
+    };
 
     return (
         <div className="min-h-screen bg-slate-950 text-slate-100 flex">
@@ -84,12 +85,6 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                             onClick={() => router.push('/dashboard/projects')}
                             className="text-xs px-2 py-1 rounded bg-slate-800"
                         >
-                            
-                        </button>
-                        <button
-                            onClick={() => router.push('/dashboard/projects')}
-                            className="text-xs px-2 py-1 rounded bg-slate-800"
-                        >
                             Projects
                         </button>
                         <button
@@ -110,5 +105,5 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <div className="flex-1 p-4 md:p-8">{children}</div>
             </main>
         </div>
-    )
+    );
 }

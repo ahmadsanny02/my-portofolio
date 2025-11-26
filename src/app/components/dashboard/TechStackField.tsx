@@ -1,27 +1,28 @@
-"use client"
+// app/components/dashboard/TechStackField.tsx
+'use client';
 
-import { TechStackItem } from "types"
+import { TechStackItem } from 'types';
 
 type Props = {
-    items: TechStackItem[]
-    onChange: (items: TechStackItem[]) => void
-}
+    items: TechStackItem[];
+    onChange: (items: TechStackItem[]) => void;
+};
 
-export function TechStackFiled({ items, onChange }: Props) {
+export function TechStackField({ items, onChange }: Props) {
     const updateItem = (idx: number, key: keyof TechStackItem, value: string) => {
-        const next = [...items]
-        next[idx] = { ...next[idx], [key]: value }
-        onChange(next)
-    }
+        const next = [...items];
+        next[idx] = { ...next[idx], [key]: value };
+        onChange(next);
+    };
 
     const addItem = () => {
-        onChange([...items, { name: "", icon_url: "" }])
-    }
+        onChange([...items, { name: '', icon_url: '' }]);
+    };
 
     const removeItem = (idx: number) => {
-        const next = items.filter((_, i) => i !== idx)
-        onChange(next)
-    }
+        const next = items.filter((_, i) => i !== idx);
+        onChange(next);
+    };
 
     return (
         <div className="space-y-2">
@@ -71,5 +72,5 @@ export function TechStackFiled({ items, onChange }: Props) {
                 ))}
             </div>
         </div>
-    )
+    );
 }

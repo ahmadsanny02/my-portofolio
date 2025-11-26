@@ -1,43 +1,46 @@
-"use client"
+// app/login/page.tsx
+'use client';
 
-import { supabase } from "lib/supabaseClient";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { supabase } from 'lib/supabaseClient';
 
 export default function LoginPage() {
-    const router = useRouter()
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const [loading, setLoading] = useState(false)
-    const [errorMsg, setErrorMsg] = useState("")
+    const router = useRouter();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState('');
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault()
-        setLoading(true)
-        setErrorMsg("")
+        e.preventDefault();
+        setLoading(true);
+        setErrorMsg('');
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
-            password
-        })
+            password,
+        });
 
         if (error) {
-            setErrorMsg(error.message)
-            setLoading(false)
-            return
+            setErrorMsg(error.message);
+            setLoading(false);
+            return;
         }
 
-        const allowedEmail = process.env.NEXT_PUBLIC_DASHBOARD_EMAIL
+        // Optional: restrict by email if kamu mau benar-benar hanya 1 email yg boleh
+        const allowedEmail = process.env.NEXT_PUBLIC_DASHBOARD_EMAIL;
         if (allowedEmail && data.user?.email !== allowedEmail) {
-            await supabase.auth.signOut()
-            setErrorMsg("Email tidak diizinkan mengakses dashboard")
-            setLoading(false)
-            return
+            await supabase.auth.signOut();
+            setErrorMsg('Email tidak diizinkan mengakses dashboard.');
+            setLoading(false);
+            return;
         }
 
-        localStorage.setItem("dashboard-auth", "true")
-        router.push("/dashboard")
-    }
+        // Simpel flag di localStorage
+        localStorage.setItem('dashboard-auth', 'true');
+        router.push('/dashboard');
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
@@ -83,5 +86,5 @@ export default function LoginPage() {
                 </form>
             </div>
         </div>
-    )
+    );
 }
