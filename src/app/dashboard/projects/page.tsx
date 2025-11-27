@@ -150,7 +150,7 @@ export default function DashboardProjectsPage() {
     };
 
     return (
-        <div className="max-w-5xl mx-auto space-y-8">
+        <div className="">
             <div>
                 <h1 className="text-xl md:text-2xl font-semibold mb-2">Projects</h1>
                 <p className="text-sm text-slate-400">
@@ -291,6 +291,8 @@ export default function DashboardProjectsPage() {
                                         <Image
                                             src={project.image_url}
                                             alt={project.title}
+                                            width={1600}
+                                            height={720}
                                             className="w-full h-full object-cover"
                                         />
                                     </div>
@@ -321,6 +323,8 @@ export default function DashboardProjectsPage() {
                                                         <Image
                                                             src={t.icon_url}
                                                             alt={t.name}
+                                                            width={50}
+                                                            height={50}
                                                             className="w-3.5 h-3.5 object-contain"
                                                         />
                                                     )}

@@ -151,7 +151,7 @@ export default function DashboardCertificatesPage() {
     };
 
     return (
-        <div className="max-w-5xl mx-auto space-y-8">
+        <div className="">
             <div>
                 <h1 className="text-xl md:text-2xl font-semibold mb-2">Certificates</h1>
                 <p className="text-sm text-slate-400">
@@ -278,7 +278,7 @@ export default function DashboardCertificatesPage() {
                         Belum ada certificate. Tambahkan certificate baru di form di atas.
                     </p>
                 ) : (
-                    <div className="grid sm:grid-cols-2 gap-3 md:gap-4">
+                    <div className="flex flex-col justify-self-center lg:grid lg:grid-cols-2 2xl:grid-cols-4 gap-3 md:gap-4">
                         {certificates.map(c => (
                             <div
                                 key={c.id}
@@ -289,6 +289,8 @@ export default function DashboardCertificatesPage() {
                                         <Image
                                             src={c.image_url}
                                             alt={c.title}
+                                            width={1600}
+                                            height={720}
                                             className="w-full h-56 object-cover"
                                         />
                                     </div>

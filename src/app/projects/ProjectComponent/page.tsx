@@ -152,9 +152,9 @@ function ProjectCard({ project }: { project: Project }) {
                 src={imgSrc}
                 alt={name}
                 priority
-                width={720}
-                height={400}
-                className="h-52 w-full rounded-t-2xl object-fill group-hover:saturate-0"
+                width={1600}
+                height={720}
+                className="h-72 w-full rounded-t-2xl object-fill group-hover:saturate-0"
                 unoptimized // untuk local image dan supabase image tanpa loader config
             />
 
