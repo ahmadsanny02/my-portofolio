@@ -150,7 +150,7 @@ export default function DashboardProjectsPage() {
     };
 
     return (
-        <div className="">
+        <div className="space-y-5">
             <div>
                 <h1 className="text-xl md:text-2xl font-semibold mb-2">Projects</h1>
                 <p className="text-sm text-slate-400">
@@ -280,20 +280,20 @@ export default function DashboardProjectsPage() {
                         Belum ada project. Tambahkan project baru di form di atas.
                     </p>
                 ) : (
-                    <div className="space-y-3">
+                    <div className="grid grid-cols-4 gap-5 mt-5">
                         {projects.map(project => (
                             <div
                                 key={project.id}
-                                className="border border-slate-800 rounded-xl p-3 md:p-4 flex flex-col md:flex-row gap-3 md:gap-4"
+                                className="border border-slate-800 rounded-xl p-3 flex flex-col gap-5"
                             >
                                 {project.image_url && (
-                                    <div className="w-full md:w-40 h-28 md:h-24 rounded-lg overflow-hidden bg-slate-800 flex-shrink-0">
+                                    <div className="rounded-lg overflow-hidden bg-slate-800">
                                         <Image
                                             src={project.image_url}
                                             alt={project.title}
                                             width={1600}
                                             height={720}
-                                            className="w-full h-full object-cover"
+                                            className="w-96 object-cover"
                                         />
                                     </div>
                                 )}

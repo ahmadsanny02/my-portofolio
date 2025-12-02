@@ -151,7 +151,7 @@ export default function DashboardCertificatesPage() {
     };
 
     return (
-        <div className="">
+        <div className="space-y-5">
             <div>
                 <h1 className="text-xl md:text-2xl font-semibold mb-2">Certificates</h1>
                 <p className="text-sm text-slate-400">
@@ -291,7 +291,7 @@ export default function DashboardCertificatesPage() {
                                             alt={c.title}
                                             width={1600}
                                             height={720}
-                                            className="w-full h-56 object-cover"
+                                            className="w-full h-56 object-fill"
                                         />
                                     </div>
                                 )}
