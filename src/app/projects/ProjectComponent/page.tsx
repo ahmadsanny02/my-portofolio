@@ -5,8 +5,6 @@ import { Code, ExternalLink } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const characterLimit = 50;
-
 // Tipe Project sesuai data dashboard
 type Tech = {
     name: string;
@@ -164,7 +162,7 @@ function ProjectCard({ project }: { project: Project }) {
 
                 {/* Project Description */}
                 <p className="mt-2 text-justify">
-                    {desc.length > characterLimit ? desc.slice(0, characterLimit) + "..." : desc}
+                    {desc}
                 </p>
 
                 {/* Tech Stack */}
