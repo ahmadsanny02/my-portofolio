@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 6, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 22, "column": 0}, "map": {"version":3,"sources":["file:///home/ahmadsanny02/Workspace/03_web/projects/my-portofolio/src/app/dashboard/page.tsx"],"sourcesContent":["export default function DashboardPage() {\n    return (\n        <h1 className=\"\">Hi! Ahmad Sani Jabarulloh</h1>\n    )\n}\n"],"names":[],"mappings":";;;;;AAAe,SAAS;IACpB,qBACI,8WAAC;QAAG,WAAU;kBAAG;;;;;;AAEzB","debugId":null}}]
+}
