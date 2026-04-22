@@ -8,6 +8,26 @@ import { ArrowLeft, ExternalLink, Github, Calendar, Tag } from 'lucide-react';
 import api from '@/lib/api-client';
 import { Project, ApiResponse } from 'types';
 import { formatDate } from '@/lib/utils';
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/projects/${slug}`);
+    const data: ApiResponse<Project> = await res.json();
+    const project = data.data;
+    
+    return {
+      title: `${project?.title} | Portfolio`,
+      description: project?.description,
+      openGraph: {
+        images: [project?.thumbnail || ''],
+      },
+    };
+  } catch (error) {
+    return { title: 'Project Details' };
+  }
+}
 
 export default function ProjectDetail() {
   const { slug } = useParams();
