@@ -10,7 +10,7 @@ CREATE TABLE contact_messages (
 
 -- RLS
 ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Only admin can read/delete messages"
-  ON contact_messages FOR SELECT, DELETE USING (auth.role() = 'authenticated');
+CREATE POLICY "Only admin can manage messages"
+  ON contact_messages FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Public can insert messages"
   ON contact_messages FOR INSERT WITH CHECK (true);
