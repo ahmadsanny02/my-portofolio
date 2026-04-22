@@ -3,6 +3,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import projectRoutes from './interfaces/routes/projectRoutes';
+import certificateRoutes from './interfaces/routes/certificateRoutes';
+import skillRoutes from './interfaces/routes/skillRoutes';
+import contactRoutes from './interfaces/routes/contactRoutes';
+import uploadRoutes from './interfaces/routes/uploadRoutes';
 import { errorHandler } from './interfaces/middlewares/errorHandler';
 
 dotenv.config();
@@ -20,6 +24,10 @@ app.use(express.json());
 
 // Routes
 app.use('/api/projects', projectRoutes);
+app.use('/api/certificates', certificateRoutes);
+app.use('/api/skills', skillRoutes);
+app.use('/api/contact', contactRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

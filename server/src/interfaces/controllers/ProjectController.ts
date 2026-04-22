@@ -1,11 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import { GetAllProjectsUseCase } from '../../application/use-cases/projects/GetAllProjectsUseCase';
 import { GetProjectBySlugUseCase } from '../../application/use-cases/projects/GetProjectBySlugUseCase';
+import { CreateProjectUseCase } from '../../application/use-cases/projects/CreateProjectUseCase';
+import { UpdateProjectUseCase } from '../../application/use-cases/projects/UpdateProjectUseCase';
+import { DeleteProjectUseCase } from '../../application/use-cases/projects/DeleteProjectUseCase';
 
 export class ProjectController {
   constructor(
     private getAllProjectsUseCase: GetAllProjectsUseCase,
-    private getProjectBySlugUseCase: GetProjectBySlugUseCase
+    private getProjectBySlugUseCase: GetProjectBySlugUseCase,
+    private createProjectUseCase: CreateProjectUseCase,
+    private updateProjectUseCase: UpdateProjectUseCase,
+    private deleteProjectUseCase: DeleteProjectUseCase
   ) {}
 
   async getAll(req: Request, res: Response, next: NextFunction) {
@@ -23,6 +29,35 @@ export class ProjectController {
       const { slug } = req.params;
       const project = await this.getProjectBySlugUseCase.execute(slug);
       res.json({ success: true, data: project });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async create(req: Request, res: Response, next: NextFunction) {
+    try {
+      const project = await this.createProjectUseCase.execute(req.body);
+      res.status(201).json({ success: true, data: project });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const project = await this.updateProjectUseCase.execute(id, req.body);
+      res.json({ success: true, data: project });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async delete(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      await this.deleteProjectUseCase.execute(id);
+      res.json({ success: true, message: 'Project deleted successfully' });
     } catch (error) {
       next(error);
     }
