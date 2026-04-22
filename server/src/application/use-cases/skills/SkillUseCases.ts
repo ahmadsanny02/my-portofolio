@@ -1,5 +1,5 @@
 import { ISkillRepository } from '../../../domain/repositories/ISkillRepository';
-import { Skill } from 'types';
+import type { Skill } from 'types';
 
 export class SkillUseCases {
   constructor(private repo: ISkillRepository) {}

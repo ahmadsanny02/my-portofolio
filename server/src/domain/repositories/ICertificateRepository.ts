@@ -1,4 +1,4 @@
-import { Certificate } from 'types';
+import type { Certificate } from 'types';
 
 export interface ICertificateRepository {
   findAll(): Promise<Certificate[]>;

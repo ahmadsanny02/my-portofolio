@@ -1,4 +1,4 @@
-import { Project } from 'types';
+import type { Project } from 'types';
 
 export interface IProjectRepository {
   findAll(onlyPublished?: boolean): Promise<Project[]>;

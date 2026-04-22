@@ -1,4 +1,4 @@
-import { Skill } from 'types';
+import type { Skill } from 'types';
 
 export interface ISkillRepository {
   findAll(): Promise<Skill[]>;

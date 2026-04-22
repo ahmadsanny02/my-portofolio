@@ -1,6 +1,6 @@
 import { supabase } from './SupabaseClient';
 import { ISkillRepository } from '../../../domain/repositories/ISkillRepository';
-import { Skill } from 'types';
+import type { Skill } from 'types';
 
 export class SkillSupabaseRepository implements ISkillRepository {
   private mapToDomain(item: any): Skill {

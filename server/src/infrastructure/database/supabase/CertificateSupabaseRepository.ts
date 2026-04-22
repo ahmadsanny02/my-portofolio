@@ -1,6 +1,6 @@
 import { supabase } from './SupabaseClient';
 import { ICertificateRepository } from '../../../domain/repositories/ICertificateRepository';
-import { Certificate } from 'types';
+import type { Certificate } from 'types';
 
 export class CertificateSupabaseRepository implements ICertificateRepository {
   private mapToDomain(item: any): Certificate {

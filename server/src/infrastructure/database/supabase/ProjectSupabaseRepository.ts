@@ -1,6 +1,6 @@
 import { supabase } from './SupabaseClient';
 import { IProjectRepository } from '../../../domain/repositories/IProjectRepository';
-import { Project } from 'types';
+import type { Project } from 'types';
 
 export class ProjectSupabaseRepository implements IProjectRepository {
   private mapToDomain(item: any): Project {
