@@ -57,7 +57,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
       setImageUrl(data.url);
       toast.success('Image uploaded!');
     } catch (error) {
-      toast.error('Upload failed');
+      toast.error('Upload failed. Ensure "certificates" bucket exists.');
     } finally {
       setUploading(false);
     }
@@ -89,46 +89,74 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
         <button onClick={onCancel} className="p-2 hover:bg-secondary/10 rounded-full"><X size={24} /></button>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div className="grid md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-6">
           <div className="space-y-2">
             <label className="text-sm font-bold">Certificate Title</label>
-            <input {...register('title')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" />
+            <input {...register('title')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="e.g. Meta Front-End Developer" />
             {errors.title && <p className="text-red-500 text-xs">{errors.title.message as string}</p>}
           </div>
+
           <div className="space-y-2">
             <label className="text-sm font-bold">Issuer</label>
-            <input {...register('issuer')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" />
+            <input {...register('issuer')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="e.g. Coursera" />
           </div>
-        </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-bold">Issued Date</label>
+              <input type="date" {...register('issuedAt')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-bold">Category</label>
+              <input {...register('category')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="Web Development" />
+            </div>
+          </div>
+
           <div className="space-y-2">
-            <label className="text-sm font-bold">Issued Date</label>
-            <input type="date" {...register('issuedAt')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" />
+            <label className="text-sm font-bold">Credential URL</label>
+            <input {...register('credentialUrl')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://..." />
           </div>
+        </div>
+
+        <div className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-bold">Category</label>
-            <input {...register('category')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="Web Development" />
+            <label className="text-sm font-bold">Certificate Image / Badge</label>
+            <div className="border-2 border-dashed border-secondary/20 rounded-2xl p-4 flex flex-col items-center justify-center min-h-[200px] relative overflow-hidden group">
+              {imageUrl ? (
+                <>
+                  <img src={imageUrl} className="absolute inset-0 w-full h-full object-contain p-4" alt="Certificate Preview" />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <label className="cursor-pointer bg-white/20 p-3 rounded-full hover:bg-white/40 transition-colors">
+                      <Upload size={20} className="text-white" />
+                      <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                    </label>
+                  </div>
+                </>
+              ) : (
+                <label className="cursor-pointer flex flex-col items-center gap-2">
+                  <div className="p-3 bg-primary/10 rounded-full text-primary">
+                    {uploading ? <Loader2 className="animate-spin" /> : <Upload size={24} />}
+                  </div>
+                  <span className="text-sm font-medium text-secondary">Click to upload certificate image</span>
+                  <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                </label>
+              )}
+            </div>
           </div>
-        </div>
 
-        <div className="space-y-2">
-          <label className="text-sm font-bold">Credential URL</label>
-          <input {...register('credentialUrl')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://..." />
-        </div>
-
-        <div className="flex gap-4 pt-4">
-          <button
-            disabled={loading || uploading}
-            type="submit"
-            className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50"
-          >
-            {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> Save Certificate</>}
-          </button>
-          <button type="button" onClick={onCancel} className="px-8 py-4 bg-background border border-secondary/10 rounded-xl font-bold hover:bg-secondary/5 transition-all">
-            Cancel
-          </button>
+          <div className="flex gap-4 pt-4">
+            <button
+              disabled={loading || uploading}
+              type="submit"
+              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50"
+            >
+              {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> Save Certificate</>}
+            </button>
+            <button type="button" onClick={onCancel} className="px-8 py-4 bg-background border border-secondary/10 rounded-xl font-bold hover:bg-secondary/5 transition-all">
+              Cancel
+            </button>
+          </div>
         </div>
       </form>
     </div>
