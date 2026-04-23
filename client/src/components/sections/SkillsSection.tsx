@@ -2,28 +2,28 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Code2, Database, Layout, Server, Settings, Smartphone } from 'lucide-react';
+import { Code2, Database, Layout, Server, Settings, Smartphone, Cloud } from 'lucide-react';
 
 const skillCategories = [
   {
     title: 'Frontend',
     icon: <Layout className="text-primary" />,
-    skills: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Redux', 'Framer Motion'],
+    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'Bootstrap', 'JavaScript', 'TypeScript'],
   },
   {
     title: 'Backend',
     icon: <Server className="text-primary" />,
-    skills: ['Node.js', 'Express', 'Go', 'Python', 'PostgreSQL', 'Redis'],
+    skills: ['Node.js', 'Express.js', 'PHP', 'Laravel', 'MySQL', 'PostgreSQL'],
   },
   {
-    title: 'Mobile',
-    icon: <Smartphone className="text-primary" />,
-    skills: ['React Native', 'Flutter', 'Swift'],
+    title: 'Tools & DB',
+    icon: <Database className="text-primary" />,
+    skills: ['Supabase', 'Git', 'GitHub', 'Postman', 'Figma', 'Vercel'],
   },
   {
-    title: 'DevOps',
-    icon: <Settings className="text-primary" />,
-    skills: ['Docker', 'Kubernetes', 'AWS', 'CI/CD', 'Terraform'],
+    title: 'Expertise',
+    icon: <Cloud className="text-primary" />,
+    skills: ['Cloud Computing', 'REST API', 'Agile', 'OpenAI API'],
   },
 ];
 
@@ -37,7 +37,7 @@ export default function SkillsSection() {
             <h3 className="text-4xl font-bold">Tech Stack & Expertise</h3>
           </div>
           <p className="text-secondary max-w-sm">
-            Constant learning is key. Here are the technologies I work with to bring ideas to life.
+            Fokus saya adalah pada ekosistem JavaScript modern dan pengembangan web berbasis performa.
           </p>
         </div>
 

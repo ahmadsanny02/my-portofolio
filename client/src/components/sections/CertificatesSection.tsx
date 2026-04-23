@@ -35,11 +35,11 @@ export default function CertificatesSection() {
                 className="bg-background rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all overflow-hidden shadow-sm hover:shadow-xl group"
               >
                 {cert.imageUrl && (
-                  <div className="h-48 overflow-hidden bg-secondary/5 relative">
+                  <div className="h-80 overflow-hidden bg-secondary/5 relative">
                     <img 
                       src={cert.imageUrl} 
                       alt={cert.title} 
-                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500" 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
                     />
                   </div>
                 )}

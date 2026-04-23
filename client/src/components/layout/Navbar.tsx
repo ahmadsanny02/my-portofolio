@@ -38,7 +38,7 @@ export default function Navbar() {
           <div className="bg-primary p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
             <Terminal size={20} className="text-white" />
           </div>
-          <span className="font-bold text-xl tracking-tight">Porto<span className="text-primary">folio</span></span>
+          <span className="font-bold text-xl tracking-tight">Sani<span className="text-primary">.Dev</span></span>
         </Link>
 
         {/* Desktop Nav */}

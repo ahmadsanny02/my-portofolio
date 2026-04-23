@@ -34,7 +34,7 @@ export default function ProjectsSection() {
                 transition={{ delay: index * 0.1 }}
                 className="group relative bg-background rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-secondary/5"
               >
-                <div className="relative h-56 w-full overflow-hidden">
+                <div className="relative h-80 w-full overflow-hidden">
                   <img
                     src={project.thumbnail || 'https://via.placeholder.com/600x400'}
                     alt={project.title}
