@@ -45,10 +45,10 @@ export default function SkillsSection() {
           {skillCategories.map((category, idx) => (
             <motion.div
               key={category.title}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ duration: 1, delay: idx * 0.1 }}
               className="p-8 bg-surface rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all group"
             >
               <div className="mb-6 p-4 bg-background w-fit rounded-2xl group-hover:rotate-12 transition-transform shadow-sm">
