@@ -91,7 +91,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   };
 
   return (
-    <div className="bg-surface p-8 rounded-3xl border border-secondary/5 shadow-xl">
+    <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-secondary/5 shadow-xl">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-2xl font-bold">{project ? 'Edit Project' : 'New Project'}</h2>
         <button onClick={onCancel} className="p-2 hover:bg-secondary/10 rounded-full"><X size={24} /></button>
@@ -115,7 +115,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             <input {...register('techStack')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="Next.js, Tailwind, Supabase" />
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-bold">Demo URL</label>
               <input {...register('demoUrl')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://..." />
@@ -169,15 +169,15 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             </div>
           </div>
 
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <button
               disabled={loading || uploading}
               type="submit"
-              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50"
+              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 order-1 sm:order-none"
             >
               {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> {project ? 'Update' : 'Create'} Project</>}
             </button>
-            <button type="button" onClick={onCancel} className="px-8 py-4 bg-background border border-secondary/10 rounded-xl font-bold hover:bg-secondary/5 transition-all">
+            <button type="button" onClick={onCancel} className="px-8 py-4 bg-background border border-secondary/10 rounded-xl font-bold hover:bg-secondary/5 transition-all order-2 sm:order-none">
               Cancel
             </button>
           </div>
