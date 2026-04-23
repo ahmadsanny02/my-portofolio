@@ -54,7 +54,7 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
   };
 
   return (
-    <div className="bg-surface p-8 rounded-3xl border border-secondary/5 shadow-xl max-w-lg mx-auto">
+    <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-secondary/5 shadow-xl max-w-lg mx-auto">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-2xl font-bold">{skill ? 'Edit Skill' : 'New Skill'}</h2>
         <button onClick={onCancel} className="p-2 hover:bg-secondary/10 rounded-full"><X size={24} /></button>
