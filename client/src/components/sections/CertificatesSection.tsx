@@ -28,18 +28,18 @@ export default function CertificatesSection() {
             {certificates.map((cert, index) => (
               <motion.div
                 key={cert.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1}}
+                viewport={{ once: false, amount: 0.1 }}
                 transition={{ delay: index * 0.1 }}
                 className="bg-background rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all overflow-hidden shadow-sm hover:shadow-xl group"
               >
                 {cert.imageUrl && (
-                  <div className="h-80 overflow-hidden bg-secondary/5 relative">
+                  <div className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative">
                     <img
                       src={cert.imageUrl}
                       alt={cert.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-fill group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
                 )}
@@ -49,8 +49,8 @@ export default function CertificatesSection() {
                       <Award size={20} />
                     </div>
                     <div>
-                      <h4 className="font-bold mb-1 leading-tight text-xl line-clamp-2 h-10">{cert.title}</h4>
                       <p className="text-secondary text-sm font-medium">{cert.issuer}</p>
+                      <h4 className="font-bold mb-1 leading-tight text-xl line-clamp-2 h-12">{cert.title}</h4>
                     </div>
                   </div>
 
