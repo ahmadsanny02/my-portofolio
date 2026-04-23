@@ -30,7 +30,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}
       suppressHydrationWarning
     >
-      <body className="antialiased selection:bg-primary/30 selection:text-primary">
+      <body className="antialiased selection:bg-primary/30 selection:text-primary overflow-x-hidden">
         <ThemeProvider>
           <Toaster position="bottom-right" />
           {children}
