@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
@@ -12,7 +12,9 @@ import {
   MessageSquare, 
   LogOut, 
   User,
-  ExternalLink
+  ExternalLink,
+  Menu,
+  X
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -29,11 +31,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const router = useRouter();
   const pathname = usePathname();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   useEffect(() => {
     if (!loading && !user && pathname !== '/admin/login') {
       router.push('/admin/login');
     }
   }, [user, loading, pathname, router]);
+
+  // Close sidebar on navigation
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [pathname]);
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><div className="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin" /></div>;
 
@@ -42,9 +51,36 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   if (!user) return null; // Prevent rendering dashboard if not authenticated
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex flex-col lg:flex-row">
+      {/* Mobile Header */}
+      <header className="lg:hidden h-16 bg-surface border-b border-secondary/10 flex items-center justify-between px-6 sticky top-0 z-20">
+        <Link href="/" className="flex items-center gap-2">
+          <div className="bg-primary p-1.5 rounded-lg">
+            <User size={18} className="text-white" />
+          </div>
+          <span className="font-bold text-base tracking-tight">Admin<span className="text-primary">Panel</span></span>
+        </Link>
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 text-secondary hover:text-primary transition-colors"
+        >
+          {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </header>
+
+      {/* Sidebar Backdrop (Mobile) */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-surface border-r border-secondary/10 flex flex-col fixed h-full z-10">
+      <aside className={cn(
+        "w-64 bg-surface border-r border-secondary/10 flex flex-col fixed h-full z-40 transition-transform duration-300 lg:translate-x-0",
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      )}>
         <div className="p-6">
           <Link href="/" className="flex items-center gap-2 mb-8">
             <div className="bg-primary p-1.5 rounded-lg">
@@ -92,7 +128,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-64 p-10">
+      <main className="flex-1 lg:ml-64 p-6 lg:p-10">
         {children}
       </main>
     </div>
