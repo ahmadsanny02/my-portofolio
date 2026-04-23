@@ -2,30 +2,57 @@
 
 import React, { useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
-import { Plus, Search, MoreVertical, Edit, Trash2, ExternalLink } from 'lucide-react';
-import { formatDate } from '@/lib/utils';
+import { Plus, Search, Edit, Trash2, ExternalLink } from 'lucide-react';
+import { formatDate, cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
+import ProjectForm from '@/components/admin/ProjectForm';
+import { Project } from 'types';
+import api from '@/lib/api-client';
 
 export default function AdminProjectsPage() {
-  const { projects, loading } = useProjects();
+  const { projects, loading, error } = useProjects();
   const [searchTerm, setSearchTerm] = useState('');
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingProject, setEditingProject] = useState<Project | undefined>(undefined);
 
   const filteredProjects = projects.filter(p => 
     p.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleDelete = (id: string) => {
+  const handleAdd = () => {
+    setEditingProject(undefined);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (project: Project) => {
+    setEditingProject(project);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this project?')) {
-      toast.promise(
-        new Promise((resolve) => setTimeout(resolve, 1000)), // Placeholder for API call
-        {
-          loading: 'Deleting...',
-          success: 'Project deleted!',
-          error: 'Failed to delete.',
-        }
-      );
+      try {
+        await api.delete(`/projects/${id}`);
+        toast.success('Project deleted!');
+        window.location.reload(); // Quick refresh for now
+      } catch (err) {
+        toast.error('Failed to delete project');
+      }
     }
   };
+
+  if (isFormOpen) {
+    return (
+      <ProjectForm 
+        project={editingProject} 
+        onSuccess={() => {
+          setIsFormOpen(false);
+          window.location.reload();
+        }}
+        onCancel={() => setIsFormOpen(false)}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -34,7 +61,10 @@ export default function AdminProjectsPage() {
           <h1 className="text-3xl font-bold mb-2">Projects</h1>
           <p className="text-secondary">Manage your portfolio projects and case studies.</p>
         </div>
-        <button className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20">
+        <button 
+          onClick={handleAdd}
+          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+        >
           <Plus size={20} /> Add Project
         </button>
       </div>
@@ -96,7 +126,7 @@ export default function AdminProjectsPage() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 hover:text-primary transition-colors"><Edit size={18} /></button>
+                      <button onClick={() => handleEdit(project)} className="p-2 hover:text-primary transition-colors"><Edit size={18} /></button>
                       <button onClick={() => handleDelete(project.id)} className="p-2 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
                       <button className="p-2 hover:text-primary transition-colors"><ExternalLink size={18} /></button>
                     </div>

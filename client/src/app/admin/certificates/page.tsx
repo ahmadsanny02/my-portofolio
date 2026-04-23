@@ -2,29 +2,56 @@
 
 import React, { useState } from 'react';
 import { useCertificates } from '@/hooks/useCertificates';
-import { Plus, Search, Trash2, ExternalLink, Award } from 'lucide-react';
+import { Plus, Trash2, ExternalLink, Award, Edit } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
+import CertificateForm from '@/components/admin/CertificateForm';
+import { Certificate } from 'types';
 
 export default function AdminCertificatesPage() {
   const { certificates, loading } = useCertificates();
   const [searchTerm, setSearchTerm] = useState('');
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingCert, setEditingCert] = useState<Certificate | undefined>(undefined);
 
   const filtered = certificates.filter(c => 
     c.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleAdd = () => {
+    setEditingCert(undefined);
+    setIsFormOpen(true);
+  };
+
+  const handleEdit = (cert: Certificate) => {
+    setEditingCert(cert);
+    setIsFormOpen(true);
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Delete this certificate?')) return;
     try {
       await api.delete(`/certificates/${id}`);
       toast.success('Certificate deleted');
-      // In a real app, you'd trigger a re-fetch or update state
+      window.location.reload();
     } catch (error) {
       toast.error('Failed to delete');
     }
   };
+
+  if (isFormOpen) {
+    return (
+      <CertificateForm 
+        certificate={editingCert}
+        onSuccess={() => {
+          setIsFormOpen(false);
+          window.location.reload();
+        }}
+        onCancel={() => setIsFormOpen(false)}
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -33,7 +60,10 @@ export default function AdminCertificatesPage() {
           <h1 className="text-3xl font-bold mb-2">Certificates</h1>
           <p className="text-secondary">Manage your professional certifications.</p>
         </div>
-        <button className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all">
+        <button 
+          onClick={handleAdd}
+          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all"
+        >
           <Plus size={20} /> Add Certificate
         </button>
       </div>
@@ -49,10 +79,13 @@ export default function AdminCertificatesPage() {
               <p className="text-secondary text-xs mb-2">{cert.issuer} • {formatDate(cert.issuedAt)}</p>
               <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 <a href={cert.credentialUrl} target="_blank" className="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
-                  View <ExternalLink size={12} />
+                  <ExternalLink size={12} />
                 </a>
+                <button onClick={() => handleEdit(cert)} className="text-xs font-bold text-primary hover:underline">
+                  <Edit size={12} />
+                </button>
                 <button onClick={() => handleDelete(cert.id)} className="text-xs font-bold text-red-500 hover:underline">
-                  Delete
+                  <Trash2 size={12} />
                 </button>
               </div>
             </div>
