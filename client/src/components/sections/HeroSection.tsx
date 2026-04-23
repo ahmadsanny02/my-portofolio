@@ -14,9 +14,10 @@ export default function HeroSection() {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-7xl">
           <motion.div
-            initial={{ opacity: 0, y: 20, x: -20 }}
-            animate={{ opacity: 1, y: 0, x: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
+            viewport={{ once: false, amount: 0.2 }}
           >
             <h2 className="text-primary font-bold tracking-widest mb-4 uppercase text-sm">
               Hello, I am
