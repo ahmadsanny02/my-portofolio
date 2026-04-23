@@ -28,9 +28,9 @@ export default function ProjectsSection() {
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false, amount: 0.2 }}
                 transition={{ delay: index * 0.1 }}
                 className="group relative bg-background rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-secondary/5"
               >
@@ -55,7 +55,7 @@ export default function ProjectsSection() {
                   <p className="text-secondary text-sm mb-6 line-clamp-2">
                     {project.description}
                   </p>
-                  
+
                   <div className="flex items-center gap-4">
                     {project.demoUrl && (
                       <a href={project.demoUrl} className="flex items-center gap-1.5 text-sm font-bold text-primary hover:gap-2 transition-all">
