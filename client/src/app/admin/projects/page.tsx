@@ -56,14 +56,14 @@ export default function AdminProjectsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold mb-2">Projects</h1>
-          <p className="text-secondary">Manage your portfolio projects and case studies.</p>
+          <p className="text-secondary text-sm sm:text-base">Manage your portfolio projects and case studies.</p>
         </div>
         <button 
           onClick={handleAdd}
-          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20"
+          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-lg shadow-primary/20 w-full sm:w-auto justify-center"
         >
           <Plus size={20} /> Add Project
         </button>
@@ -125,7 +125,7 @@ export default function AdminProjectsPage() {
                     {formatDate(project.createdAt)}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex justify-end gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                       <button onClick={() => handleEdit(project)} className="p-2 hover:text-primary transition-colors"><Edit size={18} /></button>
                       <button onClick={() => handleDelete(project.id)} className="p-2 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
                       <button className="p-2 hover:text-primary transition-colors"><ExternalLink size={18} /></button>
