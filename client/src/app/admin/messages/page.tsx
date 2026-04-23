@@ -40,24 +40,24 @@ export default function AdminMessagesPage() {
             <p className="text-secondary">No messages yet.</p>
           </div>
         ) : messages.map((msg) => (
-          <div key={msg.id} className="p-8 bg-surface rounded-3xl border border-secondary/5 shadow-sm hover:shadow-md transition-shadow group">
-            <div className="flex justify-between items-start mb-6">
+          <div key={msg.id} className="p-6 sm:p-8 bg-surface rounded-3xl border border-secondary/5 shadow-sm hover:shadow-md transition-shadow group">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
               <div className="flex gap-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary">
+                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary flex-shrink-0">
                   <User size={24} />
                 </div>
-                <div>
-                  <h3 className="font-bold text-lg">{msg.name}</h3>
-                  <p className="text-secondary text-sm flex items-center gap-2">
-                    <Mail size={14} /> {msg.email}
+                <div className="min-w-0">
+                  <h3 className="font-bold text-lg truncate">{msg.name}</h3>
+                  <p className="text-secondary text-sm flex items-center gap-2 truncate">
+                    <Mail size={14} className="flex-shrink-0" /> {msg.email}
                   </p>
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center justify-end gap-2">
+              <div className="sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end">
+                <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center gap-2">
                   <Calendar size={14} /> {formatDate(msg.created_at)}
                 </p>
-                <button className="mt-4 p-2 text-secondary hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100">
+                <button className="sm:mt-4 p-2 text-secondary hover:text-red-500 transition-colors lg:opacity-0 lg:group-hover:opacity-100">
                   <Trash2 size={20} />
                 </button>
               </div>
