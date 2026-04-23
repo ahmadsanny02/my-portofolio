@@ -64,14 +64,14 @@ export default function AdminSkillsPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold mb-2">Skills</h1>
-          <p className="text-secondary">Update your technical expertise and tools.</p>
+          <p className="text-secondary text-sm sm:text-base">Update your technical expertise and tools.</p>
         </div>
         <button 
           onClick={handleAdd}
-          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all"
+          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all w-full sm:w-auto justify-center"
         >
           <Plus size={20} /> Add Skill
         </button>
@@ -88,7 +88,7 @@ export default function AdminSkillsPage() {
             <h4 className="font-bold text-sm">{skill.name}</h4>
             <p className="text-xs text-secondary mt-1 uppercase tracking-widest font-bold">{skill.category}</p>
             
-            <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute top-4 right-4 flex gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
               <button onClick={() => handleEdit(skill)} className="p-1.5 hover:text-primary transition-colors"><Edit size={14} /></button>
               <button onClick={() => handleDelete(skill.id)} className="p-1.5 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
             </div>
