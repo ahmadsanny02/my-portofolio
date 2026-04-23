@@ -24,31 +24,50 @@ export default function CertificatesSection() {
             ))}
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {certificates.map((cert, index) => (
               <motion.div
                 key={cert.id}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="p-6 bg-background rounded-2xl border border-secondary/5 hover:border-primary/20 transition-all flex items-start gap-4 shadow-sm hover:shadow-lg group"
+                className="bg-background rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all overflow-hidden shadow-sm hover:shadow-xl group"
               >
-                <div className="bg-primary/10 p-3 rounded-xl text-primary group-hover:scale-110 transition-transform">
-                  <Award size={24} />
-                </div>
-                <div className="flex-1">
-                  <h4 className="font-bold mb-1 leading-tight">{cert.title}</h4>
-                  <p className="text-secondary text-xs font-medium mb-3">{cert.issuer} • {formatDate(cert.issuedAt)}</p>
-                  {cert.credentialUrl && (
-                    <a 
-                      href={cert.credentialUrl} 
-                      target="_blank" 
-                      className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-2 transition-all"
-                    >
-                      Verify Credential <ExternalLink size={12} />
-                    </a>
-                  )}
+                {cert.imageUrl && (
+                  <div className="h-48 overflow-hidden bg-secondary/5 relative">
+                    <img 
+                      src={cert.imageUrl} 
+                      alt={cert.title} 
+                      className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-500" 
+                    />
+                  </div>
+                )}
+                <div className="p-6">
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="bg-primary/10 p-2 rounded-lg text-primary flex-shrink-0">
+                      <Award size={20} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold mb-1 leading-tight text-sm line-clamp-2 h-10">{cert.title}</h4>
+                      <p className="text-secondary text-xs font-medium">{cert.issuer}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center justify-between pt-4 border-t border-secondary/5">
+                    <span className="text-[10px] font-bold text-secondary uppercase tracking-widest">
+                      {formatDate(cert.issuedAt)}
+                    </span>
+                    {cert.credentialUrl && (
+                      <a 
+                        href={cert.credentialUrl} 
+                        target="_blank" 
+                        className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-2 transition-all"
+                      >
+                        Verify <ExternalLink size={12} />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </motion.div>
             ))}
