@@ -18,11 +18,10 @@ export default function Home() {
             <div className="relative">
               <div className="aspect-square bg-primary/10 rounded-3xl overflow-hidden relative group">
                 <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop" 
+                  src="/profile/profile.png" 
                   alt="Ahmad Sani Jabarulloh" 
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700"
+                  className="w-full h-full object-cover transition-all duration-700"
                 />
-                <div className="absolute inset-0 bg-primary/20 mix-blend-overlay opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <div className="absolute -bottom-6 -right-6 bg-background p-6 rounded-3xl shadow-xl border border-secondary/10">
                 <p className="text-3xl font-bold text-primary">2+</p>

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Terminal } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from '../theme-toggle';
 
 const navLinks = [
   { name: 'Home', href: '/' },
@@ -52,6 +53,7 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
+          <ThemeToggle />
           <Link
             href="/admin/login"
             className="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20"
@@ -61,12 +63,15 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Toggle */}
-        <button
-          className="md:hidden p-2"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X /> : <Menu />}
-        </button>
+        <div className="flex items-center gap-4 md:hidden">
+          <ThemeToggle />
+          <button
+            className="p-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X /> : <Menu />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
