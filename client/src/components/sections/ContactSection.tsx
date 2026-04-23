@@ -46,14 +46,14 @@ export default function ContactSection() {
                 <div className="p-3 bg-primary/10 rounded-xl text-primary"><Mail size={20} /></div>
                 <div>
                   <p className="text-xs text-secondary font-bold uppercase tracking-widest">Email</p>
-                  <p className="font-semibold">ahmadsanijabarulloh.02@gmail.com</p>
+                  <p className="text-sm sm:text-base font-semibold">ahmadsanijabarulloh.02@gmail.com</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
                 <div className="p-3 bg-primary/10 rounded-xl text-primary"><MapPin size={20} /></div>
                 <div>
                   <p className="text-xs text-secondary font-bold uppercase tracking-widest">Location</p>
-                  <p className="font-semibold">West Bandung, Indonesia</p>
+                  <p className="text-sm sm:text-base font-semibold">West Bandung, Indonesia</p>
                 </div>
               </div>
             </div>
