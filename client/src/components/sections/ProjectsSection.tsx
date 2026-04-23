@@ -28,17 +28,17 @@ export default function ProjectsSection() {
             {projects.map((project, index) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.2 }}
+                 initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1}}
+                viewport={{ once: false, amount: 0.1 }}
                 transition={{ delay: index * 0.1 }}
                 className="group relative bg-background rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-secondary/5"
               >
-                <div className="relative h-80 w-full overflow-hidden">
+                <div className="relative h-64 lg:h-80 w-full overflow-hidden">
                   <img
                     src={project.thumbnail || 'https://via.placeholder.com/600x400'}
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-fill group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
