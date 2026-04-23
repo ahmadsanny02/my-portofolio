@@ -61,7 +61,7 @@ export default function Home() {
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">Let's build something amazing together</h2>
           <p className="text-secondary mb-10">Currently open for new opportunities and collaborations.</p>
-          <a href="mailto:ahmadsanijabarulloh.02@gmail.com" className="text-2xl font-bold text-primary hover:underline underline-offset-8 transition-all">
+          <a href="mailto:ahmadsanijabarulloh.02@gmail.com" className="sm:text-xl md:text-2xl font-bold text-primary hover:underline underline-offset-8 transition-all">
             ahmadsanijabarulloh.02@gmail.com
           </a>
           <div className="mt-16 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
