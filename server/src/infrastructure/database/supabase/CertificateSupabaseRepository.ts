@@ -21,13 +21,13 @@ export class CertificateSupabaseRepository implements ICertificateRepository {
     const dbItem: any = {
       title: cert.title,
       issuer: cert.issuer,
-      issued_at: cert.issuedAt,
-      expired_at: cert.expiredAt,
+      issued_at: cert.issuedAt || null,
+      expired_at: cert.expiredAt || null,
       image_url: cert.imageUrl,
       credential_url: cert.credentialUrl,
       category: cert.category,
     };
-    Object.keys(dbItem).forEach(key => dbItem[key] === undefined && delete dbItem[key]);
+    Object.keys(dbItem).forEach(key => (dbItem[key] === undefined || dbItem[key] === '') && delete dbItem[key]);
     return dbItem;
   }
 
