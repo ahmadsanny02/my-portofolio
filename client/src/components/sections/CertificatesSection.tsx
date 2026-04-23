@@ -28,18 +28,18 @@ export default function CertificatesSection() {
             {certificates.map((cert, index) => (
               <motion.div
                 key={cert.id}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+                viewport={{ once: false, amount: 0.2 }}
                 transition={{ delay: index * 0.1 }}
                 className="bg-background rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all overflow-hidden shadow-sm hover:shadow-xl group"
               >
                 {cert.imageUrl && (
                   <div className="h-80 overflow-hidden bg-secondary/5 relative">
-                    <img 
-                      src={cert.imageUrl} 
-                      alt={cert.title} 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                    <img
+                      src={cert.imageUrl}
+                      alt={cert.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
                 )}
@@ -53,15 +53,15 @@ export default function CertificatesSection() {
                       <p className="text-secondary text-sm font-medium">{cert.issuer}</p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-center justify-between pt-4 border-t border-secondary/5">
                     <span className="text-[10px] font-bold text-secondary uppercase tracking-widest">
                       {formatDate(cert.issuedAt)}
                     </span>
                     {cert.credentialUrl && (
-                      <a 
-                        href={cert.credentialUrl} 
-                        target="_blank" 
+                      <a
+                        href={cert.credentialUrl}
+                        target="_blank"
                         className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-2 transition-all"
                       >
                         Verify <ExternalLink size={12} />
