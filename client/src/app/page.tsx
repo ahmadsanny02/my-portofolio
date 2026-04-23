@@ -32,11 +32,11 @@ export default function Home() {
             <div>
               <h2 className="text-primary font-bold tracking-widest mb-2 uppercase text-sm">About Me</h2>
               <h3 className="text-4xl font-bold mb-6">Passionate Frontend Developer Based in Bandung</h3>
-              <p className="text-secondary text-lg leading-relaxed mb-8">
-                Saya adalah seorang Frontend Developer yang berfokus pada ekosistem JavaScript modern. 
-                Berpengalaman dalam membangun aplikasi web yang responsif, interaktif, dan berperforma tinggi 
-                menggunakan React.js dan Next.js. Saya senang belajar teknologi baru dan selalu berusaha 
-                menerapkan best practices dalam setiap proyek yang saya kerjakan.
+              <p className="text-secondary text-lg leading-relaxed mb-8 font-medium">
+                I am a dedicated Frontend Developer with a focus on the modern JavaScript ecosystem. 
+                With expertise in building responsive, interactive, and high-performance web applications 
+                using React.js and Next.js, I am passionate about learning new technologies 
+                and always strive to implement best practices in every project I undertake.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div>

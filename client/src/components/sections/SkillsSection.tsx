@@ -36,8 +36,8 @@ export default function SkillsSection() {
             <h2 className="text-primary font-bold tracking-widest mb-2 uppercase text-sm">Skills</h2>
             <h3 className="text-4xl font-bold">Tech Stack & Expertise</h3>
           </div>
-          <p className="text-secondary max-w-sm">
-            Fokus saya adalah pada ekosistem JavaScript modern dan pengembangan web berbasis performa.
+          <p className="text-secondary max-w-sm font-medium">
+            My focus is on the modern JavaScript ecosystem and performance-driven web development.
           </p>
         </div>
 
