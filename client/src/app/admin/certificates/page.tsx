@@ -55,14 +55,14 @@ export default function AdminCertificatesPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <h1 className="text-3xl font-bold mb-2">Certificates</h1>
-          <p className="text-secondary">Manage your professional certifications.</p>
+          <p className="text-secondary text-sm sm:text-base">Manage your professional certifications.</p>
         </div>
         <button 
           onClick={handleAdd}
-          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all"
+          className="bg-primary text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all w-full sm:w-auto justify-center"
         >
           <Plus size={20} /> Add Certificate
         </button>
@@ -77,7 +77,7 @@ export default function AdminCertificatesPage() {
             <div className="flex-1">
               <h4 className="font-bold text-sm mb-1">{cert.title}</h4>
               <p className="text-secondary text-xs mb-2">{cert.issuer} • {formatDate(cert.issuedAt)}</p>
-              <div className="flex gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className="flex gap-3 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                 <a href={cert.credentialUrl} target="_blank" className="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
                   <ExternalLink size={12} />
                 </a>
