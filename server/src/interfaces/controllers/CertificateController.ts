@@ -1,10 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import { GetAllCertificatesUseCase, CreateCertificateUseCase, DeleteCertificateUseCase } from '../../application/use-cases/certificates/CertificateUseCases';
+import { 
+  GetAllCertificatesUseCase, 
+  CreateCertificateUseCase, 
+  UpdateCertificateUseCase,
+  DeleteCertificateUseCase 
+} from '../../application/use-cases/certificates/CertificateUseCases';
 
 export class CertificateController {
   constructor(
     private getAllCerts: GetAllCertificatesUseCase,
     private createCert: CreateCertificateUseCase,
+    private updateCert: UpdateCertificateUseCase,
     private deleteCert: DeleteCertificateUseCase
   ) {}
 
@@ -21,6 +27,16 @@ export class CertificateController {
     try {
       const cert = await this.createCert.execute(req.body);
       res.status(201).json({ success: true, data: cert });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const cert = await this.updateCert.execute(id, req.body);
+      res.json({ success: true, data: cert });
     } catch (error) {
       next(error);
     }

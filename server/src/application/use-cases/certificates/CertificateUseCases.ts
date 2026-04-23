@@ -17,6 +17,14 @@ export class CreateCertificateUseCase {
   }
 }
 
+export class UpdateCertificateUseCase {
+  constructor(private certRepo: ICertificateRepository) {}
+
+  async execute(id: string, data: Partial<Certificate>): Promise<Certificate> {
+    return this.certRepo.update(id, data);
+  }
+}
+
 export class DeleteCertificateUseCase {
   constructor(private certRepo: ICertificateRepository) {}
 

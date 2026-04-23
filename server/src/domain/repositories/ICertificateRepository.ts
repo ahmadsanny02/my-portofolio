@@ -3,5 +3,6 @@ import type { Certificate } from 'types';
 export interface ICertificateRepository {
   findAll(): Promise<Certificate[]>;
   create(data: Omit<Certificate, 'id' | 'createdAt'>): Promise<Certificate>;
+  update(id: string, data: Partial<Certificate>): Promise<Certificate>;
   delete(id: string): Promise<void>;
 }

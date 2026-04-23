@@ -53,6 +53,19 @@ export class CertificateSupabaseRepository implements ICertificateRepository {
     return this.mapToDomain(created);
   }
 
+  async update(id: string, data: Partial<Certificate>): Promise<Certificate> {
+    const dbData = this.mapToDb(data);
+    const { data: updated, error } = await supabase
+      .from('certificates')
+      .update(dbData)
+      .eq('id', id)
+      .select()
+      .single();
+    
+    if (error) throw new Error(error.message);
+    return this.mapToDomain(updated);
+  }
+
   async delete(id: string): Promise<void> {
     const { error } = await supabase.from('certificates').delete().eq('id', id);
     if (error) throw new Error(error.message);
