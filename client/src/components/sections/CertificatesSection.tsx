@@ -49,8 +49,8 @@ export default function CertificatesSection() {
                       <Award size={20} />
                     </div>
                     <div>
-                      <h4 className="font-bold mb-1 leading-tight text-sm line-clamp-2 h-10">{cert.title}</h4>
-                      <p className="text-secondary text-xs font-medium">{cert.issuer}</p>
+                      <h4 className="font-bold mb-1 leading-tight text-xl line-clamp-2 h-10">{cert.title}</h4>
+                      <p className="text-secondary text-sm font-medium">{cert.issuer}</p>
                     </div>
                   </div>
                   

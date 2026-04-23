@@ -13,11 +13,13 @@ const projectSchema = z.object({
   title: z.string().min(3, 'Title too short'),
   slug: z.string().min(3, 'Slug too short'),
   description: z.string().min(10, 'Description too short'),
-  long_description: z.string().optional(),
-  tech_stack: z.string().transform(val => val.split(',').map(s => s.trim())),
-  demo_url: z.string().url().optional().or(z.literal('')),
-  repo_url: z.string().url().optional().or(z.literal('')),
-  is_published: z.boolean().default(true),
+  longDescription: z.string().optional(),
+  techStack: z.string().transform(val => val.split(',').map(s => s.trim())),
+  demoUrl: z.string().url().optional().or(z.literal('')),
+  repoUrl: z.string().url().optional().or(z.literal('')),
+  isPublished: z.boolean().default(true),
+  isFeatured: z.boolean().default(false),
+  orderIndex: z.number().default(0),
 });
 
 interface ProjectFormProps {
@@ -31,17 +33,19 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   const [uploading, setUploading] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState(project?.thumbnail || '');
 
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
+  const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(projectSchema),
     defaultValues: {
       title: project?.title || '',
       slug: project?.slug || '',
       description: project?.description || '',
-      long_description: project?.longDescription || '',
-      tech_stack: project?.techStack.join(', ') || '',
-      demo_url: project?.demoUrl || '',
-      repo_url: project?.repoUrl || '',
-      is_published: project?.isPublished ?? true,
+      longDescription: project?.longDescription || '',
+      techStack: project?.techStack?.join(', ') || '',
+      demoUrl: project?.demoUrl || '',
+      repoUrl: project?.repoUrl || '',
+      isPublished: project?.isPublished ?? true,
+      isFeatured: project?.isFeatured ?? false,
+      orderIndex: project?.orderIndex ?? 0,
     }
   });
 
@@ -108,17 +112,17 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
           <div className="space-y-2">
             <label className="text-sm font-bold">Tech Stack (comma separated)</label>
-            <input {...register('tech_stack')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="Next.js, Tailwind, Supabase" />
+            <input {...register('techStack')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="Next.js, Tailwind, Supabase" />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-bold">Demo URL</label>
-              <input {...register('demo_url')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://..." />
+              <input {...register('demoUrl')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://..." />
             </div>
             <div className="space-y-2">
               <label className="text-sm font-bold">Repo URL</label>
-              <input {...register('repo_url')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://github.com/..." />
+              <input {...register('repoUrl')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://github.com/..." />
             </div>
           </div>
         </div>
@@ -154,9 +158,15 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             <textarea {...register('description')} rows={3} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none resize-none" />
           </div>
 
-          <div className="flex items-center gap-3 mt-4">
-            <input type="checkbox" {...register('is_published')} className="w-5 h-5 accent-primary" />
-            <label className="text-sm font-bold">Publish project immediately</label>
+          <div className="flex flex-wrap gap-6 mt-4">
+            <div className="flex items-center gap-3">
+              <input type="checkbox" {...register('isPublished')} className="w-5 h-5 accent-primary" />
+              <label className="text-sm font-bold">Published</label>
+            </div>
+            <div className="flex items-center gap-3">
+              <input type="checkbox" {...register('isFeatured')} className="w-5 h-5 accent-primary" />
+              <label className="text-sm font-bold">Featured</label>
+            </div>
           </div>
 
           <div className="flex gap-4 pt-4">
