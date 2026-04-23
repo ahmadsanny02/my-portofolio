@@ -39,6 +39,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (pathname === '/admin/login') return <>{children}</>;
 
+  if (!user) return null; // Prevent rendering dashboard if not authenticated
+
   return (
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
