@@ -30,45 +30,38 @@ export default function Navbar() {
   return (
     <nav
       className={cn(
-        'fixed top-0 w-full z-50 transition-all duration-300 px-6 py-4',
-        scrolled ? 'glass py-3' : 'bg-transparent'
+        'fixed top-0 z-50 px-6 py-4 w-full transition-all duration-300',
+        scrolled ? 'py-3 glass' : 'bg-transparent',
       )}
     >
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2 group">
+      <div className="flex justify-between items-center mx-auto max-w-7xl">
+        <Link href="/" className="flex gap-2 items-center group">
           <div className="bg-primary p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
             <Terminal size={20} className="text-white" />
           </div>
-          <span className="font-bold text-xl tracking-tight">San<span className="text-primary"> Dev</span></span>
+          <span className="text-xl font-bold tracking-tight">
+            San<span className="text-primary"> Dev</span>
+          </span>
         </Link>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden gap-8 items-center md:flex">
           {navLinks.map((link) => (
             <Link
               key={link.name}
               href={link.href}
-              className="text-sm font-medium hover:text-primary transition-colors"
+              className="text-sm font-medium transition-colors hover:text-primary"
             >
               {link.name}
             </Link>
           ))}
           <ThemeToggle />
-          <Link
-            href="/admin/login"
-            className="bg-primary text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-primary-dark transition-colors shadow-lg shadow-primary/20"
-          >
-            Admin
-          </Link>
         </div>
 
         {/* Mobile Toggle */}
-        <div className="flex items-center gap-4 md:hidden">
+        <div className="flex gap-4 items-center md:hidden">
           <ThemeToggle />
-          <button
-            className="p-2"
-            onClick={() => setIsOpen(!isOpen)}
-          >
+          <button className="p-2" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -76,7 +69,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full glass p-6 flex flex-col gap-4 animate-in fade-in slide-in-from-top-4">
+        <div className="flex absolute left-0 top-full flex-col gap-4 p-6 w-full md:hidden glass animate-in fade-in slide-in-from-top-4">
           {navLinks.map((link) => (
             <Link
               key={link.name}
