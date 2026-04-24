@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 export default function AboutSection() {
     return (
@@ -15,10 +16,11 @@ export default function AboutSection() {
                         className="relative"
                     >
                         <div className="aspect-square bg-primary/10 rounded-3xl overflow-hidden relative group">
-                            <img
+                            <Image
                                 src="/profile/profile.png"
                                 alt="Ahmad Sani Jabarulloh"
-                                className="w-full h-full object-cover transition-all duration-700"
+                                fill
+                                className="object-cover transition-all duration-700"
                             />
                         </div>
                         <div className="absolute -bottom-6 -right-6 bg-background p-6 rounded-3xl shadow-xl border border-secondary/10">
