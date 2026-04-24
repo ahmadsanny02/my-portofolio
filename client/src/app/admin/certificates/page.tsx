@@ -70,7 +70,19 @@ export default function AdminCertificatesPage() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
-          [1, 2, 3].map(i => <div key={i} className="h-32 bg-secondary/10 rounded-3xl animate-pulse" />)
+          [1, 2, 3, 4, 5, 6].map(i => (
+            <div key={i} className="p-6 bg-surface rounded-3xl border border-secondary/5 flex items-start gap-4 animate-pulse">
+              <div className="w-12 h-12 bg-secondary/10 rounded-xl flex-shrink-0" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 w-full bg-secondary/10 rounded" />
+                <div className="h-3 w-2/3 bg-secondary/10 rounded" />
+                <div className="flex gap-3 pt-2">
+                  <div className="h-3 w-8 bg-secondary/10 rounded" />
+                  <div className="h-3 w-8 bg-secondary/10 rounded" />
+                </div>
+              </div>
+            </div>
+          ))
         ) : filtered.map((cert) => (
           <div key={cert.id} className="p-6 bg-surface rounded-3xl border border-secondary/5 flex items-start gap-4 group relative">
             <div className="bg-primary/10 p-3 rounded-xl text-primary"><Award size={24} /></div>
