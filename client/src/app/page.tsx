@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/Navbar';
 import HeroSection from '@/components/sections/HeroSection';
-import { Github, Linkedin } from 'lucide-react';
+import { Github, Instagram, Linkedin } from 'lucide-react';
 
 const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), { ssr: true });
 const SkillsSection = dynamic(() => import('@/components/sections/SkillsSection'), { ssr: true });
@@ -53,6 +53,14 @@ export default function Home() {
                 className="p-2 bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
               >
                 <Linkedin size={18} />
+              </a>
+              <a
+                href="https://instagram.com/ahmadsanny02"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
+              >
+                <Instagram size={18} />
               </a>
             </div>
           </div>
