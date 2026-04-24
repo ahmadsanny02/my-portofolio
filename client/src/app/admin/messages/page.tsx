@@ -28,7 +28,21 @@ export default function AdminMessagesPage() {
 
       <div className="space-y-4">
         {loading ? (
-          [1, 2, 3].map(i => <div key={i} className="h-40 bg-secondary/10 rounded-3xl animate-pulse" />)
+          [1, 2, 3].map(i => (
+            <div key={i} className="p-8 bg-surface rounded-3xl border border-secondary/5 animate-pulse">
+              <div className="flex justify-between items-start mb-6">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 bg-secondary/10 rounded-2xl" />
+                  <div className="space-y-2">
+                    <div className="h-5 w-32 bg-secondary/10 rounded" />
+                    <div className="h-4 w-48 bg-secondary/10 rounded" />
+                  </div>
+                </div>
+                <div className="h-4 w-24 bg-secondary/10 rounded" />
+              </div>
+              <div className="h-24 bg-secondary/5 rounded-2xl" />
+            </div>
+          ))
         ) : messages.length === 0 ? (
           <div className="text-center py-20 bg-surface rounded-3xl border border-secondary/5">
             <MessageSquare size={48} className="mx-auto text-secondary/30 mb-4" />
