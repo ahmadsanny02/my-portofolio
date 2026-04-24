@@ -7,15 +7,15 @@ import { useCertificates } from '@/hooks/useCertificates';
 import { useMessages } from '@/hooks/useMessages';
 
 export default function DashboardPage() {
-  const { projects } = useProjects();
-  const { certificates } = useCertificates();
-  const { messages } = useMessages();
+  const { projects, loading: loadingProjects } = useProjects();
+  const { certificates, loading: loadingCerts } = useCertificates();
+  const { messages, loading: loadingMessages } = useMessages();
 
   const stats = [
-    { name: 'Total Projects', value: projects.length, icon: Briefcase, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-    { name: 'Certificates', value: certificates.length, icon: Award, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-    { name: 'Messages', value: messages.length, icon: MessageSquare, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
-    { name: 'Profile Views', value: '1.2k', icon: TrendingUp, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+    { name: 'Total Projects', value: projects.length, icon: Briefcase, color: 'text-blue-500', bg: 'bg-blue-500/10', loading: loadingProjects },
+    { name: 'Certificates', value: certificates.length, icon: Award, color: 'text-purple-500', bg: 'bg-purple-500/10', loading: loadingCerts },
+    { name: 'Messages', value: messages.length, icon: MessageSquare, color: 'text-emerald-500', bg: 'bg-emerald-500/10', loading: loadingMessages },
+    { name: 'Profile Views', value: '1.2k', icon: TrendingUp, color: 'text-orange-500', bg: 'bg-orange-500/10', loading: false },
   ];
 
   return (
@@ -34,7 +34,11 @@ export default function DashboardPage() {
               </div>
             </div>
             <p className="text-secondary text-sm font-medium mb-1">{stat.name}</p>
-            <p className="text-3xl font-bold">{stat.value}</p>
+            {stat.loading ? (
+              <p className="text-3xl font-bold">0</p>
+            ) : (
+              <p className="text-3xl font-bold">{stat.value}</p>
+            )}
           </div>
         ))}
       </div>
