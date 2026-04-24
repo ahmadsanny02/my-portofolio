@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useCertificates } from '@/hooks/useCertificates';
 import { Award, ExternalLink } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function CertificatesSection() {
   const { certificates, loading } = useCertificates();
@@ -36,10 +37,11 @@ export default function CertificatesSection() {
               >
                 {cert.imageUrl && (
                   <div className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative">
-                    <img
+                    <Image
                       src={cert.imageUrl}
                       alt={cert.title}
-                      className="w-full h-full object-fill group-hover:scale-110 transition-transform duration-500"
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
                 )}
@@ -62,6 +64,7 @@ export default function CertificatesSection() {
                       <a
                         href={cert.credentialUrl}
                         target="_blank"
+                        rel="noopener noreferrer"
                         className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-2 transition-all"
                       >
                         Verify <ExternalLink size={12} />
