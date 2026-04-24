@@ -3,26 +3,21 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, Trash2, Calendar, User, MessageSquare } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
-import api from '@/lib/api-client';
+import { useMessages } from '@/hooks/useMessages';
 import toast from 'react-hot-toast';
 
 export default function AdminMessagesPage() {
-  const [messages, setMessages] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { messages, loading, deleteMessage } = useMessages();
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const { data } = await api.get('/contact');
-        setMessages(data.data || []);
-      } catch (error) {
-        toast.error('Failed to load messages');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMessages();
-  }, []);
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this message?')) return;
+    const result = await deleteMessage(id);
+    if (result.success) {
+      toast.success('Message deleted');
+    } else {
+      toast.error('Failed to delete message');
+    }
+  };
 
   return (
     <div className="space-y-8">
@@ -57,7 +52,10 @@ export default function AdminMessagesPage() {
                 <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center gap-2">
                   <Calendar size={14} /> {formatDate(msg.created_at)}
                 </p>
-                <button className="sm:mt-4 p-2 text-secondary hover:text-red-500 transition-colors lg:opacity-0 lg:group-hover:opacity-100">
+                <button 
+                  onClick={() => handleDelete(msg.id)}
+                  className="sm:mt-4 p-2 text-secondary hover:text-red-500 transition-colors lg:opacity-0 lg:group-hover:opacity-100"
+                >
                   <Trash2 size={20} />
                 </button>
               </div>

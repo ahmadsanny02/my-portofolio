@@ -4,15 +4,17 @@ import React from 'react';
 import { Briefcase, Award, MessageSquare, TrendingUp } from 'lucide-react';
 import { useProjects } from '@/hooks/useProjects';
 import { useCertificates } from '@/hooks/useCertificates';
+import { useMessages } from '@/hooks/useMessages';
 
 export default function DashboardPage() {
   const { projects } = useProjects();
   const { certificates } = useCertificates();
+  const { messages } = useMessages();
 
   const stats = [
     { name: 'Total Projects', value: projects.length, icon: Briefcase, color: 'text-blue-500', bg: 'bg-blue-500/10' },
     { name: 'Certificates', value: certificates.length, icon: Award, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-    { name: 'Messages', value: '0', icon: MessageSquare, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    { name: 'Messages', value: messages.length, icon: MessageSquare, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
     { name: 'Profile Views', value: '1.2k', icon: TrendingUp, color: 'text-orange-500', bg: 'bg-orange-500/10' },
   ];
 
