@@ -19,9 +19,24 @@ export default function CertificatesSection() {
         </div>
 
         {loading ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-48 bg-secondary/10 rounded-2xl animate-pulse" />
+              <div key={i} className="bg-surface rounded-3xl border border-secondary/5 overflow-hidden shadow-sm">
+                <div className="h-64 lg:h-80 bg-secondary/10 animate-pulse" />
+                <div className="p-6">
+                  <div className="flex gap-4 mb-4">
+                    <div className="w-10 h-10 bg-secondary/10 rounded-lg animate-pulse" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 w-20 bg-secondary/10 rounded animate-pulse" />
+                      <div className="h-6 w-full bg-secondary/10 rounded animate-pulse" />
+                    </div>
+                  </div>
+                  <div className="pt-4 border-t border-secondary/5 flex justify-between">
+                    <div className="h-4 w-16 bg-secondary/10 rounded animate-pulse" />
+                    <div className="h-4 w-12 bg-secondary/10 rounded animate-pulse" />
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         ) : (
