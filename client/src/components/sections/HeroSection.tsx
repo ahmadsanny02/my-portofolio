@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin } from 'lucide-react';
+import { ArrowRight, Download, Github, Instagram, Linkedin } from 'lucide-react';
 
 export default function HeroSection() {
   return (
@@ -68,6 +68,14 @@ export default function HeroSection() {
                   className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm"
                 >
                   <Linkedin size={20} />
+                </a>
+                 <a
+                  href="https://instagram.com/ahmadsanny02"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm"
+                >
+                  <Instagram size={20} />
                 </a>
               </div>
             </div>
