@@ -1,11 +1,14 @@
+import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/Navbar';
 import HeroSection from '@/components/sections/HeroSection';
-import SkillsSection from '@/components/sections/SkillsSection';
-import ProjectsSection from '@/components/sections/ProjectsSection';
-import CertificatesSection from '@/components/sections/CertificatesSection';
-import ContactSection from '@/components/sections/ContactSection';
-import { Github, Linkedin, Twitter } from 'lucide-react';
-import AboutSection from '@/components/sections/AboutSection';
+import { Github, Linkedin } from 'lucide-react';
+
+const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), { ssr: true });
+const SkillsSection = dynamic(() => import('@/components/sections/SkillsSection'), { ssr: true });
+const ProjectsSection = dynamic(() => import('@/components/sections/ProjectsSection'), { ssr: true });
+const CertificatesSection = dynamic(() => import('@/components/sections/CertificatesSection'), { ssr: true });
+const ContactSection = dynamic(() => import('@/components/sections/ContactSection'), { ssr: true });
+
 
 export default function Home() {
   return (
