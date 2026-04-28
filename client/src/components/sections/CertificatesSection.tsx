@@ -56,7 +56,7 @@ export default function CertificatesSection() {
                       src={cert.imageUrl}
                       alt={cert.title}
                       fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="object-fill h-full w-full group-hover:scale-110 transition-transform duration-500"
                     />
                   </div>
                 )}
