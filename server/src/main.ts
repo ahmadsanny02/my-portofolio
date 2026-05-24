@@ -51,6 +51,10 @@ app.get('/health', (req, res) => {
 // Error handling (must be last)
 app.use(errorHandler);
 
-app.listen(port, () => {
-  console.log(`[Server] Running on port ${port} in ${process.env.NODE_ENV || 'development'} mode`);
-});
+if (!process.env.VERCEL) {
+  app.listen(port, () => {
+    console.log(`[Server] Running on port ${port} in ${process.env.NODE_ENV || 'development'} mode`);
+  });
+}
+
+export default app;
