@@ -34,7 +34,7 @@ export default function Navbar() {
         scrolled ? 'py-3 glass' : 'bg-transparent',
       )}
     >
-      <div className="flex justify-between items-center mx-auto max-w-7xl">
+      <div className="flex justify-between items-center mx-auto container">
         <Link href="/" className="flex gap-2 items-center group">
           <div className="bg-primary p-1.5 rounded-lg group-hover:rotate-12 transition-transform">
             <Terminal size={20} className="text-white" />

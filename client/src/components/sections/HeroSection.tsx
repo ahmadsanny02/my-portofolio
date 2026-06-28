@@ -41,7 +41,7 @@ export default function HeroSection() {
                 Explore Projects <ArrowRight size={20} />
               </a>
               <a
-                href="../CV/CV-Ahmad_Sani_Jabarulloh-Frontend_Developer.pdf"
+                href="../CV/CV-Ahmad_Sani_Jabarulloh-Web_Developer.pdf"
                 target="_blank"
                 className="bg-surface border border-secondary/20 px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-secondary/5 transition-all shadow-sm"
               >
