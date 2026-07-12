@@ -2,22 +2,49 @@
 
 import React, { useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
-import { Plus, Search, Edit, Trash2, ExternalLink } from 'lucide-react';
+import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react';
 import { formatDate, cn } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import ProjectForm from '@/components/admin/ProjectForm';
 import { Project } from 'types';
 import api from '@/lib/api-client';
 import Image from 'next/image';
+import TableControls from '@/components/admin/TableControls';
 
 export default function AdminProjectsPage() {
   const { projects, loading } = useProjects();
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterStatus, setFilterStatus] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | undefined>(undefined);
 
-  const filteredProjects = projects.filter(p => 
-    p.title.toLowerCase().includes(searchTerm.toLowerCase())
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleFilterChange = (val: string) => {
+    setFilterStatus(val);
+    setCurrentPage(1);
+  };
+
+  const filteredProjects = projects.filter(p => {
+    const matchesSearch = p.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = 
+      filterStatus === '' 
+        ? true 
+        : filterStatus === 'published' 
+          ? p.isPublished 
+          : !p.isPublished;
+    return matchesSearch && matchesFilter;
+  });
+
+  const totalPages = Math.ceil(filteredProjects.length / itemsPerPage) || 1;
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   const handleAdd = () => {
@@ -71,17 +98,24 @@ export default function AdminProjectsPage() {
       </div>
 
       <div className="bg-surface rounded-3xl border border-secondary/5 overflow-hidden shadow-sm">
-        <div className="p-6 border-b border-secondary/5 flex justify-between items-center bg-surface">
-          <div className="relative max-w-md w-full">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary" size={18} />
-            <input
-              type="text"
-              placeholder="Search projects..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full bg-background border border-secondary/10 rounded-xl pl-12 pr-4 py-2.5 focus:outline-none focus:border-primary transition-colors text-sm"
-            />
-          </div>
+        <div className="p-6 border-b border-secondary/5 bg-surface">
+          <TableControls
+            searchTerm={searchTerm}
+            onSearchChange={handleSearchChange}
+            searchPlaceholder="Search projects..."
+            filterValue={filterStatus}
+            onFilterChange={handleFilterChange}
+            filterOptions={[
+              { value: 'published', label: 'Published' },
+              { value: 'draft', label: 'Draft' }
+            ]}
+            filterPlaceholder="All Statuses"
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            totalItems={filteredProjects.length}
+            itemsPerPage={itemsPerPage}
+          />
         </div>
 
         <div className="overflow-x-auto">
@@ -121,7 +155,7 @@ export default function AdminProjectsPage() {
                     </td>
                   </tr>
                 ))
-              ) : filteredProjects.map((project) => (
+              ) : paginatedProjects.map((project) => (
                 <tr key={project.id} className="hover:bg-secondary/5 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">

@@ -1,13 +1,51 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Mail, Trash2, Calendar, User, MessageSquare } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { useMessages } from '@/hooks/useMessages';
 import toast from 'react-hot-toast';
+import TableControls from '@/components/admin/TableControls';
 
 export default function AdminMessagesPage() {
   const { messages, loading, deleteMessage } = useMessages();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterRead, setFilterRead] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleFilterChange = (val: string) => {
+    setFilterRead(val);
+    setCurrentPage(1);
+  };
+
+  const filteredMessages = messages.filter(msg => {
+    const matchesSearch = 
+      msg.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      msg.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (msg.subject && msg.subject.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      msg.message.toLowerCase().includes(searchTerm.toLowerCase());
+      
+    const matchesFilter = 
+      filterRead === '' 
+        ? true 
+        : filterRead === 'read' 
+          ? msg.isRead 
+          : !msg.isRead;
+          
+    return matchesSearch && matchesFilter;
+  });
+
+  const totalPages = Math.ceil(filteredMessages.length / itemsPerPage) || 1;
+  const paginatedMessages = filteredMessages.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this message?')) return;
@@ -24,6 +62,26 @@ export default function AdminMessagesPage() {
       <div>
         <h1 className="text-3xl font-bold mb-2">Messages</h1>
         <p className="text-secondary">Read and manage inquiries from your portfolio visitors.</p>
+      </div>
+
+      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+        <TableControls
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          searchPlaceholder="Search messages..."
+          filterValue={filterRead}
+          onFilterChange={handleFilterChange}
+          filterOptions={[
+            { value: 'read', label: 'Read' },
+            { value: 'unread', label: 'Unread' }
+          ]}
+          filterPlaceholder="All Statuses"
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredMessages.length}
+          itemsPerPage={itemsPerPage}
+        />
       </div>
 
       <div className="space-y-4">
@@ -43,12 +101,12 @@ export default function AdminMessagesPage() {
               <div className="h-24 bg-secondary/5 rounded-2xl" />
             </div>
           ))
-        ) : messages.length === 0 ? (
+        ) : filteredMessages.length === 0 ? (
           <div className="text-center py-20 bg-surface rounded-3xl border border-secondary/5">
             <MessageSquare size={48} className="mx-auto text-secondary/30 mb-4" />
             <p className="text-secondary">No messages yet.</p>
           </div>
-        ) : messages.map((msg) => (
+        ) : paginatedMessages.map((msg) => (
           <div key={msg.id} className="p-6 sm:p-8 bg-surface rounded-3xl border border-secondary/5 shadow-sm hover:shadow-md transition-shadow group">
             <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
               <div className="flex gap-4">

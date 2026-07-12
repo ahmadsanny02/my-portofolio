@@ -8,11 +8,43 @@ import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
 import CertificateForm from '@/components/admin/CertificateForm';
 import { Certificate } from 'types';
+import TableControls from '@/components/admin/TableControls';
 
 export default function AdminCertificatesPage() {
   const { certificates, loading } = useCertificates();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterIssuer, setFilterIssuer] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCert, setEditingCert] = useState<Certificate | undefined>(undefined);
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleFilterChange = (val: string) => {
+    setFilterIssuer(val);
+    setCurrentPage(1);
+  };
+
+  const filteredCertificates = certificates.filter(c => {
+    const matchesSearch = 
+      c.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.issuer.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterIssuer === '' ? true : c.issuer === filterIssuer;
+    return matchesSearch && matchesFilter;
+  });
+
+  const totalPages = Math.ceil(filteredCertificates.length / itemsPerPage) || 1;
+  const paginatedCertificates = filteredCertificates.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const issuerOptions = Array.from(new Set(certificates.map(c => c.issuer)))
+    .map(issuer => ({ value: issuer, label: issuer }));
 
   const handleAdd = () => {
     setEditingCert(undefined);
@@ -63,6 +95,23 @@ export default function AdminCertificatesPage() {
         </button>
       </div>
 
+      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+        <TableControls
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          searchPlaceholder="Search certificates..."
+          filterValue={filterIssuer}
+          onFilterChange={handleFilterChange}
+          filterOptions={issuerOptions}
+          filterPlaceholder="All Issuers"
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredCertificates.length}
+          itemsPerPage={itemsPerPage}
+        />
+      </div>
+
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           [1, 2, 3, 4, 5, 6].map(i => (
@@ -78,7 +127,7 @@ export default function AdminCertificatesPage() {
               </div>
             </div>
           ))
-        ) : certificates.map((cert) => (
+        ) : paginatedCertificates.map((cert) => (
           <div key={cert.id} className="p-6 bg-surface rounded-3xl border border-secondary/5 flex items-start gap-4 group relative">
             <div className="bg-primary/10 p-3 rounded-xl text-primary"><Award size={24} /></div>
             <div className="flex-1">

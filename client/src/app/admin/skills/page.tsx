@@ -6,12 +6,42 @@ import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
 import SkillForm from '@/components/admin/SkillForm';
 import { Skill } from 'types';
+import TableControls from '@/components/admin/TableControls';
 
 export default function AdminSkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterCategory, setFilterCategory] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingSkill, setEditingSkill] = useState<Skill | undefined>(undefined);
+
+  const handleSearchChange = (val: string) => {
+    setSearchTerm(val);
+    setCurrentPage(1);
+  };
+
+  const handleFilterChange = (val: string) => {
+    setFilterCategory(val);
+    setCurrentPage(1);
+  };
+
+  const filteredSkills = skills.filter(s => {
+    const matchesSearch = s.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesFilter = filterCategory === '' ? true : s.category === filterCategory;
+    return matchesSearch && matchesFilter;
+  });
+
+  const totalPages = Math.ceil(filteredSkills.length / itemsPerPage) || 1;
+  const paginatedSkills = filteredSkills.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const categoryOptions = Array.from(new Set(skills.map(s => s.category)))
+    .map(cat => ({ value: cat, label: cat }));
 
   const fetchSkills = async () => {
     try {
@@ -77,10 +107,27 @@ export default function AdminSkillsPage() {
         </button>
       </div>
 
+      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+        <TableControls
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          searchPlaceholder="Search skills..."
+          filterValue={filterCategory}
+          onFilterChange={handleFilterChange}
+          filterOptions={categoryOptions}
+          filterPlaceholder="All Categories"
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredSkills.length}
+          itemsPerPage={itemsPerPage}
+        />
+      </div>
+
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {loading ? (
           [1, 2, 3, 4].map(i => <div key={i} className="h-24 bg-secondary/10 rounded-3xl animate-pulse" />)
-        ) : skills.map((skill) => (
+        ) : paginatedSkills.map((skill) => (
           <div key={skill.id} className="p-6 bg-surface rounded-3xl border border-secondary/5 flex flex-col items-center justify-center text-center group relative">
             <div className="p-3 bg-primary/10 rounded-2xl text-primary mb-3">
               <Code2 size={24} />
