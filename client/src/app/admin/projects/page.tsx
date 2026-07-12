@@ -8,9 +8,10 @@ import toast from 'react-hot-toast';
 import ProjectForm from '@/components/admin/ProjectForm';
 import { Project } from 'types';
 import api from '@/lib/api-client';
+import Image from 'next/image';
 
 export default function AdminProjectsPage() {
-  const { projects, loading, error } = useProjects();
+  const { projects, loading } = useProjects();
   const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingProject, setEditingProject] = useState<Project | undefined>(undefined);
@@ -35,7 +36,7 @@ export default function AdminProjectsPage() {
         await api.delete(`/projects/${id}`);
         toast.success('Project deleted!');
         window.location.reload(); // Quick refresh for now
-      } catch (err) {
+      } catch {
         toast.error('Failed to delete project');
       }
     }
@@ -125,7 +126,7 @@ export default function AdminProjectsPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-lg bg-background border border-secondary/10 overflow-hidden flex-shrink-0">
-                        <img src={project.thumbnail || ''} className="w-full h-full object-cover" alt="" />
+                        <Image src={project.thumbnail || 'https://via.placeholder.com/150'} className="w-full h-full object-cover" alt="" width={48} height={48} unoptimized />
                       </div>
                       <div>
                         <p className="font-bold text-sm">{project.title}</p>

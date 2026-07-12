@@ -22,7 +22,7 @@ export default function DashboardPage() {
     <div className="space-y-10">
       <div>
         <h1 className="text-3xl font-bold mb-2">Dashboard Overview</h1>
-        <p className="text-secondary">Welcome back! Here's what's happening with your portfolio.</p>
+        <p className="text-secondary">Welcome back! Here&apos;s what&apos;s happening with your portfolio.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -51,7 +51,7 @@ export default function DashboardPage() {
               <div key={i} className="flex gap-4 items-center">
                 <div className="w-2 h-2 rounded-full bg-primary" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium">New project "AI SaaS Platform" was added</p>
+                  <p className="text-sm font-medium">New project &quot;AI SaaS Platform&quot; was added</p>
                   <p className="text-xs text-secondary">2 hours ago</p>
                 </div>
               </div>

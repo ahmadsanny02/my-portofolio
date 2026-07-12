@@ -11,13 +11,8 @@ import { Certificate } from 'types';
 
 export default function AdminCertificatesPage() {
   const { certificates, loading } = useCertificates();
-  const [searchTerm, setSearchTerm] = useState('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCert, setEditingCert] = useState<Certificate | undefined>(undefined);
-
-  const filtered = certificates.filter(c => 
-    c.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const handleAdd = () => {
     setEditingCert(undefined);
@@ -35,7 +30,7 @@ export default function AdminCertificatesPage() {
       await api.delete(`/certificates/${id}`);
       toast.success('Certificate deleted');
       window.location.reload();
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete');
     }
   };
@@ -83,7 +78,7 @@ export default function AdminCertificatesPage() {
               </div>
             </div>
           ))
-        ) : filtered.map((cert) => (
+        ) : certificates.map((cert) => (
           <div key={cert.id} className="p-6 bg-surface rounded-3xl border border-secondary/5 flex items-start gap-4 group relative">
             <div className="bg-primary/10 p-3 rounded-xl text-primary"><Award size={24} /></div>
             <div className="flex-1">

@@ -4,7 +4,6 @@ import React from 'react';
 import { AlertCircle, RefreshCcw } from 'lucide-react';
 
 export default function Error({
-  error,
   reset,
 }: {
   error: Error & { digest?: string };

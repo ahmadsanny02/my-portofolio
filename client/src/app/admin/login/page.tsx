@@ -18,8 +18,8 @@ export default function LoginPage() {
     try {
       await login(email, password);
       toast.success('Welcome back, Admin!');
-    } catch (error: any) {
-      toast.error(error.message || 'Login failed');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Login failed');
     } finally {
       setIsSubmitting(false);
     }

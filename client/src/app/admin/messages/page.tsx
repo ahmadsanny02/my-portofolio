@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Mail, Trash2, Calendar, User, MessageSquare } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { useMessages } from '@/hooks/useMessages';
@@ -64,7 +64,7 @@ export default function AdminMessagesPage() {
               </div>
               <div className="sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end">
                 <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center gap-2">
-                  <Calendar size={14} /> {formatDate(msg.created_at)}
+                  <Calendar size={14} /> {formatDate(msg.createdAt)}
                 </p>
                 <button 
                   onClick={() => handleDelete(msg.id)}

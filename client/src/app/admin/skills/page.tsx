@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Settings, Plus, Trash2, Code2, Edit } from 'lucide-react';
+import { Plus, Trash2, Code2, Edit } from 'lucide-react';
 import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
 import SkillForm from '@/components/admin/SkillForm';
@@ -17,7 +17,7 @@ export default function AdminSkillsPage() {
     try {
       const { data } = await api.get('/skills');
       setSkills(data.data || []);
-    } catch (error) {
+    } catch {
       toast.error('Failed to load skills');
     } finally {
       setLoading(false);
@@ -44,7 +44,7 @@ export default function AdminSkillsPage() {
       await api.delete(`/skills/${id}`);
       toast.success('Skill deleted');
       fetchSkills();
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete');
     }
   };
