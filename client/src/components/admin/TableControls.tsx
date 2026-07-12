@@ -103,13 +103,13 @@ export default function TableControls({
       {/* Pagination Row */}
       {showPagination && totalItems > 0 && (
         <div className={cn(
-          "flex flex-col sm:flex-row gap-4 items-center justify-between text-sm",
+          "flex flex-col sm:flex-row gap-4 items-center justify-between text-xs sm:text-sm",
           showSearchAndFilter ? "pt-4 border-t border-secondary/10 mt-4" : ""
         )}>
-          <p className="text-secondary font-medium">
-            Showing <span className="text-foreground font-semibold">{startItem}</span> to{' '}
-            <span className="text-foreground font-semibold">{endItem}</span> of{' '}
-            <span className="text-foreground font-semibold">{totalItems}</span> entries
+          <p className="text-secondary/70 font-semibold uppercase tracking-wider text-[10px] sm:text-xs">
+            Showing <span className="text-foreground font-extrabold">{startItem}</span> to{' '}
+            <span className="text-foreground font-extrabold">{endItem}</span> of{' '}
+            <span className="text-foreground font-extrabold">{totalItems}</span> entries
           </p>
 
           {totalPages > 1 && (
@@ -119,7 +119,7 @@ export default function TableControls({
                 whileTap={{ scale: 0.95 }}
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
-                className="p-2.5 rounded-xl border border-secondary/15 bg-surface dark:bg-background/50 hover:bg-secondary/5 hover:text-foreground text-secondary disabled:opacity-40 disabled:hover:bg-transparent transition-all cursor-pointer"
+                className="p-2.5 rounded-xl border border-secondary/10 bg-surface/50 dark:bg-slate-900/40 hover:border-primary/30 hover:bg-primary/5 hover:text-primary text-secondary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-secondary disabled:hover:border-secondary/10 transition-all cursor-pointer flex items-center justify-center"
                 aria-label="Previous Page"
               >
                 <ChevronLeft size={16} />
@@ -132,10 +132,10 @@ export default function TableControls({
                   whileTap={{ scale: 0.95 }}
                   onClick={() => onPageChange(page)}
                   className={cn(
-                    "w-9 h-9 rounded-xl font-bold flex items-center justify-center transition-all text-xs border cursor-pointer",
+                    "w-9 h-9 rounded-xl font-extrabold flex items-center justify-center transition-all text-xs border cursor-pointer",
                     currentPage === page
                       ? "bg-primary text-white border-primary shadow-lg shadow-primary/25"
-                      : "border-secondary/15 bg-surface dark:bg-background/50 hover:bg-secondary/5 hover:text-foreground text-secondary"
+                      : "border-secondary/10 bg-surface/50 dark:bg-slate-900/40 hover:border-primary/30 hover:bg-primary/5 hover:text-primary text-secondary"
                   )}
                 >
                   {page}
@@ -147,7 +147,7 @@ export default function TableControls({
                 whileTap={{ scale: 0.95 }}
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
-                className="p-2.5 rounded-xl border border-secondary/15 bg-surface dark:bg-background/50 hover:bg-secondary/5 hover:text-foreground text-secondary disabled:opacity-40 disabled:hover:bg-transparent transition-all cursor-pointer"
+                className="p-2.5 rounded-xl border border-secondary/10 bg-surface/50 dark:bg-slate-900/40 hover:border-primary/30 hover:bg-primary/5 hover:text-primary text-secondary disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-secondary disabled:hover:border-secondary/10 transition-all cursor-pointer flex items-center justify-center"
                 aria-label="Next Page"
               >
                 <ChevronRight size={16} />

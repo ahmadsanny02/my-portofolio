@@ -216,7 +216,7 @@ export default function AdminCertificatesPage() {
         )}
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10 mt-6">
+      <div className="mt-8 px-2">
         <TableControls
           currentPage={currentPage}
           totalPages={totalPages}
