@@ -34,7 +34,7 @@ export class CertificateController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const cert = await this.updateCert.execute(id, req.body);
       res.json({ success: true, data: cert });
     } catch (error) {
@@ -44,7 +44,7 @@ export class CertificateController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       await this.deleteCert.execute(id);
       res.json({ success: true, message: 'Certificate deleted' });
     } catch (error) {

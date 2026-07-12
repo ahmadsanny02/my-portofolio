@@ -26,7 +26,7 @@ export class ProjectController {
 
   async getBySlug(req: Request, res: Response, next: NextFunction) {
     try {
-      const { slug } = req.params;
+      const slug = req.params.slug as string;
       const project = await this.getProjectBySlugUseCase.execute(slug);
       res.json({ success: true, data: project });
     } catch (error) {
@@ -45,7 +45,7 @@ export class ProjectController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       const project = await this.updateProjectUseCase.execute(id, req.body);
       res.json({ success: true, data: project });
     } catch (error) {
@@ -55,7 +55,7 @@ export class ProjectController {
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
+      const id = req.params.id as string;
       await this.deleteProjectUseCase.execute(id);
       res.json({ success: true, message: 'Project deleted successfully' });
     } catch (error) {

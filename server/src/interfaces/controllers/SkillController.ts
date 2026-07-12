@@ -20,14 +20,14 @@ export class SkillController {
 
   async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const data = await this.useCases.update(req.params.id, req.body);
+      const data = await this.useCases.update(req.params.id as string, req.body);
       res.json({ success: true, data });
     } catch (error) { next(error); }
   }
 
   async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      await this.useCases.delete(req.params.id);
+      await this.useCases.delete(req.params.id as string);
       res.json({ success: true, message: 'Skill deleted' });
     } catch (error) { next(error); }
   }
