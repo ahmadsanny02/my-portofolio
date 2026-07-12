@@ -10,6 +10,27 @@ import { Certificate } from 'types';
 import TableControls from '@/components/admin/TableControls';
 import Modal from '@/components/admin/Modal';
 import { showToast, showConfirm } from '@/lib/sweetalert';
+import Image from 'next/image';
+import { motion, Variants } from 'framer-motion';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05
+    }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { type: 'spring', stiffness: 280, damping: 22 } 
+  }
+};
 
 export default function AdminCertificatesPage() {
   const { certificates, loading } = useCertificates();
@@ -100,8 +121,7 @@ export default function AdminCertificatesPage() {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
-          totalItems={filteredCertificates.length}
-          itemsPerPage={itemsPerPage}
+          showPagination={false}
         />
       </div>
 
@@ -120,26 +140,57 @@ export default function AdminCertificatesPage() {
               </div>
             </div>
           ))
-        ) : paginatedCertificates.map((cert) => (
-          <div key={cert.id} className="p-6 bg-surface rounded-3xl border border-secondary/5 flex items-start gap-4 group relative">
-            <div className="bg-primary/10 p-3 rounded-xl text-primary"><Award size={24} /></div>
-            <div className="flex-1">
-              <h4 className="font-bold text-sm mb-1">{cert.title}</h4>
-              <p className="text-secondary text-xs mb-2">{cert.issuer} • {formatDate(cert.issuedAt)}</p>
-              <div className="flex gap-3 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                <a href={cert.credentialUrl} target="_blank" className="text-xs font-bold text-primary flex items-center gap-1 hover:underline">
-                  <ExternalLink size={12} />
-                </a>
-                <button onClick={() => handleEdit(cert)} className="text-xs font-bold text-primary hover:underline">
-                  <Edit size={12} />
-                </button>
-                <button onClick={() => handleDelete(cert.id)} className="text-xs font-bold text-red-500 hover:underline">
-                  <Trash2 size={12} />
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+        ) : (
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full w-full"
+          >
+            {paginatedCertificates.map((cert) => (
+              <motion.div 
+                key={cert.id} 
+                variants={itemVariants}
+                whileHover={{ y: -6, scale: 1.01 }}
+                className="p-6 bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 flex items-start gap-4 group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-md shadow-primary/[0.01]"
+              >
+                {cert.imageUrl ? (
+                  <div className="w-14 h-14 rounded-2xl border border-secondary/15 dark:border-white/10 overflow-hidden flex-shrink-0 bg-background relative shadow-inner">
+                    <Image src={cert.imageUrl} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="" width={56} height={56} unoptimized />
+                  </div>
+                ) : (
+                  <div className="bg-primary/10 p-3.5 rounded-2xl text-primary flex-shrink-0 transition-transform duration-300 group-hover:scale-105 shadow-inner"><Award size={24} /></div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-bold text-sm mb-1 text-foreground group-hover:text-primary transition-colors duration-200 truncate">{cert.title}</h4>
+                  <p className="text-secondary text-xs mb-3 truncate">{cert.issuer} • {formatDate(cert.issuedAt)}</p>
+                  <div className="flex gap-1 items-center opacity-60 group-hover:opacity-100 transition-all duration-300">
+                    <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center justify-center cursor-pointer">
+                      <ExternalLink size={14} />
+                    </a>
+                    <button onClick={() => handleEdit(cert)} className="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center justify-center cursor-pointer">
+                      <Edit size={14} />
+                    </button>
+                    <button onClick={() => handleDelete(cert.id)} className="p-1.5 hover:bg-red-500/10 rounded-lg text-red-500 transition-all flex items-center justify-center cursor-pointer">
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </div>
+
+      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10 mt-6">
+        <TableControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredCertificates.length}
+          itemsPerPage={itemsPerPage}
+          showSearchAndFilter={false}
+        />
       </div>
 
       <Modal 

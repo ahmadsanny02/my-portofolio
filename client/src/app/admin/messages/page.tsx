@@ -6,6 +6,26 @@ import { formatDate } from '@/lib/utils';
 import { useMessages } from '@/hooks/useMessages';
 import TableControls from '@/components/admin/TableControls';
 import { showToast, showConfirm } from '@/lib/sweetalert';
+import { motion, Variants } from 'framer-motion';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05
+    }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 15 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    transition: { type: 'spring', stiffness: 280, damping: 22 } 
+  }
+};
 
 export default function AdminMessagesPage() {
   const { messages, loading, deleteMessage } = useMessages();
@@ -84,8 +104,7 @@ export default function AdminMessagesPage() {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={setCurrentPage}
-          totalItems={filteredMessages.length}
-          itemsPerPage={itemsPerPage}
+          showPagination={false}
         />
       </div>
 
@@ -111,39 +130,71 @@ export default function AdminMessagesPage() {
             <MessageSquare size={48} className="mx-auto text-secondary/30 mb-4" />
             <p className="text-secondary">No messages yet.</p>
           </div>
-        ) : paginatedMessages.map((msg) => (
-          <div key={msg.id} className="p-6 sm:p-8 bg-surface rounded-3xl border border-secondary/5 shadow-sm hover:shadow-md transition-shadow group">
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
-              <div className="flex gap-4">
-                <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary flex-shrink-0">
-                  <User size={24} />
+        ) : (
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="space-y-6 w-full"
+          >
+            {paginatedMessages.map((msg) => (
+              <motion.div 
+                key={msg.id} 
+                variants={itemVariants}
+                className="p-6 sm:p-8 bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 shadow-md shadow-primary/[0.01] hover:shadow-lg transition-all duration-300 hover:border-primary/20 dark:hover:border-primary/10 group relative"
+              >
+                <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
+                  <div className="flex gap-4 items-center">
+                    <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center text-primary flex-shrink-0 transition-transform duration-300 group-hover:scale-105 shadow-inner">
+                      <User size={24} />
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-bold text-lg text-foreground truncate">{msg.name}</h3>
+                        {!msg.isRead && (
+                          <span className="relative flex h-2.5 w-2.5" title="Unread">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-secondary text-sm flex items-center gap-2 truncate mt-0.5">
+                        <Mail size={14} className="flex-shrink-0" /> {msg.email}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end">
+                    <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center gap-2">
+                      <Calendar size={14} /> {formatDate(msg.created_at)}
+                    </p>
+                    <button 
+                      onClick={() => handleDelete(msg.id)}
+                      className="sm:mt-4 p-2 text-secondary hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer opacity-60 group-hover:opacity-100"
+                    >
+                      <Trash2 size={20} />
+                    </button>
+                  </div>
                 </div>
-                <div className="min-w-0">
-                  <h3 className="font-bold text-lg truncate">{msg.name}</h3>
-                  <p className="text-secondary text-sm flex items-center gap-2 truncate">
-                    <Mail size={14} className="flex-shrink-0" /> {msg.email}
-                  </p>
+                
+                <div className="bg-background/40 dark:bg-slate-950/40 p-6 rounded-2xl border border-secondary/10 dark:border-white/5">
+                  <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Subject: {msg.subject || 'No Subject'}</p>
+                  <p className="text-secondary leading-relaxed text-sm">{msg.message}</p>
                 </div>
-              </div>
-              <div className="sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end">
-                <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center gap-2">
-                  <Calendar size={14} /> {formatDate(msg.created_at)}
-                </p>
-                <button 
-                  onClick={() => handleDelete(msg.id)}
-                  className="sm:mt-4 p-2 text-secondary hover:text-red-500 transition-colors lg:opacity-0 lg:group-hover:opacity-100"
-                >
-                  <Trash2 size={20} />
-                </button>
-              </div>
-            </div>
-            
-            <div className="bg-background/50 p-6 rounded-2xl border border-secondary/5">
-              <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Subject: {msg.subject}</p>
-              <p className="text-secondary leading-relaxed">{msg.message}</p>
-            </div>
-          </div>
-        ))}
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </div>
+
+      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10 mt-6">
+        <TableControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredMessages.length}
+          itemsPerPage={itemsPerPage}
+          showSearchAndFilter={false}
+        />
       </div>
     </div>
   );

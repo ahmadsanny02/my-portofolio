@@ -11,6 +11,22 @@ import Image from 'next/image';
 import TableControls from '@/components/admin/TableControls';
 import Modal from '@/components/admin/Modal';
 import { showToast, showConfirm } from '@/lib/sweetalert';
+import { motion, Variants } from 'framer-motion';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.05
+    }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 280, damping: 22 } }
+};
 
 export default function AdminProjectsPage() {
   const { projects, loading } = useProjects();
@@ -89,8 +105,8 @@ export default function AdminProjectsPage() {
         </button>
       </div>
 
-      <div className="bg-surface rounded-3xl border border-secondary/5 overflow-hidden shadow-sm">
-        <div className="p-6 border-b border-secondary/5 bg-surface">
+      <div className="bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 overflow-hidden shadow-xl shadow-primary/[0.02]">
+        <div className="p-6 border-b border-secondary/10 bg-surface/30 dark:bg-slate-900/30">
           <TableControls
             searchTerm={searchTerm}
             onSearchChange={handleSearchChange}
@@ -105,14 +121,13 @@ export default function AdminProjectsPage() {
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={setCurrentPage}
-            totalItems={filteredProjects.length}
-            itemsPerPage={itemsPerPage}
+            showPagination={false}
           />
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left">
-            <thead className="bg-secondary/5 text-secondary text-xs font-bold uppercase tracking-widest">
+            <thead className="bg-secondary/5 text-secondary text-xs font-bold uppercase tracking-widest border-b border-secondary/10">
               <tr>
                 <th className="px-6 py-4">Project</th>
                 <th className="px-6 py-4">Status</th>
@@ -120,13 +135,18 @@ export default function AdminProjectsPage() {
                 <th className="px-6 py-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-secondary/5">
+            <motion.tbody 
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="divide-y divide-secondary/10 dark:divide-white/5"
+            >
               {loading ? (
                 [1, 2, 3, 4, 5].map(i => (
                   <tr key={i}>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-4 animate-pulse">
-                        <div className="w-12 h-12 rounded-lg bg-secondary/10 flex-shrink-0" />
+                        <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex-shrink-0" />
                         <div className="space-y-2 flex-1">
                           <div className="h-4 w-32 bg-secondary/10 rounded" />
                           <div className="h-3 w-20 bg-secondary/10 rounded" />
@@ -148,14 +168,18 @@ export default function AdminProjectsPage() {
                   </tr>
                 ))
               ) : paginatedProjects.map((project) => (
-                <tr key={project.id} className="hover:bg-secondary/5 transition-colors group">
+                <motion.tr 
+                  key={project.id} 
+                  variants={itemVariants}
+                  className="hover:bg-primary/[0.03] transition-all duration-300 group"
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-lg bg-background border border-secondary/10 overflow-hidden flex-shrink-0">
+                      <div className="w-12 h-12 rounded-2xl bg-background border border-secondary/15 overflow-hidden flex-shrink-0 relative transition-transform duration-300 group-hover:scale-105 shadow-inner">
                         <Image src={project.thumbnail || 'https://via.placeholder.com/150'} className="w-full h-full object-cover" alt="" width={48} height={48} unoptimized />
                       </div>
                       <div>
-                        <p className="font-bold text-sm">{project.title}</p>
+                        <p className="font-bold text-sm text-foreground group-hover:text-primary transition-colors duration-200">{project.title}</p>
                         <p className="text-xs text-secondary">{project.techStack.slice(0, 3).join(', ')}</p>
                       </div>
                     </div>
@@ -163,7 +187,7 @@ export default function AdminProjectsPage() {
                   <td className="px-6 py-4">
                     <span className={cn(
                       "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
-                      project.isPublished ? "bg-emerald-500/10 text-emerald-500" : "bg-orange-500/10 text-orange-500"
+                      project.isPublished ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" : "bg-orange-500/10 text-orange-500 border border-orange-500/20"
                     )}>
                       {project.isPublished ? 'Published' : 'Draft'}
                     </span>
@@ -172,16 +196,26 @@ export default function AdminProjectsPage() {
                     {formatDate(project.createdAt)}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEdit(project)} className="p-2 hover:text-primary transition-colors"><Edit size={18} /></button>
-                      <button onClick={() => handleDelete(project.id)} className="p-2 hover:text-red-500 transition-colors"><Trash2 size={18} /></button>
-                      <button className="p-2 hover:text-primary transition-colors"><ExternalLink size={18} /></button>
+                    <div className="flex justify-end gap-1 opacity-60 group-hover:opacity-100 transition-all duration-300">
+                      <button onClick={() => handleEdit(project)} className="p-2 hover:text-primary hover:bg-primary/10 rounded-xl transition-all cursor-pointer"><Edit size={18} /></button>
+                      <button onClick={() => handleDelete(project.id)} className="p-2 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"><Trash2 size={18} /></button>
+                      <button className="p-2 hover:text-primary hover:bg-primary/10 rounded-xl transition-all cursor-pointer"><ExternalLink size={18} /></button>
                     </div>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
-            </tbody>
+            </motion.tbody>
           </table>
+        </div>
+        <div className="p-6 border-t border-secondary/10 dark:border-white/5 bg-surface/30 dark:bg-slate-900/30">
+          <TableControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+            totalItems={filteredProjects.length}
+            itemsPerPage={itemsPerPage}
+            showSearchAndFilter={false}
+          />
         </div>
       </div>
 
