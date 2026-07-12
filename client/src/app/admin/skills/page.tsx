@@ -3,10 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Trash2, Code2, Edit } from 'lucide-react';
 import api from '@/lib/api-client';
-import toast from 'react-hot-toast';
 import SkillForm from '@/components/admin/SkillForm';
 import { Skill } from 'types';
 import TableControls from '@/components/admin/TableControls';
+import Modal from '@/components/admin/Modal';
+import { showToast, showConfirm } from '@/lib/sweetalert';
 
 export default function AdminSkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
@@ -48,7 +49,7 @@ export default function AdminSkillsPage() {
       const { data } = await api.get('/skills');
       setSkills(data.data || []);
     } catch {
-      toast.error('Failed to load skills');
+      showToast('error', 'Failed to load skills');
     } finally {
       setLoading(false);
     }
@@ -69,28 +70,20 @@ export default function AdminSkillsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this skill?')) return;
-    try {
-      await api.delete(`/skills/${id}`);
-      toast.success('Skill deleted');
-      fetchSkills();
-    } catch {
-      toast.error('Failed to delete');
+    const result = await showConfirm(
+      'Are you sure?',
+      'You are about to delete this skill. This action cannot be undone.'
+    );
+    if (result.isConfirmed) {
+      try {
+        await api.delete(`/skills/${id}`);
+        showToast('success', 'Skill deleted');
+        fetchSkills();
+      } catch {
+        showToast('error', 'Failed to delete');
+      }
     }
   };
-
-  if (isFormOpen) {
-    return (
-      <SkillForm 
-        skill={editingSkill}
-        onSuccess={() => {
-          setIsFormOpen(false);
-          fetchSkills();
-        }}
-        onCancel={() => setIsFormOpen(false)}
-      />
-    );
-  }
 
   return (
     <div className="space-y-8">
@@ -142,6 +135,21 @@ export default function AdminSkillsPage() {
           </div>
         ))}
       </div>
+
+      <Modal 
+        isOpen={isFormOpen} 
+        onClose={() => setIsFormOpen(false)} 
+        title={editingSkill ? 'Edit Skill' : 'Add Skill'}
+      >
+        <SkillForm 
+          skill={editingSkill}
+          onSuccess={() => {
+            setIsFormOpen(false);
+            fetchSkills();
+          }}
+          onCancel={() => setIsFormOpen(false)}
+        />
+      </Modal>
     </div>
   );
 }

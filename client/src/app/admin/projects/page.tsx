@@ -4,12 +4,13 @@ import React, { useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
 import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react';
 import { formatDate, cn } from '@/lib/utils';
-import toast from 'react-hot-toast';
 import ProjectForm from '@/components/admin/ProjectForm';
 import { Project } from 'types';
 import api from '@/lib/api-client';
 import Image from 'next/image';
 import TableControls from '@/components/admin/TableControls';
+import Modal from '@/components/admin/Modal';
+import { showToast, showConfirm } from '@/lib/sweetalert';
 
 export default function AdminProjectsPage() {
   const { projects, loading } = useProjects();
@@ -58,29 +59,20 @@ export default function AdminProjectsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this project?')) {
+    const result = await showConfirm(
+      'Are you sure?',
+      'You are about to delete this project. This action cannot be undone.'
+    );
+    if (result.isConfirmed) {
       try {
         await api.delete(`/projects/${id}`);
-        toast.success('Project deleted!');
+        showToast('success', 'Project deleted!');
         window.location.reload(); // Quick refresh for now
       } catch {
-        toast.error('Failed to delete project');
+        showToast('error', 'Failed to delete project');
       }
     }
   };
-
-  if (isFormOpen) {
-    return (
-      <ProjectForm 
-        project={editingProject} 
-        onSuccess={() => {
-          setIsFormOpen(false);
-          window.location.reload();
-        }}
-        onCancel={() => setIsFormOpen(false)}
-      />
-    );
-  }
 
   return (
     <div className="space-y-8">
@@ -192,6 +184,21 @@ export default function AdminProjectsPage() {
           </table>
         </div>
       </div>
+
+      <Modal 
+        isOpen={isFormOpen} 
+        onClose={() => setIsFormOpen(false)} 
+        title={editingProject ? 'Edit Project' : 'Add Project'}
+      >
+        <ProjectForm 
+          project={editingProject} 
+          onSuccess={() => {
+            setIsFormOpen(false);
+            window.location.reload();
+          }}
+          onCancel={() => setIsFormOpen(false)}
+        />
+      </Modal>
     </div>
   );
 }

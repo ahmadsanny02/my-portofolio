@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X, Upload, Loader2, Save } from 'lucide-react';
+import { Upload, Loader2, Save } from 'lucide-react';
 import api from '@/lib/api-client';
-import toast from 'react-hot-toast';
+import { showToast } from '@/lib/sweetalert';
 import { Certificate } from 'types';
 import Image from 'next/image';
 
@@ -56,9 +56,9 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setImageUrl(data.url);
-      toast.success('Image uploaded!');
+      showToast('success', 'Image uploaded!');
     } catch {
-      toast.error('Upload failed. Ensure "certificates" bucket exists.');
+      showToast('error', 'Upload failed. Ensure "certificates" bucket exists.');
     } finally {
       setUploading(false);
     }
@@ -70,25 +70,21 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
       const payload = { ...data, imageUrl };
       if (certificate) {
         await api.put(`/certificates/${certificate.id}`, payload);
-        toast.success('Certificate updated!');
+        showToast('success', 'Certificate updated!');
       } else {
         await api.post('/certificates', payload);
-        toast.success('Certificate created!');
+        showToast('success', 'Certificate created!');
       }
       onSuccess();
     } catch {
-      toast.error('Failed to save certificate');
+      showToast('error', 'Failed to save certificate');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-secondary/5 shadow-xl">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">{certificate ? 'Edit Certificate' : 'New Certificate'}</h2>
-        <button onClick={onCancel} className="p-2 hover:bg-secondary/10 rounded-full"><X size={24} /></button>
-      </div>
+    <>
 
       <form onSubmit={handleSubmit(onSubmit)} className="grid lg:grid-cols-2 gap-8">
         <div className="space-y-6">
@@ -146,20 +142,20 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex gap-3 pt-4">
+            <button type="button" onClick={onCancel} className="flex-1 py-4 bg-secondary/10 text-foreground rounded-xl font-bold hover:bg-secondary/15 transition-all cursor-pointer">
+              Cancel
+            </button>
             <button
               disabled={loading || uploading}
               type="submit"
-              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 order-1 sm:order-none"
+              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
             >
               {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> Save Certificate</>}
-            </button>
-            <button type="button" onClick={onCancel} className="px-8 py-4 bg-background border border-secondary/10 rounded-xl font-bold hover:bg-secondary/5 transition-all order-2 sm:order-none">
-              Cancel
             </button>
           </div>
         </div>
       </form>
-    </div>
+    </>
   );
 }

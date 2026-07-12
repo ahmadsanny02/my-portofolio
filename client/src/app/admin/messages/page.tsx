@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { Mail, Trash2, Calendar, User, MessageSquare } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { useMessages } from '@/hooks/useMessages';
-import toast from 'react-hot-toast';
 import TableControls from '@/components/admin/TableControls';
+import { showToast, showConfirm } from '@/lib/sweetalert';
 
 export default function AdminMessagesPage() {
   const { messages, loading, deleteMessage } = useMessages();
@@ -48,12 +48,17 @@ export default function AdminMessagesPage() {
   );
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this message?')) return;
-    const result = await deleteMessage(id);
-    if (result.success) {
-      toast.success('Message deleted');
-    } else {
-      toast.error('Failed to delete message');
+    const result = await showConfirm(
+      'Are you sure?',
+      'You are about to delete this message. This action cannot be undone.'
+    );
+    if (result.isConfirmed) {
+      const deleteResult = await deleteMessage(id);
+      if (deleteResult.success) {
+        showToast('success', 'Message deleted');
+      } else {
+        showToast('error', 'Failed to delete message');
+      }
     }
   };
 

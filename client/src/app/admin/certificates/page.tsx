@@ -5,10 +5,11 @@ import { useCertificates } from '@/hooks/useCertificates';
 import { Plus, Trash2, ExternalLink, Award, Edit } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import api from '@/lib/api-client';
-import toast from 'react-hot-toast';
 import CertificateForm from '@/components/admin/CertificateForm';
 import { Certificate } from 'types';
 import TableControls from '@/components/admin/TableControls';
+import Modal from '@/components/admin/Modal';
+import { showToast, showConfirm } from '@/lib/sweetalert';
 
 export default function AdminCertificatesPage() {
   const { certificates, loading } = useCertificates();
@@ -57,28 +58,20 @@ export default function AdminCertificatesPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this certificate?')) return;
-    try {
-      await api.delete(`/certificates/${id}`);
-      toast.success('Certificate deleted');
-      window.location.reload();
-    } catch {
-      toast.error('Failed to delete');
+    const result = await showConfirm(
+      'Are you sure?',
+      'You are about to delete this certificate. This action cannot be undone.'
+    );
+    if (result.isConfirmed) {
+      try {
+        await api.delete(`/certificates/${id}`);
+        showToast('success', 'Certificate deleted');
+        window.location.reload();
+      } catch {
+        showToast('error', 'Failed to delete');
+      }
     }
   };
-
-  if (isFormOpen) {
-    return (
-      <CertificateForm 
-        certificate={editingCert}
-        onSuccess={() => {
-          setIsFormOpen(false);
-          window.location.reload();
-        }}
-        onCancel={() => setIsFormOpen(false)}
-      />
-    );
-  }
 
   return (
     <div className="space-y-8">
@@ -148,6 +141,21 @@ export default function AdminCertificatesPage() {
           </div>
         ))}
       </div>
+
+      <Modal 
+        isOpen={isFormOpen} 
+        onClose={() => setIsFormOpen(false)} 
+        title={editingCert ? 'Edit Certificate' : 'Add Certificate'}
+      >
+        <CertificateForm 
+          certificate={editingCert}
+          onSuccess={() => {
+            setIsFormOpen(false);
+            window.location.reload();
+          }}
+          onCancel={() => setIsFormOpen(false)}
+        />
+      </Modal>
     </div>
   );
 }

@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X, Upload, Loader2, Save } from 'lucide-react';
+import { Upload, Loader2, Save } from 'lucide-react';
 import api from '@/lib/api-client';
-import toast from 'react-hot-toast';
+import { showToast } from '@/lib/sweetalert';
 import { Project } from 'types';
 import Image from 'next/image';
 
@@ -64,9 +64,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setThumbnailUrl(data.url);
-      toast.success('Image uploaded!');
+      showToast('success', 'Image uploaded!');
     } catch {
-      toast.error('Upload failed');
+      showToast('error', 'Upload failed');
     } finally {
       setUploading(false);
     }
@@ -78,26 +78,21 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
       const payload = { ...data, thumbnail: thumbnailUrl };
       if (project) {
         await api.put(`/projects/${project.id}`, payload);
-        toast.success('Project updated!');
+        showToast('success', 'Project updated!');
       } else {
         await api.post('/projects', payload);
-        toast.success('Project created!');
+        showToast('success', 'Project created!');
       }
       onSuccess();
     } catch {
-      toast.error('Failed to save project');
+      showToast('error', 'Failed to save project');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-secondary/5 shadow-xl">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">{project ? 'Edit Project' : 'New Project'}</h2>
-        <button onClick={onCancel} className="p-2 hover:bg-secondary/10 rounded-full"><X size={24} /></button>
-      </div>
-
+    <>
       <form onSubmit={handleSubmit(onSubmit)} className="grid lg:grid-cols-2 gap-8">
         <div className="space-y-6">
           <div className="space-y-2">
@@ -170,20 +165,20 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          <div className="flex gap-3 pt-4">
+            <button type="button" onClick={onCancel} className="flex-1 py-4 bg-secondary/10 text-foreground rounded-xl font-bold hover:bg-secondary/15 transition-all cursor-pointer">
+              Cancel
+            </button>
             <button
               disabled={loading || uploading}
               type="submit"
-              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 order-1 sm:order-none"
+              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
             >
-              {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> {project ? 'Update' : 'Create'} Project</>}
-            </button>
-            <button type="button" onClick={onCancel} className="px-8 py-4 bg-background border border-secondary/10 rounded-xl font-bold hover:bg-secondary/5 transition-all order-2 sm:order-none">
-              Cancel
+              {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> {project ? 'Save' : 'Create'} Project</>}
             </button>
           </div>
         </div>
       </form>
-    </div>
+    </>
   );
 }

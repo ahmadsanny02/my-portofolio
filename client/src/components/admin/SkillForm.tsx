@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X, Loader2, Save } from 'lucide-react';
+import { Loader2, Save } from 'lucide-react';
 import api from '@/lib/api-client';
-import toast from 'react-hot-toast';
+import { showToast } from '@/lib/sweetalert';
 import { Skill } from 'types';
 
 const skillSchema = z.object({
@@ -40,25 +40,21 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
     try {
       if (skill) {
         await api.put(`/skills/${skill.id}`, data);
-        toast.success('Skill updated!');
+        showToast('success', 'Skill updated!');
       } else {
         await api.post('/skills', data);
-        toast.success('Skill created!');
+        showToast('success', 'Skill created!');
       }
       onSuccess();
     } catch {
-      toast.error('Failed to save skill');
+      showToast('error', 'Failed to save skill');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-secondary/5 shadow-xl max-w-lg mx-auto">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold">{skill ? 'Edit Skill' : 'New Skill'}</h2>
-        <button onClick={onCancel} className="p-2 hover:bg-secondary/10 rounded-full"><X size={24} /></button>
-      </div>
+    <>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="space-y-2">
@@ -82,14 +78,23 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
           <input type="number" {...register('proficiency', { valueAsNumber: true })} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" />
         </div>
 
-        <button
-          disabled={loading}
-          type="submit"
-          className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50"
-        >
-          {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> Save Skill</>}
-        </button>
+        <div className="flex gap-3">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="flex-1 bg-secondary/10 text-foreground py-4 rounded-xl font-bold hover:bg-secondary/15 transition-all cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            disabled={loading}
+            type="submit"
+            className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
+          >
+            {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> Save Skill</>}
+          </button>
+        </div>
       </form>
-    </div>
+    </>
   );
 }
