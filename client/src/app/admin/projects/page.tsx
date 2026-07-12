@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useProjects } from '@/hooks/useProjects';
-import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react';
-import { formatDate, cn } from '@/lib/utils';
+import { Plus, Edit, Trash2, ExternalLink, Code2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import ProjectForm from '@/components/admin/ProjectForm';
 import { Project } from 'types';
 import api from '@/lib/api-client';
@@ -105,118 +105,146 @@ export default function AdminProjectsPage() {
         </button>
       </div>
 
-      <div className="bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 overflow-hidden shadow-xl shadow-primary/[0.02]">
-        <div className="p-6 border-b border-secondary/10 bg-surface/30 dark:bg-slate-900/30">
-          <TableControls
-            searchTerm={searchTerm}
-            onSearchChange={handleSearchChange}
-            searchPlaceholder="Search projects..."
-            filterValue={filterStatus}
-            onFilterChange={handleFilterChange}
-            filterOptions={[
-              { value: 'published', label: 'Published' },
-              { value: 'draft', label: 'Draft' }
-            ]}
-            filterPlaceholder="All Statuses"
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            showPagination={false}
-          />
-        </div>
+      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+        <TableControls
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          searchPlaceholder="Search projects..."
+          filterValue={filterStatus}
+          onFilterChange={handleFilterChange}
+          filterOptions={[
+            { value: 'published', label: 'Published' },
+            { value: 'draft', label: 'Draft' }
+          ]}
+          filterPlaceholder="All Statuses"
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          showPagination={false}
+        />
+      </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="bg-secondary/5 text-secondary text-xs font-bold uppercase tracking-widest border-b border-secondary/10">
-              <tr>
-                <th className="px-6 py-4">Project</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Date</th>
-                <th className="px-6 py-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <motion.tbody 
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="divide-y divide-secondary/10 dark:divide-white/5"
-            >
-              {loading ? (
-                [1, 2, 3, 4, 5].map(i => (
-                  <tr key={i}>
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4 animate-pulse">
-                        <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex-shrink-0" />
-                        <div className="space-y-2 flex-1">
-                          <div className="h-4 w-32 bg-secondary/10 rounded" />
-                          <div className="h-3 w-20 bg-secondary/10 rounded" />
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="h-5 w-16 bg-secondary/10 rounded-full animate-pulse" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="h-4 w-24 bg-secondary/10 rounded animate-pulse" />
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex justify-end gap-2">
-                        <div className="h-8 w-8 bg-secondary/10 rounded animate-pulse" />
-                        <div className="h-8 w-8 bg-secondary/10 rounded animate-pulse" />
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : paginatedProjects.map((project) => (
-                <motion.tr 
-                  key={project.id} 
-                  variants={itemVariants}
-                  className="hover:bg-primary/[0.03] transition-all duration-300 group"
-                >
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 rounded-2xl bg-background border border-secondary/15 overflow-hidden flex-shrink-0 relative transition-transform duration-300 group-hover:scale-105 shadow-inner">
-                        <Image src={project.thumbnail || 'https://via.placeholder.com/150'} className="w-full h-full object-cover" alt="" width={48} height={48} unoptimized />
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm text-foreground group-hover:text-primary transition-colors duration-200">{project.title}</p>
-                        <p className="text-xs text-secondary">{project.techStack.slice(0, 3).join(', ')}</p>
-                      </div>
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {loading ? (
+          [1, 2, 3, 4, 5, 6].map(i => (
+            <div key={i} className="h-96 bg-secondary/10 rounded-[28px] animate-pulse" />
+          ))
+        ) : filteredProjects.length === 0 ? (
+          <div className="col-span-full text-center py-20 bg-surface/50 rounded-3xl border border-secondary/10">
+            <p className="text-secondary">No projects found.</p>
+          </div>
+        ) : (
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 col-span-full w-full"
+          >
+            {paginatedProjects.map((project) => (
+              <motion.div 
+                key={project.id} 
+                variants={itemVariants}
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="flex flex-col bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
+              >
+                {/* Card Thumbnail */}
+                <div className="h-48 w-full bg-background border-b border-secondary/10 dark:border-white/5 relative overflow-hidden flex-shrink-0">
+                  {project.thumbnail ? (
+                    <Image src={project.thumbnail} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="" fill unoptimized />
+                  ) : (
+                    <div className="w-full h-full bg-primary/5 flex items-center justify-center text-primary">
+                      <Code2 size={40} className="animate-pulse" />
                     </div>
-                  </td>
-                  <td className="px-6 py-4">
+                  )}
+
+                  {/* Badges Overlay */}
+                  <div className="absolute top-4 left-4 flex gap-2">
+                    {project.isFeatured && (
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/25 text-amber-500 border border-amber-500/25 backdrop-blur-sm uppercase tracking-wider">
+                        Featured
+                      </span>
+                    )}
                     <span className={cn(
-                      "px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider",
-                      project.isPublished ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" : "bg-orange-500/10 text-orange-500 border border-orange-500/20"
+                      "px-2.5 py-1 rounded-full text-[10px] font-bold backdrop-blur-sm uppercase tracking-wider border",
+                      project.isPublished 
+                        ? "bg-emerald-500/25 text-emerald-500 border-emerald-500/25" 
+                        : "bg-orange-500/25 text-orange-500 border-orange-500/25"
                     )}>
                       {project.isPublished ? 'Published' : 'Draft'}
                     </span>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-secondary">
-                    {formatDate(project.createdAt)}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <div className="flex justify-end gap-1 opacity-60 group-hover:opacity-100 transition-all duration-300">
-                      <button onClick={() => handleEdit(project)} className="p-2 hover:text-primary hover:bg-primary/10 rounded-xl transition-all cursor-pointer"><Edit size={18} /></button>
-                      <button onClick={() => handleDelete(project.id)} className="p-2 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"><Trash2 size={18} /></button>
-                      <button className="p-2 hover:text-primary hover:bg-primary/10 rounded-xl transition-all cursor-pointer"><ExternalLink size={18} /></button>
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </motion.tbody>
-          </table>
-        </div>
-        <div className="p-6 border-t border-secondary/10 dark:border-white/5 bg-surface/30 dark:bg-slate-900/30">
-          <TableControls
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={setCurrentPage}
-            totalItems={filteredProjects.length}
-            itemsPerPage={itemsPerPage}
-            showSearchAndFilter={false}
-          />
-        </div>
+                  </div>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div className="space-y-3">
+                    <h4 className="font-bold text-base text-foreground group-hover:text-primary transition-colors duration-200 line-clamp-2" title={project.title}>
+                      {project.title}
+                    </h4>
+                    
+                    {/* Tech Stack Tags */}
+                    {project.techStack && project.techStack.length > 0 && (
+                      <div className="flex flex-wrap gap-1">
+                        {project.techStack.slice(0, 4).map((tech, i) => (
+                          <span key={i} className="px-2 py-0.5 rounded-lg text-[10px] bg-secondary/10 dark:bg-white/5 text-secondary font-semibold">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                    
+                    <p className="text-secondary/70 text-xs line-clamp-3 leading-relaxed">
+                      {project.description}
+                    </p>
+                  </div>
+
+                  {/* Card Actions Footer */}
+                  <div className="flex items-center gap-2 mt-6 pt-4 border-t border-secondary/10 dark:border-white/5">
+                    {project.demoUrl ? (
+                      <a 
+                        href={project.demoUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="flex-1 py-2.5 px-3 bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <ExternalLink size={14} /> Demo
+                      </a>
+                    ) : (
+                      <div className="flex-1 text-center py-2.5 rounded-xl text-xs text-secondary/40 font-semibold bg-secondary/5 border border-secondary/5 select-none">
+                        No Demo
+                      </div>
+                    )}
+                    <button 
+                      onClick={() => handleEdit(project)} 
+                      className="p-2.5 bg-secondary/10 hover:bg-secondary/20 hover:text-foreground text-secondary rounded-xl transition-all cursor-pointer flex items-center justify-center"
+                      title="Edit"
+                    >
+                      <Edit size={14} />
+                    </button>
+                    <button 
+                      onClick={() => handleDelete(project.id)} 
+                      className="p-2.5 bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 rounded-xl transition-all cursor-pointer flex items-center justify-center"
+                      title="Delete"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+      </div>
+
+      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10 mt-6">
+        <TableControls
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+          totalItems={filteredProjects.length}
+          itemsPerPage={itemsPerPage}
+          showSearchAndFilter={false}
+        />
       </div>
 
       <Modal 
