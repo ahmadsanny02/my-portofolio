@@ -93,56 +93,59 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid lg:grid-cols-2 gap-8">
+      <form onSubmit={handleSubmit(onSubmit)} className="grid lg:grid-cols-2 gap-8 text-foreground">
         <div className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-bold">Project Title</label>
-            <input {...register('title')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="e.g. E-Commerce Platform" />
-            {errors.title && <p className="text-red-500 text-xs">{errors.title.message as string}</p>}
+            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Project Title</label>
+            <input {...register('title')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="e.g. E-Commerce Platform" />
+            {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-bold">Slug (URL)</label>
-            <input {...register('slug')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="e.g. ecommerce-platform" />
+            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Slug (URL)</label>
+            <input {...register('slug')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="e.g. ecommerce-platform" />
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-bold">Tech Stack (comma separated)</label>
-            <input {...register('techStack')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="Next.js, Tailwind, Supabase" />
+            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Tech Stack (comma separated)</label>
+            <input {...register('techStack')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="Next.js, Tailwind, Supabase" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-bold">Demo URL</label>
-              <input {...register('demoUrl')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://..." />
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Demo URL</label>
+              <input {...register('demoUrl')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="https://..." />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-bold">Repo URL</label>
-              <input {...register('repoUrl')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="https://github.com/..." />
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Repo URL</label>
+              <input {...register('repoUrl')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="https://github.com/..." />
             </div>
           </div>
         </div>
 
         <div className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-bold">Thumbnail Image</label>
-            <div className="border-2 border-dashed border-secondary/20 rounded-2xl p-4 flex flex-col items-center justify-center min-h-[150px] relative overflow-hidden group">
+            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Thumbnail Image</label>
+            <div className="border-2 border-dashed border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02] rounded-[24px] p-6 flex flex-col items-center justify-center min-h-[160px] relative overflow-hidden group transition-all duration-300">
               {thumbnailUrl ? (
                 <>
-                  <Image src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover" alt="Preview" fill unoptimized />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <label className="cursor-pointer bg-white/20 p-3 rounded-full hover:bg-white/40 transition-colors">
+                  <Image src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Preview" fill unoptimized />
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                    <label className="cursor-pointer bg-primary p-3.5 rounded-2xl hover:bg-primary-dark transition-all hover:scale-110 shadow-lg shadow-primary/20 flex items-center justify-center">
                       <Upload size={20} className="text-white" />
                       <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
                     </label>
                   </div>
                 </>
               ) : (
-                <label className="cursor-pointer flex flex-col items-center gap-2">
-                  <div className="p-3 bg-primary/10 rounded-full text-primary">
-                    {uploading ? <Loader2 className="animate-spin" /> : <Upload size={24} />}
+                <label className="cursor-pointer flex flex-col items-center gap-3 w-full text-center group/btn">
+                  <div className="p-4 bg-primary/15 rounded-2xl text-primary transition-all group-hover/btn:scale-110 shadow-inner">
+                    {uploading ? <Loader2 className="animate-spin" /> : <Upload size={22} />}
                   </div>
-                  <span className="text-sm font-medium text-secondary">Click to upload thumbnail</span>
+                  <div>
+                    <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click to upload thumbnail</span>
+                    <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
+                  </div>
                   <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
                 </label>
               )}
@@ -150,18 +153,18 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-bold">Short Description</label>
-            <textarea {...register('description')} rows={3} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none resize-none" />
+            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Short Description</label>
+            <textarea {...register('description')} rows={3} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none text-sm" placeholder="Briefly describe the project..." />
           </div>
 
-          <div className="flex flex-wrap gap-6 mt-4">
-            <div className="flex items-center gap-3">
-              <input type="checkbox" {...register('isPublished')} className="w-5 h-5 accent-primary" />
-              <label className="text-sm font-bold">Published</label>
+          <div className="flex flex-wrap gap-6 py-2 bg-secondary/5 dark:bg-white/[0.02] rounded-2xl px-4 border border-secondary/10 dark:border-white/5">
+            <div className="flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" id="isPublished" {...register('isPublished')} className="w-4 h-4 accent-primary rounded cursor-pointer" />
+              <label htmlFor="isPublished" className="text-sm font-semibold text-secondary select-none cursor-pointer">Published</label>
             </div>
-            <div className="flex items-center gap-3">
-              <input type="checkbox" {...register('isFeatured')} className="w-5 h-5 accent-primary" />
-              <label className="text-sm font-bold">Featured</label>
+            <div className="flex items-center gap-2.5 cursor-pointer">
+              <input type="checkbox" id="isFeatured" {...register('isFeatured')} className="w-4 h-4 accent-primary rounded cursor-pointer" />
+              <label htmlFor="isFeatured" className="text-sm font-semibold text-secondary select-none cursor-pointer">Featured</label>
             </div>
           </div>
 

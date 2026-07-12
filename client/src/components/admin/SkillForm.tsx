@@ -55,16 +55,15 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
 
   return (
     <>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-foreground">
         <div className="space-y-2">
-          <label className="text-sm font-bold">Skill Name</label>
-          <input {...register('name')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" placeholder="e.g. TypeScript" />
+          <label className="text-xs font-bold uppercase tracking-wider text-secondary">Skill Name</label>
+          <input {...register('name')} className="w-full bg-background/50 dark:bg-slate-955/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="e.g. TypeScript" />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold">Category</label>
-          <select {...register('category')} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none">
+          <label className="text-xs font-bold uppercase tracking-wider text-secondary">Category</label>
+          <select {...register('category')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm cursor-pointer">
             <option value="Frontend">Frontend</option>
             <option value="Backend">Backend</option>
             <option value="Mobile">Mobile</option>
@@ -74,15 +73,15 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-bold">Proficiency (%)</label>
-          <input type="number" {...register('proficiency', { valueAsNumber: true })} className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:border-primary outline-none" />
+          <label className="text-xs font-bold uppercase tracking-wider text-secondary">Proficiency (%)</label>
+          <input type="number" {...register('proficiency', { valueAsNumber: true })} className="w-full bg-background/50 dark:bg-slate-955/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm" />
         </div>
 
-        <div className="flex gap-3">
+        <div className="flex gap-3 pt-2">
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 bg-secondary/10 text-foreground py-4 rounded-xl font-bold hover:bg-secondary/15 transition-all cursor-pointer"
+            className="flex-1 py-4 bg-secondary/10 text-foreground rounded-xl font-bold hover:bg-secondary/15 transition-all cursor-pointer"
           >
             Cancel
           </button>

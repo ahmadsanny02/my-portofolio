@@ -42,22 +42,25 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 26 }}
-            className="w-full max-w-2xl bg-surface dark:bg-slate-900 border border-secondary/15 rounded-[32px] shadow-2xl overflow-hidden relative z-10 max-h-[90vh] flex flex-col"
+            transition={{ type: 'spring', stiffness: 350, damping: 28 }}
+            className="w-full max-w-2xl bg-surface/90 dark:bg-slate-950/90 backdrop-blur-xl border border-secondary/15 dark:border-white/10 rounded-[32px] shadow-2xl shadow-primary/5 overflow-hidden relative z-10 max-h-[90vh] flex flex-col"
           >
+            {/* Top Glow Ornament */}
+            <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-[1px]" />
+            
             {/* Header */}
-            <div className="p-6 border-b border-secondary/10 flex items-center justify-between">
-              <h3 className="text-xl font-bold text-foreground">{title}</h3>
+            <div className="p-6 border-b border-secondary/10 flex items-center justify-between bg-surface/50 dark:bg-slate-900/50 backdrop-blur-sm">
+              <h3 className="text-xl font-bold text-foreground tracking-tight bg-gradient-to-r from-foreground via-foreground to-foreground/80 bg-clip-text">{title}</h3>
               <button
                 onClick={onClose}
-                className="p-2 rounded-xl text-secondary hover:text-foreground hover:bg-secondary/5 transition-all cursor-pointer flex items-center justify-center"
+                className="p-2 rounded-xl text-secondary hover:text-foreground hover:bg-secondary/10 transition-all cursor-pointer flex items-center justify-center"
               >
                 <X size={20} />
               </button>
             </div>
 
             {/* Scrollable Body */}
-            <div className="p-6 overflow-y-auto flex-1">
+            <div className="p-6 sm:p-8 overflow-y-auto flex-1 bg-surface/20 dark:bg-slate-950/20">
               {children}
             </div>
           </motion.div>
