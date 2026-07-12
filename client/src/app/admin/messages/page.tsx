@@ -64,7 +64,7 @@ export default function AdminMessagesPage() {
               </div>
               <div className="sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end">
                 <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center gap-2">
-                  <Calendar size={14} /> {formatDate(msg.createdAt)}
+                  <Calendar size={14} /> {formatDate(msg.created_at)}
                 </p>
                 <button 
                   onClick={() => handleDelete(msg.id)}

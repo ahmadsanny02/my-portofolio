@@ -44,7 +44,7 @@ export interface ContactMessage {
   subject?: string;
   message: string;
   isRead: boolean;
-  createdAt: string;
+  created_at: string;
 }
 
 export interface ApiResponse<T> {

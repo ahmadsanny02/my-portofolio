@@ -107,12 +107,12 @@ export default function DashboardPage() {
     }
   }
   if (messages.length > 0) {
-    const latestMsg = [...messages].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())[0];
+    const latestMsg = [...messages].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())[0];
     if (latestMsg) {
       activities.push({
         id: `m-${latestMsg.id}`,
         text: `Received a message from "${latestMsg.name}"`,
-        time: latestMsg.createdAt,
+        time: latestMsg.created_at,
         icon: MessageSquare,
         color: 'bg-emerald-500/10 text-emerald-500'
       });
