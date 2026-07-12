@@ -16,8 +16,8 @@ export function useProjects() {
         if (response.data.success) {
           setProjects(response.data.data || []);
         }
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Unknown error');
       } finally {
         setLoading(false);
       }
