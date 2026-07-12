@@ -30,7 +30,7 @@
     - `helmet`: Mengamankan aplikasi Express dengan menyetel berbagai header HTTP.
     - `cors`: Konfigurasi berbagi sumber daya lintas asal (cross-origin sharing).
     - `multer`: Middleware penanganan unggahan file (multipart/form-data) ke memory buffer sebelum diunggah ke Supabase Storage.
-    - `zod`: Validasi muatan (payload) HTTP request di tingkat middleware.
+    - `zod`: Validasi muatan (payload) HTTP request di tingkat middleware (Zod v4).
 
 ---
 
@@ -84,7 +84,7 @@ Mengizinkan pengunjung mengirimkan pesan langsung ke pemilik portofolio.
 
 ### E. Modul Keamanan, Autentikasi, & Unggah Media (Auth & Media Upload Module)
 - **Autentikasi (Auth):**
-  - Menggunakan modul bawaan Supabase Auth di frontend untuk mengelola sesi pengguna login dan logout ([useAuth.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/client/src/hooks/useAuth.ts)).
+  - Menggunakan Supabase Auth di frontend untuk mengelola sesi pengguna login dan logout ([useAuth.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/client/src/hooks/useAuth.ts)).
   - Di backend, middleware [authMiddleware.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/server/src/interfaces/middlewares/authMiddleware.ts) memvalidasi token JWT (`Bearer Token`) yang dikirim dari klien dengan memanggil `supabase.auth.getUser(token)` sebelum mengizinkan rute administratif.
 - **Unggah Media (Upload):**
   - Mengunggah media (gambar portofolio/sertifikat) ke bucket penyimpanan Supabase.
@@ -93,9 +93,14 @@ Mengizinkan pengunjung mengirimkan pesan langsung ke pemilik portofolio.
 ---
 
 ## 4. CATATAN QA & KESIAPAN AI
-- **Kesiapan AI:**
-  AI (Antigravity) telah memindai, menganalisis, dan sepenuhnya memahami struktur proyek monorepo ini, termasuk pola Clean Architecture di backend, arsitektur Next.js App Router di frontend, alur autentikasi JWT terpusat dengan Supabase, serta pembagian tipe data bersama (`types` package). Kami siap melakukan modifikasi kode, penambahan fitur, pemecahan masalah, atau peningkatan fungsionalitas pada basis kode ini.
-- **Temuan QA & Catatan Pengembang:**
-  1. **Bypass Layer pada Modul Kontak:** Berbeda dengan modul Proyek, Sertifikat, dan Skill, modul Kontak ([contactRoutes.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/server/src/interfaces/routes/contactRoutes.ts)) tidak menggunakan use-cases atau repository, melainkan langsung berinteraksi dengan Supabase client. Hal ini memotong arsitektur Clean Architecture yang telah mapan di bagian backend lainnya. Jika konsistensi arsitektur diinginkan, ini bisa direfaktorkan di masa mendatang.
-  2. **Supabase Service Role Key:** Backend menggunakan `SUPABASE_SERVICE_ROLE_KEY` ([SupabaseClient.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/server/src/infrastructure/database/supabase/SupabaseClient.ts#L7)) yang melewati RLS (Row Level Security). Oleh karena itu, keamanan sepenuhnya bergantung pada middleware autentikasi backend kita (`authMiddleware`). Sangat krusial untuk memastikan semua rute mutasi data (POST/PUT/DELETE) dilindungi dengan benar.
-  3. **File Lingkungan (.env):** Ada file `.env.example` di server, tetapi kredensial riil perlu dikonfigurasi melalui file `.env` lokal untuk menjalankan server dengan sukses di lingkungan pengembangan lokal.
+- **Pernyataan Kesiapan AI:**
+  AI (Antigravity) telah memindai, menganalisis, dan sepenuhnya memahami struktur proyek monorepo ini, termasuk pola Clean Architecture di backend, arsitektur Next.js App Router di frontend, alur autentikasi JWT terpusat dengan Supabase, serta pembagian tipe data bersama (`types` package).
+- **Hasil Pemeliharaan Bebas Error (Error-Free Status):**
+  Seluruh basis kode telah dibersihkan secara penuh:
+  1. Kompilasi TypeScript backend (`server`) berhasil 100% tanpa error (`tsc --noEmit` bersih).
+  2. Linter frontend (`client`) berhasil 100% tanpa ada error maupun warning (`eslint` bersih).
+  3. Kompilasi TypeScript frontend (`client`) berhasil 100% tanpa error (`tsc --noEmit` bersih).
+  4. Build produksi (`client` dan `server`) berhasil di-bundle secara optimal.
+- **Temuan Keamanan & Catatan Pengembang:**
+  1. **Bypass Layer pada Modul Kontak:** Berbeda dengan modul Proyek, Sertifikat, dan Skill, modul Kontak tidak menggunakan use-cases atau repository, melainkan langsung berinteraksi dengan Supabase client. Hal ini memotong arsitektur Clean Architecture yang telah mapan di bagian backend lainnya.
+  2. **Supabase Service Role Key:** Backend menggunakan `SUPABASE_SERVICE_ROLE_KEY` yang melewati RLS (Row Level Security). Oleh karena itu, keamanan mutasi data bergantung penuh pada `authMiddleware` backend.
