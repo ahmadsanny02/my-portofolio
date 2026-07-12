@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { X, Loader2, Save, Code2 } from 'lucide-react';
+import { X, Loader2, Save } from 'lucide-react';
 import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
 import { Skill } from 'types';
@@ -25,7 +25,7 @@ interface SkillFormProps {
 export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps) {
   const [loading, setLoading] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit } = useForm({
     resolver: zodResolver(skillSchema),
     defaultValues: {
       name: skill?.name || '',
@@ -35,7 +35,7 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
     }
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: z.infer<typeof skillSchema>) => {
     setLoading(true);
     try {
       if (skill) {
@@ -46,7 +46,7 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
         toast.success('Skill created!');
       }
       onSuccess();
-    } catch (error) {
+    } catch {
       toast.error('Failed to save skill');
     } finally {
       setLoading(false);

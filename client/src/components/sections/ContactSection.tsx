@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send, Mail, Phone, MapPin, Loader2 } from 'lucide-react';
+import { Send, Mail, MapPin, Loader2 } from 'lucide-react';
 import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
 
@@ -22,7 +22,7 @@ export default function ContactSection() {
       await api.post('/contact', formData);
       toast.success('Message sent successfully!');
       setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch (error) {
+    } catch {
       toast.error('Failed to send message.');
     } finally {
       setLoading(false);
@@ -35,10 +35,10 @@ export default function ContactSection() {
         <div className="grid lg:grid-cols-2 gap-16">
           <div>
             <h2 className="text-primary font-bold tracking-widest mb-2 uppercase text-sm">Contact</h2>
-            <h3 className="text-4xl font-bold mb-8">Let's Talk About Your Project</h3>
+            <h3 className="text-4xl font-bold mb-8">Let&apos;s Talk About Your Project</h3>
             <p className="text-secondary text-lg mb-10 leading-relaxed">
-              I'm always looking for new opportunities and collaborations. 
-              Whether you have a question or just want to say hi, I'll try my best to get back to you!
+              I&apos;m always looking for new opportunities and collaborations. 
+              Whether you have a question or just want to say hi, I&apos;ll try my best to get back to you!
             </p>
 
             <div className="space-y-6">

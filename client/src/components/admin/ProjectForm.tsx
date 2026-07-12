@@ -8,6 +8,7 @@ import { X, Upload, Loader2, Save } from 'lucide-react';
 import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
 import { Project } from 'types';
+import Image from 'next/image';
 
 const projectSchema = z.object({
   title: z.string().min(3, 'Title too short'),
@@ -64,14 +65,14 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
       });
       setThumbnailUrl(data.url);
       toast.success('Image uploaded!');
-    } catch (error) {
+    } catch {
       toast.error('Upload failed');
     } finally {
       setUploading(false);
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: z.infer<typeof projectSchema>) => {
     setLoading(true);
     try {
       const payload = { ...data, thumbnail: thumbnailUrl };
@@ -83,7 +84,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
         toast.success('Project created!');
       }
       onSuccess();
-    } catch (error) {
+    } catch {
       toast.error('Failed to save project');
     } finally {
       setLoading(false);
@@ -133,7 +134,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             <div className="border-2 border-dashed border-secondary/20 rounded-2xl p-4 flex flex-col items-center justify-center min-h-[150px] relative overflow-hidden group">
               {thumbnailUrl ? (
                 <>
-                  <img src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover" alt="Preview" />
+                  <Image src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover" alt="Preview" fill unoptimized />
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <label className="cursor-pointer bg-white/20 p-3 rounded-full hover:bg-white/40 transition-colors">
                       <Upload size={20} className="text-white" />

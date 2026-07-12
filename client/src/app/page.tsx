@@ -24,7 +24,7 @@ export default function Home() {
       <footer className="py-20 border-t border-secondary/10 bg-surface">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-4">
-            Let's build something amazing together
+            Let&apos;s build something amazing together
           </h2>
           <p className="text-secondary mb-10">
             Currently open for new opportunities and collaborations.

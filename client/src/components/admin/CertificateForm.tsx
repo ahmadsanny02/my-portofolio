@@ -8,6 +8,7 @@ import { X, Upload, Loader2, Save } from 'lucide-react';
 import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
 import { Certificate } from 'types';
+import Image from 'next/image';
 
 const certSchema = z.object({
   title: z.string().min(3, 'Title too short'),
@@ -56,14 +57,14 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
       });
       setImageUrl(data.url);
       toast.success('Image uploaded!');
-    } catch (error) {
+    } catch {
       toast.error('Upload failed. Ensure "certificates" bucket exists.');
     } finally {
       setUploading(false);
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: z.infer<typeof certSchema>) => {
     setLoading(true);
     try {
       const payload = { ...data, imageUrl };
@@ -75,7 +76,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
         toast.success('Certificate created!');
       }
       onSuccess();
-    } catch (error) {
+    } catch {
       toast.error('Failed to save certificate');
     } finally {
       setLoading(false);
@@ -125,7 +126,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
             <div className="border-2 border-dashed border-secondary/20 rounded-2xl p-4 flex flex-col items-center justify-center min-h-[200px] relative overflow-hidden group">
               {imageUrl ? (
                 <>
-                  <img src={imageUrl} className="absolute inset-0 w-full h-full object-contain p-4" alt="Certificate Preview" />
+                  <Image src={imageUrl} className="absolute inset-0 w-full h-full object-contain p-4" alt="Certificate Preview" fill unoptimized />
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <label className="cursor-pointer bg-white/20 p-3 rounded-full hover:bg-white/40 transition-colors">
                       <Upload size={20} className="text-white" />

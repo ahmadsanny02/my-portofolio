@@ -7,6 +7,7 @@ import { ArrowLeft, ExternalLink, Github, Calendar, Tag } from 'lucide-react';
 import type { Project } from 'types';
 import { formatDate } from '@/lib/utils';
 import Navbar from '@/components/layout/Navbar';
+import Image from 'next/image';
 
 interface ProjectContentProps {
   project: Project;
@@ -73,9 +74,11 @@ export default function ProjectContent({ project }: ProjectContentProps) {
             className="sticky top-32"
           >
             <div className="rounded-[40px] overflow-hidden shadow-2xl border border-secondary/10">
-              <img 
+              <Image 
                 src={project.thumbnail || 'https://via.placeholder.com/1200x800'} 
                 alt={project.title}
+                width={1200}
+                height={800}
                 className="w-full h-auto"
               />
             </div>
