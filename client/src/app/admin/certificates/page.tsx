@@ -151,27 +151,61 @@ export default function AdminCertificatesPage() {
               <motion.div 
                 key={cert.id} 
                 variants={itemVariants}
-                whileHover={{ y: -6, scale: 1.01 }}
-                className="p-6 bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 flex items-start gap-4 group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-md shadow-primary/[0.01]"
+                whileHover={{ y: -6, scale: 1.02 }}
+                className="flex flex-col bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
               >
-                {cert.imageUrl ? (
-                  <div className="w-14 h-14 rounded-2xl border border-secondary/15 dark:border-white/10 overflow-hidden flex-shrink-0 bg-background relative shadow-inner">
-                    <Image src={cert.imageUrl} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="" width={56} height={56} unoptimized />
+                {/* Card Image Banner */}
+                <div className="h-40 w-full bg-background border-b border-secondary/10 dark:border-white/5 relative overflow-hidden flex-shrink-0">
+                  {cert.imageUrl ? (
+                    <Image src={cert.imageUrl} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="" fill unoptimized />
+                  ) : (
+                    <div className="w-full h-full bg-primary/5 flex items-center justify-center text-primary">
+                      <Award size={40} className="animate-pulse" />
+                    </div>
+                  )}
+                  
+                  {/* Floating Category Badge */}
+                  {cert.category && (
+                    <div className="absolute top-4 left-4">
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold bg-primary/25 text-primary border border-primary/25 backdrop-blur-sm uppercase tracking-wider">
+                        {cert.category}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Body */}
+                <div className="p-6 flex-1 flex flex-col justify-between">
+                  <div className="space-y-2">
+                    <h4 className="font-bold text-base text-foreground group-hover:text-primary transition-colors duration-200 line-clamp-2" title={cert.title}>
+                      {cert.title}
+                    </h4>
+                    <p className="text-secondary text-sm font-semibold truncate">{cert.issuer}</p>
+                    <p className="text-secondary/70 text-xs">Issued: {formatDate(cert.issuedAt)}</p>
                   </div>
-                ) : (
-                  <div className="bg-primary/10 p-3.5 rounded-2xl text-primary flex-shrink-0 transition-transform duration-300 group-hover:scale-105 shadow-inner"><Award size={24} /></div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-sm mb-1 text-foreground group-hover:text-primary transition-colors duration-200 truncate">{cert.title}</h4>
-                  <p className="text-secondary text-xs mb-3 truncate">{cert.issuer} • {formatDate(cert.issuedAt)}</p>
-                  <div className="flex gap-1 items-center opacity-60 group-hover:opacity-100 transition-all duration-300">
-                    <a href={cert.credentialUrl} target="_blank" rel="noopener noreferrer" className="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center justify-center cursor-pointer">
-                      <ExternalLink size={14} />
+
+                  {/* Card Actions Footer */}
+                  <div className="flex items-center gap-2 mt-6 pt-4 border-t border-secondary/10 dark:border-white/5">
+                    <a 
+                      href={cert.credentialUrl} 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="flex-1 py-2.5 px-3 bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      <ExternalLink size={14} /> View
                     </a>
-                    <button onClick={() => handleEdit(cert)} className="p-1.5 hover:bg-primary/10 rounded-lg text-primary transition-all flex items-center justify-center cursor-pointer">
+                    <button 
+                      onClick={() => handleEdit(cert)} 
+                      className="p-2.5 bg-secondary/10 hover:bg-secondary/20 hover:text-foreground text-secondary rounded-xl transition-all cursor-pointer flex items-center justify-center"
+                      title="Edit"
+                    >
                       <Edit size={14} />
                     </button>
-                    <button onClick={() => handleDelete(cert.id)} className="p-1.5 hover:bg-red-500/10 rounded-lg text-red-500 transition-all flex items-center justify-center cursor-pointer">
+                    <button 
+                      onClick={() => handleDelete(cert.id)} 
+                      className="p-2.5 bg-red-500/10 hover:bg-red-500 hover:text-white text-red-500 rounded-xl transition-all cursor-pointer flex items-center justify-center"
+                      title="Delete"
+                    >
                       <Trash2 size={14} />
                     </button>
                   </div>
