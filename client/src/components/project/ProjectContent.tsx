@@ -195,10 +195,6 @@ export default function ProjectContent({ project }: ProjectContentProps) {
               {/* Project Quick Metrics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-secondary/10 dark:border-white/5">
                 <div className="space-y-1">
-                  <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Role</span>
-                  <p className="text-sm font-bold text-foreground">Solo Developer</p>
-                </div>
-                <div className="space-y-1">
                   <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Category</span>
                   <p className="text-sm font-bold text-foreground">Web Application</p>
                 </div>
@@ -257,27 +253,6 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                   </motion.a>
                 )}
               </div>
-            </motion.div>
-
-            {/* Highlights Card */}
-            <motion.div 
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 sm:p-10 shadow-lg space-y-4"
-            >
-              <h4 className="text-lg font-bold text-foreground">Project Highlights & Quality Standards</h4>
-              <ul className="space-y-3 text-secondary font-medium">
-                <li className="flex items-start gap-2 text-sm leading-relaxed">
-                  <span className="text-primary font-bold">✓</span> Developed with optimized asset loading, high performance page speeds, and clean semantic markup.
-                </li>
-                <li className="flex items-start gap-2 text-sm leading-relaxed">
-                  <span className="text-primary font-bold">✓</span> Designed with fully responsive, mobile-first layouts using curated modern typography and color palettes.
-                </li>
-                <li className="flex items-start gap-2 text-sm leading-relaxed">
-                  <span className="text-primary font-bold">✓</span> Integrated clean codebase architecture conforming to professional standards.
-                </li>
-              </ul>
             </motion.div>
           </div>
 
