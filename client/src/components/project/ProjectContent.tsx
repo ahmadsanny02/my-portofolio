@@ -154,10 +154,31 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 <h3 className="text-2xl font-bold mb-4 text-foreground">
                   Project Overview
                 </h3>
-                <div className="prose prose-lg dark:prose-invert max-w-none text-secondary leading-relaxed font-medium">
+                <div className="prose prose-lg dark:prose-invert max-w-none text-secondary leading-relaxed font-medium mb-6">
                   {project.longDescription || 'Detailed information about this project is coming soon.'}
                 </div>
               </div>
+
+              {/* Large Project Image Centerpiece */}
+              {project.thumbnail && (
+                <div 
+                  onClick={() => setLightboxIndex(0)}
+                  className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative aspect-[16/9] w-full cursor-pointer group shadow-md hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300"
+                >
+                  <Image 
+                    src={project.thumbnail} 
+                    alt={project.title}
+                    fill
+                    className="object-cover group-hover:scale-[1.01] transition-transform duration-700 ease-out"
+                    unoptimized
+                  />
+                  <div className="absolute inset-0 bg-primary/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div className="p-3.5 bg-white/15 backdrop-blur-md rounded-full text-white shadow-lg border border-white/20">
+                      <Maximize2 size={22} />
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Project Quick Metrics Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-secondary/10 dark:border-white/5">
