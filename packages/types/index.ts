@@ -14,6 +14,8 @@ export interface Project {
   createdAt: string;
   updatedAt: string;
   images?: string[];
+  category?: string;
+  status?: string;
 }
 
 export interface Certificate {

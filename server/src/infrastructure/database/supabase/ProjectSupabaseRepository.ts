@@ -20,6 +20,8 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       createdAt: item.created_at,
       updatedAt: item.updated_at,
       images: item.images || [],
+      category: item.category || 'Web Application',
+      status: item.status || 'Completed',
     };
   }
 
@@ -37,6 +39,8 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       is_published: project.isPublished,
       order_index: project.orderIndex,
       images: project.images,
+      category: project.category,
+      status: project.status,
     };
 
     // Remove undefined keys

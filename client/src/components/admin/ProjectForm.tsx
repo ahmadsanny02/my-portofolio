@@ -18,6 +18,8 @@ const projectSchema = z.object({
   techStack: z.string().transform(val => val.split(',').map(s => s.trim())),
   demoUrl: z.string().url().optional().or(z.literal('')),
   repoUrl: z.string().url().optional().or(z.literal('')),
+  category: z.string().min(1, 'Category is required'),
+  status: z.string().min(1, 'Status is required'),
   isPublished: z.boolean().default(true),
   isFeatured: z.boolean().default(false),
   orderIndex: z.number().default(0),
@@ -47,6 +49,8 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
       techStack: project?.techStack?.join(', ') || '',
       demoUrl: project?.demoUrl || '',
       repoUrl: project?.repoUrl || '',
+      category: project?.category || 'Web Application',
+      status: project?.status || 'Completed',
       isPublished: project?.isPublished ?? true,
       isFeatured: project?.isFeatured ?? false,
       orderIndex: project?.orderIndex ?? 0,
@@ -161,7 +165,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
               <input 
                 {...register('title')} 
                 className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                   errors.title 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -176,7 +180,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
               <input 
                 {...register('techStack')} 
                 className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                   errors.techStack 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -192,7 +196,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 <input 
                   {...register('demoUrl')} 
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                     errors.demoUrl 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -206,7 +210,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 <input 
                   {...register('repoUrl')} 
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                     errors.repoUrl 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -217,13 +221,44 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
               </div>
             </div>
 
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-secondary">Category</label>
+                <input 
+                  {...register('category')} 
+                  className={cn(
+                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    errors.category 
+                      ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                      : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                  )} 
+                  placeholder="e.g. Web Application" 
+                />
+                {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message as string}</p>}
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-secondary">Status</label>
+                <input 
+                  {...register('status')} 
+                  className={cn(
+                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    errors.status 
+                      ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                      : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                  )} 
+                  placeholder="e.g. Completed" 
+                />
+                {errors.status && <p className="text-red-500 text-xs mt-1">{errors.status.message as string}</p>}
+              </div>
+            </div>
+
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Long Description (Detailed)</label>
               <textarea 
                 {...register('longDescription')} 
                 rows={4} 
                 className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
+                  "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
                   errors.longDescription 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -279,7 +314,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 {...register('description')} 
                 rows={3} 
                 className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
+                  "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
                   errors.description 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"

@@ -196,7 +196,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-secondary/10 dark:border-white/5">
                 <div className="space-y-1">
                   <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Category</span>
-                  <p className="text-sm font-bold text-foreground">Web Application</p>
+                  <p className="text-sm font-bold text-foreground">{project.category || 'Web Application'}</p>
                 </div>
                 <div className="space-y-1">
                   <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Released</span>
@@ -204,7 +204,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 </div>
                 <div className="space-y-1">
                   <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Status</span>
-                  <p className="text-sm font-bold text-foreground">Completed</p>
+                  <p className="text-sm font-bold text-foreground">{project.status || 'Completed'}</p>
                 </div>
               </div>
 
