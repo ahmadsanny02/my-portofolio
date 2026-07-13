@@ -92,7 +92,7 @@ export default function AboutSection() {
           >
             <motion.h2 
               variants={textItemVariants}
-              className="text-primary font-extrabold tracking-widest mb-2 uppercase text-xs sm:text-sm"
+              className="text-primary font-extrabold tracking-widest mb-2.5 uppercase text-xs sm:text-sm"
             >
               About Me
             </motion.h2>

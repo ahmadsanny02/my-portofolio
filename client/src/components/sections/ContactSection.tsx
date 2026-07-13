@@ -80,19 +80,19 @@ export default function ContactSection() {
           >
             <motion.h2 
               variants={infoItemVariants}
-              className="text-primary font-bold tracking-widest mb-2 uppercase text-sm"
+              className="text-primary font-extrabold tracking-widest mb-2.5 uppercase text-xs sm:text-sm"
             >
               Contact
             </motion.h2>
             <motion.h3 
               variants={infoItemVariants}
-              className="text-4xl font-extrabold mb-8 text-foreground"
+              className="text-3xl md:text-5xl font-black mb-6 leading-tight tracking-tight text-foreground"
             >
               Let&apos;s Talk About Your Project
             </motion.h3>
             <motion.p 
               variants={infoItemVariants}
-              className="text-secondary text-lg mb-10 leading-relaxed font-medium"
+              className="text-secondary text-lg mb-8 leading-relaxed font-medium"
             >
               I&apos;m always looking for new opportunities and collaborations. 
               Whether you have a question or just want to say hi, I&apos;ll try my best to get back to you!

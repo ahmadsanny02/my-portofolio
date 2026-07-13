@@ -14,17 +14,17 @@ export default function CertificatesSection() {
   const visibleCertificates = certificates.slice(0, visibleCount);
 
   return (
-    <section id="certificates" className="py-24 bg-surface/30 dark:bg-slate-950/30 overflow-hidden">
+    <section id="certificates" className="py-24 bg-surface/30 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-primary font-bold tracking-widest mb-2 uppercase text-sm">Achievements</h2>
-          <h3 className="text-4xl font-bold">Certifications & Learning</h3>
+          <h2 className="text-primary font-extrabold tracking-widest mb-2.5 uppercase text-xs sm:text-sm">Certifications</h2>
+          <h3 className="text-3xl md:text-5xl font-black tracking-tight text-foreground">Featured Achievements</h3>
         </div>
 
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-surface rounded-3xl border border-secondary/5 overflow-hidden shadow-sm">
+              <div key={i} className="bg-surface rounded-[32px] border border-secondary/10 dark:border-white/5 overflow-hidden shadow-sm">
                 <div className="h-64 lg:h-80 bg-secondary/10 animate-pulse" />
                 <div className="p-6">
                   <div className="flex gap-4 mb-4">

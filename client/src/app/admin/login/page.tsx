@@ -55,9 +55,9 @@ export default function LoginPage() {
         transition={{ duration: 0.8, ease: 'easeOut' }}
         className="w-full max-w-md z-10"
       >
-        <div className="glass border border-secondary/15 rounded-[36px] p-8 sm:p-10 shadow-2xl relative">
+        <div className="glass border border-secondary/15 rounded-[32px] p-8 sm:p-10 shadow-2xl relative">
           {/* Card Border Highlight effect */}
-          <div className="absolute -inset-px rounded-[36px] bg-gradient-to-tr from-primary/20 via-transparent to-accent/25 opacity-30 pointer-events-none" />
+          <div className="absolute -inset-px rounded-[32px] bg-gradient-to-tr from-primary/20 via-transparent to-accent/25 opacity-30 pointer-events-none" />
 
           <div className="text-center mb-8">
             <motion.div 

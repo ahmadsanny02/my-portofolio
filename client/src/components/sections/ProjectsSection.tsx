@@ -14,13 +14,13 @@ export default function ProjectsSection() {
   const visibleProjects = projects.slice(0, visibleCount);
 
   return (
-    <section id="projects" className="py-24 bg-surface/30 dark:bg-slate-955/30 overflow-hidden">
+    <section id="projects" className="py-24 bg-surface/30 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <h2 className="text-primary font-bold tracking-widest mb-2 uppercase text-sm">
+          <h2 className="text-primary font-extrabold tracking-widest mb-2.5 uppercase text-xs sm:text-sm">
             Portfolio
           </h2>
-          <h3 className="text-4xl font-bold">Featured Projects</h3>
+          <h3 className="text-3xl md:text-5xl font-black tracking-tight text-foreground">Featured Projects</h3>
         </div>
 
         {loading ? (
@@ -28,7 +28,7 @@ export default function ProjectsSection() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="bg-surface rounded-3xl border border-secondary/5 overflow-hidden shadow-sm"
+                className="bg-surface rounded-[32px] border border-secondary/10 dark:border-white/5 overflow-hidden shadow-sm"
               >
                 <div className="h-64 lg:h-80 bg-secondary/10 animate-pulse" />
                 <div className="p-8">
