@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { login, loading, user } = useAuth();
+  const { login, loading, user } = useAuth({ redirectToDashboardIfLoggedIn: true });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

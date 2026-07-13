@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { User } from '@supabase/supabase-js';
 
-export function useAuth() {
+export function useAuth({ redirectToDashboardIfLoggedIn = false } = {}) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -16,17 +16,22 @@ export function useAuth() {
       setUser(session?.user || null);
       setLoading(false);
 
-      if (session?.user) router.push('/admin/dashboard');
+      if (session?.user && redirectToDashboardIfLoggedIn) {
+        router.push('/admin/dashboard');
+      }
     };
 
     getSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user || null);
+      if (session?.user && redirectToDashboardIfLoggedIn) {
+        router.push('/admin/dashboard');
+      }
     });
 
     return () => subscription.unsubscribe();
-  }, [router]);
+  }, [router, redirectToDashboardIfLoggedIn]);
 
   const login = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
