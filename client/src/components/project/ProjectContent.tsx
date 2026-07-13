@@ -35,7 +35,13 @@ export default function ProjectContent({ project }: ProjectContentProps) {
   ].filter(Boolean) as string[];
 
   useEffect(() => {
-    if (lightboxIndex === null) return;
+    if (lightboxIndex === null) {
+      document.body.style.overflow = '';
+      return;
+    }
+
+    // Lock body scroll
+    document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
@@ -48,7 +54,11 @@ export default function ProjectContent({ project }: ProjectContentProps) {
     };
 
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      // Restore body scroll on cleanup
+      document.body.style.overflow = '';
+    };
   }, [lightboxIndex, allImages.length]);
 
   const handlePrev = (e: React.MouseEvent) => {
