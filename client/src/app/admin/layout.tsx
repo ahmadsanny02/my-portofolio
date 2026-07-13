@@ -111,17 +111,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Link 
                   href="/admin/dashboard"
                   className={cn(
-                    "flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all group",
+                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group",
                     pathname === '/admin/dashboard'
                       ? "text-primary bg-primary/10 font-semibold"
                       : "text-secondary hover:text-foreground hover:bg-secondary/5"
                   )}
                 >
-                  <div className="flex items-center gap-3">
-                    <LayoutDashboard size={18} className={cn("transition-transform group-hover:scale-105", pathname === '/admin/dashboard' ? "text-primary" : "text-secondary")} />
-                    <span>Dashboard</span>
-                  </div>
-                  <ChevronRight size={14} className="text-secondary/60 group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                  <LayoutDashboard size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/dashboard' ? "text-primary" : "text-secondary")} />
+                  <span>Dashboard</span>
                 </Link>
 
                 {/* Collapsible Projects Section */}
@@ -178,34 +175,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Link 
                   href="/admin/skills"
                   className={cn(
-                    "flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all group",
+                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group",
                     pathname === '/admin/skills'
                       ? "text-primary bg-primary/10 font-semibold"
                       : "text-secondary hover:text-foreground hover:bg-secondary/5"
                   )}
                 >
-                  <div className="flex items-center gap-3">
-                    <Settings size={18} className={cn("transition-transform group-hover:scale-105", pathname === '/admin/skills' ? "text-primary" : "text-secondary")} />
-                    <span>Skills</span>
-                  </div>
-                  <ChevronRight size={14} className="text-secondary/60 group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                  <Settings size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/skills' ? "text-primary" : "text-secondary")} />
+                  <span>Skills</span>
                 </Link>
 
                 {/* Messages Link */}
                 <Link 
                   href="/admin/messages"
                   className={cn(
-                    "flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all group",
+                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group",
                     pathname === '/admin/messages'
                       ? "text-primary bg-primary/10 font-semibold"
                       : "text-secondary hover:text-foreground hover:bg-secondary/5"
                   )}
                 >
-                  <div className="flex items-center gap-3">
-                    <MessageSquare size={18} className={cn("transition-transform group-hover:scale-105", pathname === '/admin/messages' ? "text-primary" : "text-secondary")} />
-                    <span>Messages</span>
-                  </div>
-                  <ChevronRight size={14} className="text-secondary/60 group-hover:text-foreground group-hover:translate-x-0.5 transition-all" />
+                  <MessageSquare size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/messages' ? "text-primary" : "text-secondary")} />
+                  <span>Messages</span>
                 </Link>
               </div>
             </div>
