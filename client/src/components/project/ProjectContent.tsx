@@ -268,12 +268,12 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 <h3 className="text-xl font-bold text-foreground border-b border-secondary/10 dark:border-white/5 pb-3">
                   Project Gallery
                 </h3>
-                <div className="overflow-y-auto h-[700px] pr-1.5 snap-y snap-mandatory scroll-smooth space-y-6 custom-scrollbar">
+                <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-hidden overflow-y-hidden lg:overflow-y-auto h-auto lg:h-[700px] pr-1.5 snap-x lg:snap-y snap-mandatory scroll-smooth gap-6 custom-scrollbar pb-3 lg:pb-0">
                   {allImages.map((img, idx) => (
                     <div 
                       key={idx} 
                       onClick={() => setLightboxIndex(idx)}
-                      className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block aspect-[3/2] cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300 snap-start snap-always shrink-0"
+                      className={`${allImages.length > 1 ? 'w-[85%] sm:w-[60%] lg:w-full' : 'w-full'} rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block aspect-[3/2] cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300 snap-start snap-always shrink-0`}
                     >
                       <Image 
                         src={img} 
