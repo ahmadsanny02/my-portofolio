@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Upload, Loader2, Save, Trash } from 'lucide-react';
+import { Upload, Loader2, Save, Trash, ChevronDown } from 'lucide-react';
 import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
 import { Project } from 'types';
@@ -40,7 +40,10 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   const [isDraggingThumbnail, setIsDraggingThumbnail] = useState(false);
   const [isDraggingGallery, setIsDraggingGallery] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isStatusOpen, setIsStatusOpen] = useState(false);
+
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     resolver: zodResolver(projectSchema),
     defaultValues: {
       title: project?.title || '',
@@ -56,6 +59,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
       orderIndex: project?.orderIndex ?? 0,
     }
   });
+
+  const categoryValue = watch('category');
+  const statusValue = watch('status');
 
   const uploadThumbnailFile = async (file: File) => {
     setUploadingThumbnail(true);
@@ -222,40 +228,97 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="space-y-2">
+              <div className="space-y-2 relative">
                 <label className="text-xs font-bold uppercase tracking-wider text-secondary">Category</label>
-                <select 
-                  {...register('category')} 
+                <input type="hidden" {...register('category')} />
+                
+                {isCategoryOpen && (
+                  <div className="fixed inset-0 z-10" onClick={() => setIsCategoryOpen(false)} />
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer appearance-none",
+                    "w-full flex items-center justify-between bg-background border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer text-foreground/80 font-medium text-left relative z-20",
                     errors.category 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-                  )} 
+                  )}
                 >
-                  <option value="Web Application" className="bg-background dark:bg-slate-900 text-foreground">Web Application</option>
-                  <option value="Mobile Application" className="bg-background dark:bg-slate-900 text-foreground">Mobile Application</option>
-                  <option value="UI/UX Design" className="bg-background dark:bg-slate-900 text-foreground">UI/UX Design</option>
-                  <option value="Desktop Application" className="bg-background dark:bg-slate-900 text-foreground">Desktop Application</option>
-                  <option value="Machine Learning / AI" className="bg-background dark:bg-slate-900 text-foreground">Machine Learning / AI</option>
-                </select>
+                  <span>{categoryValue || 'Select Category'}</span>
+                  <ChevronDown size={16} className={cn("text-secondary transition-transform", isCategoryOpen && "rotate-180")} />
+                </button>
+
+                {isCategoryOpen && (
+                  <div className="absolute top-full mt-2 left-0 right-0 bg-surface border border-secondary/15 rounded-2xl p-1.5 shadow-2xl z-30 space-y-0.5 backdrop-blur-md max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                    {["Web Application", "Mobile Application", "UI/UX Design", "Desktop Application", "Machine Learning / AI"].map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => {
+                          setValue('category', cat, { shouldValidate: true });
+                          setIsCategoryOpen(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center px-4 py-2.5 text-xs text-left rounded-xl transition-all cursor-pointer font-semibold",
+                          categoryValue === cat
+                            ? "text-primary bg-primary/10 font-bold"
+                            : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                        )}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message as string}</p>}
               </div>
-              <div className="space-y-2">
+
+              <div className="space-y-2 relative">
                 <label className="text-xs font-bold uppercase tracking-wider text-secondary">Status</label>
-                <select 
-                  {...register('status')} 
+                <input type="hidden" {...register('status')} />
+
+                {isStatusOpen && (
+                  <div className="fixed inset-0 z-10" onClick={() => setIsStatusOpen(false)} />
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setIsStatusOpen(!isStatusOpen)}
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer appearance-none",
+                    "w-full flex items-center justify-between bg-background border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer text-foreground/80 font-medium text-left relative z-20",
                     errors.status 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-                  )} 
+                  )}
                 >
-                  <option value="Completed" className="bg-background dark:bg-slate-900 text-foreground">Completed</option>
-                  <option value="In Progress" className="bg-background dark:bg-slate-900 text-foreground">In Progress</option>
-                  <option value="Maintenance" className="bg-background dark:bg-slate-900 text-foreground">Maintenance</option>
-                </select>
+                  <span>{statusValue || 'Select Status'}</span>
+                  <ChevronDown size={16} className={cn("text-secondary transition-transform", isStatusOpen && "rotate-180")} />
+                </button>
+
+                {isStatusOpen && (
+                  <div className="absolute top-full mt-2 left-0 right-0 bg-surface border border-secondary/15 rounded-2xl p-1.5 shadow-2xl z-30 space-y-0.5 backdrop-blur-md max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                    {["Completed", "In Progress", "Maintenance"].map((stat) => (
+                      <button
+                        key={stat}
+                        type="button"
+                        onClick={() => {
+                          setValue('status', stat, { shouldValidate: true });
+                          setIsStatusOpen(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center px-4 py-2.5 text-xs text-left rounded-xl transition-all cursor-pointer font-semibold",
+                          statusValue === stat
+                            ? "text-primary bg-primary/10 font-bold"
+                            : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                        )}
+                      >
+                        {stat}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 {errors.status && <p className="text-red-500 text-xs mt-1">{errors.status.message as string}</p>}
               </div>
             </div>
