@@ -19,6 +19,7 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       orderIndex: item.order_index,
       createdAt: item.created_at,
       updatedAt: item.updated_at,
+      images: item.images || [],
     };
   }
 
@@ -35,6 +36,7 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       is_featured: project.isFeatured,
       is_published: project.isPublished,
       order_index: project.orderIndex,
+      images: project.images,
     };
 
     // Remove undefined keys
@@ -85,6 +87,13 @@ export class ProjectSupabaseRepository implements IProjectRepository {
   async create(
     data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>,
   ): Promise<Project> {
+    if (!data.slug) {
+      data.slug = data.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+    }
+
     const dbData = this.mapToDb(data);
     const { data: created, error } = await supabase
       .from('projects')
@@ -97,6 +106,13 @@ export class ProjectSupabaseRepository implements IProjectRepository {
   }
 
   async update(id: string, data: Partial<Project>): Promise<Project> {
+    if (data.title && !data.slug) {
+      data.slug = data.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+    }
+
     const dbData = this.mapToDb(data);
     const { data: updated, error } = await supabase
       .from('projects')

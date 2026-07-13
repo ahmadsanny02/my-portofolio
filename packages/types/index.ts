@@ -13,6 +13,7 @@ export interface Project {
   orderIndex: number;
   createdAt: string;
   updatedAt: string;
+  images?: string[];
 }
 
 export interface Certificate {
