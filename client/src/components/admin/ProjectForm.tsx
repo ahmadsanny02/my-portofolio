@@ -238,16 +238,19 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
               </div>
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-secondary">Status</label>
-                <input 
+                <select 
                   {...register('status')} 
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer appearance-none",
                     errors.status 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
                   )} 
-                  placeholder="e.g. Completed" 
-                />
+                >
+                  <option value="Completed" className="bg-background dark:bg-slate-900 text-foreground">Completed</option>
+                  <option value="In Progress" className="bg-background dark:bg-slate-900 text-foreground">In Progress</option>
+                  <option value="Maintenance" className="bg-background dark:bg-slate-900 text-foreground">Maintenance</option>
+                </select>
                 {errors.status && <p className="text-red-500 text-xs mt-1">{errors.status.message as string}</p>}
               </div>
             </div>
