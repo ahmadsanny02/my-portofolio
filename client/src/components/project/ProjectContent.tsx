@@ -76,12 +76,14 @@ export default function ProjectContent({ project }: ProjectContentProps) {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
+    <main className="min-h-screen bg-background text-foreground relative">
       <Navbar />
 
-      {/* Decorative Background Glows */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-3xl pointer-events-none" />
+      {/* Decorative Background Glows Wrapper (Prevents horizontal overflow while allowing sticky children) */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-accent/10 rounded-full blur-3xl" />
+      </div>
 
       {/* Hero Header Area with Blurred Background */}
       <div className="relative pt-32 pb-20 border-b border-secondary/10 overflow-hidden">
