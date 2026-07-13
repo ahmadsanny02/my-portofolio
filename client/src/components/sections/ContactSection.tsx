@@ -126,7 +126,7 @@ export default function ContactSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
-            className="bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md p-8 rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all duration-300"
+            className="bg-surface dark:bg-slate-900/50 backdrop-blur-md p-8 rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all duration-300"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
@@ -137,7 +137,7 @@ export default function ContactSection() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/35 text-sm font-medium"
+                    className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
                     placeholder="John Doe"
                   />
                 </div>
@@ -148,7 +148,7 @@ export default function ContactSection() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/35 text-sm font-medium"
+                    className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -160,7 +160,7 @@ export default function ContactSection() {
                   type="text"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/35 text-sm font-medium"
+                  className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
                   placeholder="Project Inquiry"
                 />
               </div>
@@ -171,7 +171,7 @@ export default function ContactSection() {
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none text-sm font-medium placeholder:text-secondary/35"
+                  className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none text-sm font-medium placeholder:text-secondary/50 text-foreground"
                   placeholder="Tell me more about your project..."
                 />
               </div>
