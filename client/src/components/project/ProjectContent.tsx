@@ -280,7 +280,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
           </div>
 
           {/* RIGHT: Gallery Sidebar (1 Column wide) */}
-          <div className="space-y-8">
+          <div className="space-y-8 lg:sticky lg:top-32">
             {allImages.length > 0 && (
               <motion.div 
                 initial={{ opacity: 0, y: 30 }}
@@ -291,12 +291,12 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 <h3 className="text-xl font-bold text-foreground border-b border-secondary/10 dark:border-white/5 pb-3">
                   Project Gallery
                 </h3>
-                <div className="grid grid-cols-1 gap-6">
+                <div className="overflow-y-auto h-[1000px] pr-1.5 snap-y snap-mandatory scroll-smooth space-y-6 custom-scrollbar">
                   {allImages.map((img, idx) => (
                     <div 
                       key={idx} 
                       onClick={() => setLightboxIndex(idx)}
-                      className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block aspect-[3/2] cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300"
+                      className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block aspect-[3/2] cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300 snap-start snap-always shrink-0"
                     >
                       <Image 
                         src={img} 
