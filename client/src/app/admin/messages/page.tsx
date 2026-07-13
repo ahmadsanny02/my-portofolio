@@ -89,7 +89,7 @@ export default function AdminMessagesPage() {
         <p className="text-secondary">Read and manage inquiries from your portfolio visitors.</p>
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+      <div className="bg-surface/50 p-6 rounded-[32px] border border-secondary/10">
         <TableControls
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -111,7 +111,7 @@ export default function AdminMessagesPage() {
       <div className="space-y-4">
         {loading ? (
           [1, 2, 3].map(i => (
-            <div key={i} className="p-8 bg-surface rounded-3xl border border-secondary/5 animate-pulse">
+            <div key={i} className="p-8 bg-surface rounded-[32px] border border-secondary/5 animate-pulse">
               <div className="flex justify-between items-start mb-6">
                 <div className="flex gap-4">
                   <div className="w-12 h-12 bg-secondary/10 rounded-2xl" />
@@ -126,7 +126,7 @@ export default function AdminMessagesPage() {
             </div>
           ))
         ) : filteredMessages.length === 0 ? (
-          <div className="text-center py-20 bg-surface rounded-3xl border border-secondary/5">
+          <div className="text-center py-20 bg-surface rounded-[32px] border border-secondary/5">
             <MessageSquare size={48} className="mx-auto text-secondary/30 mb-4" />
             <p className="text-secondary">No messages yet.</p>
           </div>
@@ -141,7 +141,7 @@ export default function AdminMessagesPage() {
               <motion.div 
                 key={msg.id} 
                 variants={itemVariants}
-                className="p-6 sm:p-8 bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 shadow-md shadow-primary/[0.01] hover:shadow-lg transition-all duration-300 hover:border-primary/20 dark:hover:border-primary/10 group relative"
+                className="p-6 sm:p-8 bg-surface/50 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-md shadow-primary/[0.01] hover:shadow-lg transition-all duration-300 hover:border-primary/20 dark:hover:border-primary/10 group relative"
               >
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
                   <div className="flex gap-4 items-center">

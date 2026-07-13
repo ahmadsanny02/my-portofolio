@@ -145,7 +145,7 @@ export default function DashboardPage() {
           <motion.div 
             variants={itemVariants}
             key={stat.name} 
-            className="p-6 bg-surface/50 border border-secondary/10 rounded-3xl relative overflow-hidden group shadow-sm hover:shadow-md transition-all hover:border-secondary/20"
+            className="p-6 bg-surface/50 border border-secondary/10 rounded-[32px] relative overflow-hidden group shadow-sm hover:shadow-md transition-all hover:border-secondary/20"
           >
             {/* Hover decoration sphere */}
             <div className={`absolute -right-8 -top-8 w-24 h-24 rounded-full ${stat.bg} blur-2xl group-hover:scale-150 transition-transform duration-500`} />

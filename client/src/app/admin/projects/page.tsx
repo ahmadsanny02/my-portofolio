@@ -99,7 +99,7 @@ export default function AdminProjectsPage() {
           </p>
         </div>
 
-        <div className="bg-surface/50 p-6 sm:p-10 rounded-3xl border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
+        <div className="bg-surface/50 p-6 sm:p-10 rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
           <ProjectForm 
             project={editingProject} 
             onSuccess={() => {
@@ -128,7 +128,7 @@ export default function AdminProjectsPage() {
         </button>
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+      <div className="bg-surface/50 p-6 rounded-[32px] border border-secondary/10">
         <TableControls
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -153,7 +153,7 @@ export default function AdminProjectsPage() {
             <div key={i} className="h-96 bg-secondary/10 rounded-[28px] animate-pulse" />
           ))
         ) : filteredProjects.length === 0 ? (
-          <div className="col-span-full text-center py-20 bg-surface/50 rounded-3xl border border-secondary/10">
+          <div className="col-span-full text-center py-20 bg-surface/50 rounded-[32px] border border-secondary/10">
             <p className="text-secondary">No projects found.</p>
           </div>
         ) : (
@@ -168,7 +168,7 @@ export default function AdminProjectsPage() {
                 key={project.id} 
                 variants={itemVariants}
                 whileHover={{ y: -6, scale: 1.02 }}
-                className="flex flex-col bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
+                className="flex flex-col bg-surface/50 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
               >
                 {/* Card Thumbnail */}
                 <div className="h-48 w-full bg-background border-b border-secondary/10 dark:border-white/5 relative overflow-hidden flex-shrink-0">

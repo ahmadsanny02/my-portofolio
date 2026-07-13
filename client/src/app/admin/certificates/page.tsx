@@ -103,7 +103,7 @@ export default function AdminCertificatesPage() {
           </p>
         </div>
 
-        <div className="bg-surface/50 p-6 sm:p-10 rounded-3xl border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
+        <div className="bg-surface/50 p-6 sm:p-10 rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
           <CertificateForm 
             certificate={editingCert}
             onSuccess={() => {
@@ -132,7 +132,7 @@ export default function AdminCertificatesPage() {
         </button>
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+      <div className="bg-surface/50 p-6 rounded-[32px] border border-secondary/10">
         <TableControls
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -151,7 +151,7 @@ export default function AdminCertificatesPage() {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           [1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="p-6 bg-surface rounded-3xl border border-secondary/5 flex items-start gap-4 animate-pulse">
+            <div key={i} className="p-6 bg-surface rounded-[32px] border border-secondary/5 flex items-start gap-4 animate-pulse">
               <div className="w-12 h-12 bg-secondary/10 rounded-xl flex-shrink-0" />
               <div className="flex-1 space-y-2">
                 <div className="h-4 w-full bg-secondary/10 rounded" />
@@ -175,7 +175,7 @@ export default function AdminCertificatesPage() {
                 key={cert.id} 
                 variants={itemVariants}
                 whileHover={{ y: -6, scale: 1.02 }}
-                className="flex flex-col bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
+                className="flex flex-col bg-surface/50 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
               >
                 {/* Card Image Banner */}
                 <div className="h-40 w-full bg-background border-b border-secondary/10 dark:border-white/5 relative overflow-hidden flex-shrink-0">

@@ -120,7 +120,7 @@ export default function AdminSkillsPage() {
         </button>
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-3xl border border-secondary/10">
+      <div className="bg-surface/50 p-6 rounded-[32px] border border-secondary/10">
         <TableControls
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -138,7 +138,7 @@ export default function AdminSkillsPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {loading ? (
-          [1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-36 bg-secondary/10 rounded-[28px] animate-pulse" />)
+          [1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-36 bg-secondary/10 rounded-[32px] animate-pulse" />)
         ) : (
           <motion.div 
             variants={containerVariants}
@@ -151,7 +151,7 @@ export default function AdminSkillsPage() {
                 key={skill.id} 
                 variants={itemVariants}
                 whileHover={{ y: -5, scale: 1.02 }}
-                className="p-6 bg-surface/50 dark:bg-slate-900/50 backdrop-blur-md rounded-3xl border border-secondary/10 dark:border-white/5 flex flex-col items-center justify-center text-center group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-md shadow-primary/[0.01]"
+                className="p-6 bg-surface/50 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 flex flex-col items-center justify-center text-center group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-md shadow-primary/[0.01]"
               >
                 <div className="p-3 bg-primary/10 rounded-2xl text-primary mb-3 transition-transform duration-300 group-hover:scale-110 shadow-inner">
                   <Code2 size={24} />
