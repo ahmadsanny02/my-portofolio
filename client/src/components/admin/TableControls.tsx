@@ -1,7 +1,7 @@
 'use client';
 
-import React from 'react';
-import { Search, ChevronLeft, ChevronRight, SlidersHorizontal } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, ChevronLeft, ChevronRight, SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
@@ -50,11 +50,15 @@ export default function TableControls({
   showSearchAndFilter = true,
   showPagination = true
 }: TableControlsProps) {
+  const [isOpen, setIsOpen] = useState(false);
   const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   // Pagination info
   const startItem = totalItems === 0 ? 0 : (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);
+
+  const selectedOption = filterOptions.find(opt => opt.value === filterValue);
+  const currentLabel = selectedOption ? selectedOption.label : filterPlaceholder;
 
   return (
     <div className="w-full">
@@ -73,28 +77,60 @@ export default function TableControls({
             />
           </div>
 
-          {/* Filter Selection (Optional) */}
+          {/* Custom Filter Dropdown */}
           {onFilterChange && filterOptions.length > 0 && (
-            <div className="relative min-w-[180px] flex items-center">
-              <SlidersHorizontal className="absolute left-4 text-secondary pointer-events-none" size={16} />
-              <select
-                value={filterValue}
-                onChange={(e) => onFilterChange(e.target.value)}
-                className="w-full bg-surface dark:bg-background/50 border border-secondary/15 rounded-2xl pl-11 pr-10 py-3 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm appearance-none cursor-pointer text-foreground/80 font-semibold"
+            <div className="relative min-w-[220px] flex items-center">
+              {isOpen && (
+                <div className="fixed inset-0 z-10" onClick={() => setIsOpen(false)} />
+              )}
+              
+              <button
+                type="button"
+                onClick={() => setIsOpen(!isOpen)}
+                className="w-full flex items-center justify-between bg-surface dark:bg-background/50 border border-secondary/15 rounded-2xl pl-11 pr-4 py-3 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm cursor-pointer text-foreground/80 font-semibold relative z-20 text-left"
               >
-                <option value="">{filterPlaceholder}</option>
-                {filterOptions.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-              {/* Custom dropdown arrow */}
-              <div className="absolute right-4 pointer-events-none text-secondary">
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                  <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
-                </svg>
-              </div>
+                <SlidersHorizontal className="absolute left-4 text-secondary pointer-events-none" size={16} />
+                <span className="truncate pr-2">{currentLabel}</span>
+                <ChevronDown size={16} className={cn("text-secondary transition-transform duration-300 shrink-0", isOpen && "rotate-180")} />
+              </button>
+
+              {isOpen && (
+                <div className="absolute top-full mt-2 left-0 right-0 bg-surface/95 dark:bg-slate-900/95 border border-secondary/15 rounded-2xl p-1.5 shadow-2xl z-20 space-y-0.5 backdrop-blur-md max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onFilterChange("");
+                      setIsOpen(false);
+                    }}
+                    className={cn(
+                      "w-full flex items-center px-4 py-2.5 text-xs text-left rounded-xl transition-all cursor-pointer font-semibold",
+                      filterValue === ""
+                        ? "text-primary bg-primary/10 font-bold"
+                        : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                    )}
+                  >
+                    {filterPlaceholder}
+                  </button>
+                  {filterOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => {
+                        onFilterChange(opt.value);
+                        setIsOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center px-4 py-2.5 text-xs text-left rounded-xl transition-all cursor-pointer font-semibold",
+                        filterValue === opt.value
+                          ? "text-primary bg-primary/10 font-bold"
+                          : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                      )}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
