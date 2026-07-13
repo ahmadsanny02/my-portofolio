@@ -76,7 +76,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
   };
 
   return (
-    <main className="min-h-screen bg-background text-foreground relative overflow-hidden">
+    <main className="min-h-screen bg-background text-foreground relative overflow-x-hidden">
       <Navbar />
 
       {/* Decorative Background Glows */}
@@ -291,7 +291,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 <h3 className="text-xl font-bold text-foreground border-b border-secondary/10 dark:border-white/5 pb-3">
                   Project Gallery
                 </h3>
-                <div className="overflow-y-auto h-[1000px] pr-1.5 snap-y snap-mandatory scroll-smooth space-y-6 custom-scrollbar">
+                <div className="overflow-y-auto h-[520px] pr-1.5 snap-y snap-mandatory scroll-smooth space-y-6 custom-scrollbar">
                   {allImages.map((img, idx) => (
                     <div 
                       key={idx} 
