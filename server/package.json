@@ -7,7 +7,7 @@
     "dev": "tsup src/main.ts --watch --onSuccess \"node dist/main.js\"",
     "build": "tsup src/main.ts --clean",
     "start": "node dist/main.js",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",
