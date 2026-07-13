@@ -10,7 +10,6 @@ import {
   Calendar, 
   Tag, 
   Cpu, 
-  Link as LinkIcon, 
   ChevronLeft, 
   ChevronRight, 
   X, 
@@ -141,61 +140,65 @@ export default function ProjectContent({ project }: ProjectContentProps) {
       <div className="container mx-auto px-6 py-16">
         <div className="grid lg:grid-cols-3 gap-12 items-start">
           
-          {/* LEFT: Project Overview (2 Columns wide) */}
-          <div className="lg:col-span-2 space-y-12">
+          {/* LEFT: Project Case Study (2 Columns wide) */}
+          <div className="lg:col-span-2 space-y-8">
             
-            {/* Project Overview Card */}
+            {/* Main Overview & Metrics Card */}
             <motion.div 
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 sm:p-10 shadow-lg"
+              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 sm:p-10 shadow-lg space-y-8"
             >
-              <h3 className="text-2xl font-bold mb-6 text-foreground border-b border-secondary/10 dark:border-white/5 pb-4">
-                Project Overview
-              </h3>
-              <div className="prose prose-lg dark:prose-invert max-w-none text-secondary leading-relaxed font-medium">
-                {project.longDescription || 'Detailed information about this project is coming soon.'}
-              </div>
-            </motion.div>
-          </div>
-
-          {/* RIGHT: Metadata, Links, Tech & Gallery Sidebar (1 Column wide) */}
-          <div className="space-y-8">
-            
-            {/* Primary Visual Thumbnail Card */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.45 }}
-              onClick={() => setLightboxIndex(0)} // Open main thumbnail in lightbox
-              className="rounded-[32px] overflow-hidden shadow-xl border border-secondary/15 relative aspect-[3/2] cursor-pointer group"
-            >
-              <Image 
-                src={project.thumbnail || 'https://via.placeholder.com/1200x800'} 
-                alt={project.title}
-                fill
-                className="object-cover group-hover:scale-102 transition-transform duration-700 ease-out"
-                unoptimized
-              />
-              <div className="absolute inset-0 bg-primary/15 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <div className="p-3.5 bg-white/15 backdrop-blur-md rounded-full text-white shadow-lg border border-white/20">
-                  <Maximize2 size={22} />
+              <div>
+                <h3 className="text-2xl font-bold mb-4 text-foreground">
+                  Project Overview
+                </h3>
+                <div className="prose prose-lg dark:prose-invert max-w-none text-secondary leading-relaxed font-medium">
+                  {project.longDescription || 'Detailed information about this project is coming soon.'}
                 </div>
               </div>
-            </motion.div>
 
-            {/* Quick Links Card */}
-            <motion.div 
-              initial={{ opacity: 0, y: 25 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 shadow-lg space-y-6"
-            >
-              <h4 className="font-extrabold uppercase text-[10px] tracking-widest text-secondary flex items-center gap-2">
-                <LinkIcon size={14} className="text-primary" /> Project Links
-              </h4>
-              <div className="flex flex-col gap-3">
+              {/* Project Quick Metrics Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-secondary/10 dark:border-white/5">
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Role</span>
+                  <p className="text-sm font-bold text-foreground">Solo Developer</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Category</span>
+                  <p className="text-sm font-bold text-foreground">Web Application</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Released</span>
+                  <p className="text-sm font-bold text-foreground">{formatDate(project.createdAt)}</p>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[10px] uppercase tracking-widest text-secondary font-extrabold">Status</span>
+                  <p className="text-sm font-bold text-foreground">Completed</p>
+                </div>
+              </div>
+
+              {/* Technologies Used inline */}
+              <div className="space-y-3 pt-6 border-t border-secondary/10 dark:border-white/5">
+                <h4 className="font-extrabold uppercase text-[10px] tracking-widest text-secondary flex items-center gap-2">
+                  <Cpu size={14} className="text-primary" /> Technologies Used
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {project.techStack.map((tech) => (
+                    <motion.span 
+                      key={tech} 
+                      whileHover={{ scale: 1.05, borderColor: "rgba(14, 165, 233, 0.3)" }}
+                      className="px-3.5 py-2 bg-background border border-secondary/10 dark:border-white/5 rounded-xl text-xs font-bold text-secondary cursor-default select-none transition-all"
+                    >
+                      {tech}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons inline */}
+              <div className="flex flex-wrap gap-4 pt-6 border-t border-secondary/10 dark:border-white/5">
                 {project.demoUrl && (
                   <motion.a 
                     href={project.demoUrl} 
@@ -203,7 +206,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-primary hover:bg-primary-dark text-white py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 transition-all cursor-pointer text-sm"
+                    className="bg-primary hover:bg-primary-dark text-white px-8 py-3.5 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-primary/20 transition-all cursor-pointer text-sm"
                   >
                     Live Preview <ExternalLink size={16} />
                   </motion.a>
@@ -215,7 +218,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                     rel="noopener noreferrer"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-surface dark:bg-slate-800/40 border border-secondary/20 dark:border-white/10 hover:bg-secondary/5 text-foreground py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all cursor-pointer text-sm"
+                    className="bg-surface dark:bg-slate-800/40 border border-secondary/20 dark:border-white/10 hover:bg-secondary/5 text-foreground px-8 py-3.5 rounded-2xl font-bold flex items-center gap-2 transition-all cursor-pointer text-sm"
                   >
                     Source Code <Github size={16} />
                   </motion.a>
@@ -223,50 +226,50 @@ export default function ProjectContent({ project }: ProjectContentProps) {
               </div>
             </motion.div>
 
-            {/* Technologies Used Card */}
+            {/* Highlights Card */}
             <motion.div 
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.55 }}
-              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 shadow-lg space-y-5"
+              transition={{ delay: 0.5 }}
+              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 sm:p-10 shadow-lg space-y-4"
             >
-              <h4 className="font-extrabold uppercase text-[10px] tracking-widest text-secondary flex items-center gap-2">
-                <Cpu size={14} className="text-primary" /> Technologies Used
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {project.techStack.map((tech) => (
-                  <motion.span 
-                    key={tech} 
-                    whileHover={{ scale: 1.05, borderColor: "rgba(14, 165, 233, 0.3)" }}
-                    className="px-3.5 py-2 bg-background border border-secondary/10 dark:border-white/5 rounded-xl text-xs font-bold text-secondary cursor-default select-none transition-all"
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
+              <h4 className="text-lg font-bold text-foreground">Project Highlights & Quality Standards</h4>
+              <ul className="space-y-3 text-secondary font-medium">
+                <li className="flex items-start gap-2 text-sm leading-relaxed">
+                  <span className="text-primary font-bold">✓</span> Developed with optimized asset loading, high performance page speeds, and clean semantic markup.
+                </li>
+                <li className="flex items-start gap-2 text-sm leading-relaxed">
+                  <span className="text-primary font-bold">✓</span> Designed with fully responsive, mobile-first layouts using curated modern typography and color palettes.
+                </li>
+                <li className="flex items-start gap-2 text-sm leading-relaxed">
+                  <span className="text-primary font-bold">✓</span> Integrated clean codebase architecture conforming to professional standards.
+                </li>
+              </ul>
             </motion.div>
+          </div>
 
-            {/* Gallery Card (Moved to Right, 1 Column Vertical scrollable style) */}
-            {project.images && project.images.length > 0 && (
+          {/* RIGHT: Gallery Sidebar (1 Column wide) */}
+          <div className="space-y-8">
+            {allImages.length > 0 && (
               <motion.div 
-                initial={{ opacity: 0, y: 25 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6 }}
-                className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 shadow-lg space-y-5"
+                transition={{ delay: 0.45 }}
+                className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 shadow-lg space-y-6"
               >
-                <h4 className="font-extrabold uppercase text-[10px] tracking-widest text-secondary flex items-center gap-2">
+                <h3 className="text-xl font-bold text-foreground border-b border-secondary/10 dark:border-white/5 pb-3">
                   Project Gallery
-                </h4>
+                </h3>
                 <div className="grid grid-cols-1 gap-6">
-                  {project.images.map((img, idx) => (
+                  {allImages.map((img, idx) => (
                     <div 
                       key={idx} 
-                      onClick={() => setLightboxIndex(idx + 1)} // idx + 1 because idx 0 is the main thumbnail
-                      className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block h-48 sm:h-56 cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300"
+                      onClick={() => setLightboxIndex(idx)}
+                      className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block aspect-[3/2] cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300"
                     >
                       <Image 
                         src={img} 
-                        alt={`Gallery screenshot ${idx + 1}`} 
+                        alt={`Project preview ${idx + 1}`} 
                         fill 
                         className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out" 
                         unoptimized 
