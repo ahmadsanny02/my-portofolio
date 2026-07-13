@@ -8,6 +8,11 @@ import {
 } from '../../application/use-cases/certificates/CertificateUseCases';
 import { CertificateSupabaseRepository } from '../../infrastructure/database/supabase/CertificateSupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
+import { validateRequest } from '../middlewares/validateRequest';
+import {
+  createCertificateSchema,
+  updateCertificateSchema,
+} from '../validators/certificateValidator';
 
 const router = Router();
 const repo = new CertificateSupabaseRepository();
@@ -18,12 +23,21 @@ const del = new DeleteCertificateUseCase(repo);
 const controller = new CertificateController(getAll, create, update, del);
 
 router.get('/', (req, res, next) => controller.getAll(req, res, next));
-router.post('/', authMiddleware, (req, res, next) =>
-  controller.create(req, res, next),
+
+router.post(
+  '/',
+  authMiddleware,
+  validateRequest(createCertificateSchema),
+  (req, res, next) => controller.create(req, res, next),
 );
-router.put('/:id', authMiddleware, (req, res, next) =>
-  controller.update(req, res, next),
+
+router.put(
+  '/:id',
+  authMiddleware,
+  validateRequest(updateCertificateSchema),
+  (req, res, next) => controller.update(req, res, next),
 );
+
 router.delete('/:id', authMiddleware, (req, res, next) =>
   controller.delete(req, res, next),
 );
