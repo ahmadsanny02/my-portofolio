@@ -9,7 +9,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
 async function getProject(slug: string): Promise<Project | null> {
   try {
     const res = await fetch(`${API_URL}/projects/${slug}`, {
-      next: { revalidate: 3600 } // Cache for 1 hour
+      cache: 'no-store'
     });
     
     if (!res.ok) return null;
