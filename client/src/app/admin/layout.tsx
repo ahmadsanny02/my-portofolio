@@ -254,7 +254,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         isDesktopSidebarCollapsed ? "lg:ml-0" : "lg:ml-64"
       )}>
         {/* Toggle Trigger & Workspace Top Bar */}
-        <div className="h-14 border-b border-secondary/10 px-6 flex items-center bg-surface/90 backdrop-blur-md sticky top-0 z-10">
+        <div className="hidden lg:flex h-14 border-b border-secondary/10 px-6 items-center bg-surface/90 backdrop-blur-md sticky top-0 z-10">
           <button 
             onClick={() => {
               if (window.innerWidth >= 1024) {
