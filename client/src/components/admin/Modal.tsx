@@ -3,15 +3,24 @@
 import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+const sizeClasses = {
+  sm: 'max-w-md',
+  md: 'max-w-lg',
+  lg: 'max-w-2xl',
+  xl: 'max-w-4xl',
+};
+
+export default function Modal({ isOpen, onClose, title, children, size = 'lg' }: ModalProps) {
   // Prevent background scroll when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -43,7 +52,10 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-            className="w-full max-w-2xl bg-surface/90 dark:bg-slate-950/90 backdrop-blur-xl border border-secondary/15 dark:border-white/10 rounded-[32px] shadow-2xl shadow-primary/5 overflow-hidden relative z-10 max-h-[90vh] flex flex-col"
+            className={cn(
+              "w-full bg-surface/90 dark:bg-slate-950/90 backdrop-blur-xl border border-secondary/15 dark:border-white/10 rounded-[32px] shadow-2xl shadow-primary/5 overflow-hidden relative z-10 max-h-[90vh] flex flex-col",
+              sizeClasses[size]
+            )}
           >
             {/* Top Glow Ornament */}
             <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-transparent via-primary/50 to-transparent blur-[1px]" />

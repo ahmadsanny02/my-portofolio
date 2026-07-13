@@ -200,6 +200,7 @@ export default function AdminSkillsPage() {
         isOpen={isFormOpen} 
         onClose={() => setIsFormOpen(false)} 
         title={editingSkill ? 'Edit Skill' : 'Add Skill'}
+        size="md"
       >
         <SkillForm 
           skill={editingSkill}

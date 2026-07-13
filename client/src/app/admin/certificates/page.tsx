@@ -231,6 +231,7 @@ export default function AdminCertificatesPage() {
         isOpen={isFormOpen} 
         onClose={() => setIsFormOpen(false)} 
         title={editingCert ? 'Edit Certificate' : 'Add Certificate'}
+        size="xl"
       >
         <CertificateForm 
           certificate={editingCert}

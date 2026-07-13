@@ -251,6 +251,7 @@ export default function AdminProjectsPage() {
         isOpen={isFormOpen} 
         onClose={() => setIsFormOpen(false)} 
         title={editingProject ? 'Edit Project' : 'Add Project'}
+        size="xl"
       >
         <ProjectForm 
           project={editingProject} 

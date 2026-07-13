@@ -94,169 +94,175 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid lg:grid-cols-2 gap-8 text-foreground">
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Project Title</label>
-            <input 
-              {...register('title')} 
-              className={cn(
-                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
-                errors.title 
-                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
-                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-              )} 
-              placeholder="e.g. E-Commerce Platform" 
-            />
-            {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Slug (URL)</label>
-            <input 
-              {...register('slug')} 
-              className={cn(
-                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
-                errors.slug 
-                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
-                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-              )} 
-              placeholder="e.g. ecommerce-platform" 
-            />
-            {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug.message as string}</p>}
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Tech Stack (comma separated)</label>
-            <input 
-              {...register('techStack')} 
-              className={cn(
-                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
-                errors.techStack 
-                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
-                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-              )} 
-              placeholder="Next.js, Tailwind, Supabase" 
-            />
-            {errors.techStack && <p className="text-red-500 text-xs mt-1">{errors.techStack.message as string}</p>}
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 text-foreground">
+        <div className="grid lg:grid-cols-2 gap-8">
+          <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Demo URL</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Project Title</label>
               <input 
-                {...register('demoUrl')} 
+                {...register('title')} 
                 className={cn(
                   "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
-                  errors.demoUrl 
+                  errors.title 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
                 )} 
-                placeholder="https://..." 
+                placeholder="e.g. E-Commerce Platform" 
               />
-              {errors.demoUrl && <p className="text-red-500 text-xs mt-1">{errors.demoUrl.message as string}</p>}
+              {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
             </div>
+
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Repo URL</label>
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Slug (URL)</label>
               <input 
-                {...register('repoUrl')} 
+                {...register('slug')} 
                 className={cn(
                   "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
-                  errors.repoUrl 
+                  errors.slug 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
                 )} 
-                placeholder="https://github.com/..." 
+                placeholder="e.g. ecommerce-platform" 
               />
-              {errors.repoUrl && <p className="text-red-500 text-xs mt-1">{errors.repoUrl.message as string}</p>}
+              {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug.message as string}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Tech Stack (comma separated)</label>
+              <input 
+                {...register('techStack')} 
+                className={cn(
+                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  errors.techStack 
+                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                )} 
+                placeholder="Next.js, Tailwind, Supabase" 
+              />
+              {errors.techStack && <p className="text-red-500 text-xs mt-1">{errors.techStack.message as string}</p>}
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-secondary">Demo URL</label>
+                <input 
+                  {...register('demoUrl')} 
+                  className={cn(
+                    "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    errors.demoUrl 
+                      ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                      : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                  )} 
+                  placeholder="https://..." 
+                />
+                {errors.demoUrl && <p className="text-red-500 text-xs mt-1">{errors.demoUrl.message as string}</p>}
+              </div>
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-secondary">Repo URL</label>
+                <input 
+                  {...register('repoUrl')} 
+                  className={cn(
+                    "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    errors.repoUrl 
+                      ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                      : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                  )} 
+                  placeholder="https://github.com/..." 
+                />
+                {errors.repoUrl && <p className="text-red-500 text-xs mt-1">{errors.repoUrl.message as string}</p>}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Long Description (Detailed)</label>
+              <textarea 
+                {...register('longDescription')} 
+                rows={4} 
+                className={cn(
+                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
+                  errors.longDescription 
+                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                )} 
+                placeholder="Detailed description of the project, features, challenges..." 
+              />
+              {errors.longDescription && <p className="text-red-500 text-xs mt-1">{errors.longDescription.message as string}</p>}
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Long Description (Detailed)</label>
-            <textarea 
-              {...register('longDescription')} 
-              rows={4} 
-              className={cn(
-                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
-                errors.longDescription 
-                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
-                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-              )} 
-              placeholder="Detailed description of the project, features, challenges..." 
-            />
-            {errors.longDescription && <p className="text-red-500 text-xs mt-1">{errors.longDescription.message as string}</p>}
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Thumbnail Image</label>
+              <div className="border-2 border-dashed border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02] rounded-[24px] p-6 flex flex-col items-center justify-center h-[240px] relative overflow-hidden group transition-all duration-300">
+                {thumbnailUrl ? (
+                  <>
+                    <Image src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Preview" fill unoptimized />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
+                      <label className="cursor-pointer bg-primary p-3.5 rounded-2xl hover:bg-primary-dark transition-all hover:scale-110 shadow-lg shadow-primary/20 flex items-center justify-center">
+                        <Upload size={20} className="text-white" />
+                        <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                      </label>
+                    </div>
+                  </>
+                ) : (
+                  <label className="cursor-pointer flex flex-col items-center gap-3 w-full text-center group/btn">
+                    <div className="p-4 bg-primary/15 rounded-2xl text-primary transition-all group-hover/btn:scale-110 shadow-inner">
+                      {uploading ? <Loader2 className="animate-spin" /> : <Upload size={22} />}
+                    </div>
+                    <div>
+                      <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click to upload thumbnail</span>
+                      <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
+                    </div>
+                    <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                  </label>
+                )}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Short Description</label>
+              <textarea 
+                {...register('description')} 
+                rows={3} 
+                className={cn(
+                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
+                  errors.description 
+                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                )} 
+                placeholder="Briefly describe the project..." 
+              />
+              {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message as string}</p>}
+            </div>
+
+            <div className="flex flex-wrap gap-6 py-2 bg-secondary/5 dark:bg-white/[0.02] rounded-2xl px-4 border border-secondary/10 dark:border-white/5">
+              <div className="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" id="isPublished" {...register('isPublished')} className="w-4 h-4 accent-primary rounded cursor-pointer" />
+                <label htmlFor="isPublished" className="text-sm font-semibold text-secondary select-none cursor-pointer">Published</label>
+              </div>
+              <div className="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" id="isFeatured" {...register('isFeatured')} className="w-4 h-4 accent-primary rounded cursor-pointer" />
+                <label htmlFor="isFeatured" className="text-sm font-semibold text-secondary select-none cursor-pointer">Featured</label>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Thumbnail Image</label>
-            <div className="border-2 border-dashed border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02] rounded-[24px] p-6 flex flex-col items-center justify-center min-h-[160px] relative overflow-hidden group transition-all duration-300">
-              {thumbnailUrl ? (
-                <>
-                  <Image src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Preview" fill unoptimized />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-                    <label className="cursor-pointer bg-primary p-3.5 rounded-2xl hover:bg-primary-dark transition-all hover:scale-110 shadow-lg shadow-primary/20 flex items-center justify-center">
-                      <Upload size={20} className="text-white" />
-                      <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
-                    </label>
-                  </div>
-                </>
-              ) : (
-                <label className="cursor-pointer flex flex-col items-center gap-3 w-full text-center group/btn">
-                  <div className="p-4 bg-primary/15 rounded-2xl text-primary transition-all group-hover/btn:scale-110 shadow-inner">
-                    {uploading ? <Loader2 className="animate-spin" /> : <Upload size={22} />}
-                  </div>
-                  <div>
-                    <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click to upload thumbnail</span>
-                    <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
-                  </div>
-                  <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
-                </label>
-              )}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Short Description</label>
-            <textarea 
-              {...register('description')} 
-              rows={3} 
-              className={cn(
-                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
-                errors.description 
-                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
-                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-              )} 
-              placeholder="Briefly describe the project..." 
-            />
-            {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message as string}</p>}
-          </div>
-
-          <div className="flex flex-wrap gap-6 py-2 bg-secondary/5 dark:bg-white/[0.02] rounded-2xl px-4 border border-secondary/10 dark:border-white/5">
-            <div className="flex items-center gap-2.5 cursor-pointer">
-              <input type="checkbox" id="isPublished" {...register('isPublished')} className="w-4 h-4 accent-primary rounded cursor-pointer" />
-              <label htmlFor="isPublished" className="text-sm font-semibold text-secondary select-none cursor-pointer">Published</label>
-            </div>
-            <div className="flex items-center gap-2.5 cursor-pointer">
-              <input type="checkbox" id="isFeatured" {...register('isFeatured')} className="w-4 h-4 accent-primary rounded cursor-pointer" />
-              <label htmlFor="isFeatured" className="text-sm font-semibold text-secondary select-none cursor-pointer">Featured</label>
-            </div>
-          </div>
-
-          <div className="flex gap-3 pt-4">
-            <button type="button" onClick={onCancel} className="flex-1 py-4 bg-secondary/10 text-foreground rounded-xl font-bold hover:bg-secondary/15 transition-all cursor-pointer">
-              Cancel
-            </button>
-            <button
-              disabled={loading || uploading}
-              type="submit"
-              className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
-            >
-              {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> {project ? 'Save' : 'Create'} Project</>}
-            </button>
-          </div>
+        <div className="flex justify-end gap-3 border-t border-secondary/10 pt-6">
+          <button 
+            type="button" 
+            onClick={onCancel} 
+            className="px-6 py-3 bg-secondary/10 hover:bg-secondary/15 text-foreground rounded-2xl font-bold transition-all cursor-pointer text-sm"
+          >
+            Cancel
+          </button>
+          <button
+            disabled={loading || uploading}
+            type="submit"
+            className="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer text-sm shadow-lg shadow-primary/10 hover:shadow-primary/20"
+          >
+            {loading ? <Loader2 className="animate-spin" /> : <><Save size={18} /> {project ? 'Save' : 'Create'} Project</>}
+          </button>
         </div>
       </form>
     </>

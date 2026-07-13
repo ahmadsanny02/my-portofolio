@@ -107,20 +107,20 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
           {errors.proficiency && <p className="text-red-500 text-xs mt-1">{errors.proficiency.message as string}</p>}
         </div>
 
-        <div className="flex gap-3 pt-2">
+        <div className="flex justify-end gap-3 border-t border-secondary/10 pt-6 mt-6">
           <button
             type="button"
             onClick={onCancel}
-            className="flex-1 py-4 bg-secondary/10 text-foreground rounded-xl font-bold hover:bg-secondary/15 transition-all cursor-pointer"
+            className="px-6 py-3 bg-secondary/10 hover:bg-secondary/15 text-foreground rounded-2xl font-bold transition-all cursor-pointer text-sm"
           >
             Cancel
           </button>
           <button
             disabled={loading}
             type="submit"
-            className="flex-1 bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
+            className="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer text-sm shadow-lg shadow-primary/10 hover:shadow-primary/20"
           >
-            {loading ? <Loader2 className="animate-spin" /> : <><Save size={20} /> Save Skill</>}
+            {loading ? <Loader2 className="animate-spin" /> : <><Save size={18} /> Save Skill</>}
           </button>
         </div>
       </form>
