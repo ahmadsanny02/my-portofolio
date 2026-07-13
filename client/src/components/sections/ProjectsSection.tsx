@@ -1,17 +1,40 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { useProjects } from '@/hooks/useProjects';
 import { ExternalLink, Github } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 80,
+      damping: 16
+    }
+  }
+};
+
 export default function ProjectsSection() {
   const { projects, loading } = useProjects();
 
   return (
-    <section id="projects" className="py-24 bg-surface/50">
+    <section id="projects" className="py-24 bg-surface/30 dark:bg-slate-950/30 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-primary font-bold tracking-widest mb-2 uppercase text-sm">
@@ -47,16 +70,21 @@ export default function ProjectsSection() {
             ))}
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {projects.map((project) => (
               <motion.div
                 key={project.id}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={{ delay: index * 0.1 }}
-                className="group relative bg-background rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-secondary/5 flex flex-col h-full"
+                variants={cardVariants}
+                whileHover={{ y: -8, scale: 1.015 }}
+                className="group relative bg-background rounded-[32px] overflow-hidden border border-secondary/10 dark:border-white/5 shadow-md hover:shadow-2xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300 flex flex-col h-full"
               >
+                {/* Image Container with Zoom effect */}
                 <Link href={`/projects/${project.slug}`} className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative block">
                   <Image
                     src={
@@ -64,10 +92,10 @@ export default function ProjectsSection() {
                     }
                     alt={project.title}
                     fill
-                    className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
+                    className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-700 ease-out"
                     unoptimized
                   />
-                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Link>
 
                 <div className="p-8 flex flex-col flex-1">
@@ -75,53 +103,55 @@ export default function ProjectsSection() {
                     {project.techStack.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="text-[10px] font-bold uppercase tracking-wider bg-secondary/10 px-2 py-1 rounded-md"
+                        className="text-[10px] font-extrabold uppercase tracking-wider bg-secondary/10 dark:bg-white/5 text-secondary px-2.5 py-1 rounded-lg"
                       >
                         {tech}
                       </span>
                     ))}
                   </div>
-                  <h4 className="text-xl font-bold mb-2">
-                    <Link href={`/projects/${project.slug}`} className="hover:text-primary transition-colors">
+                  <h4 className="text-xl font-bold mb-2 text-foreground">
+                    <Link href={`/projects/${project.slug}`} className="hover:text-primary transition-colors duration-200">
                       {project.title}
                     </Link>
                   </h4>
-                  <p className="text-secondary text-sm mb-6 line-clamp-2">
+                  <p className="text-secondary text-sm mb-6 line-clamp-2 leading-relaxed">
                     {project.description}
                   </p>
 
                   <div className="flex items-center gap-4 mt-auto">
                     {project.demoUrl && (
-                      <a
+                      <motion.a
                         href={project.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm font-bold text-primary hover:gap-2 transition-all"
+                        whileHover={{ scale: 1.05 }}
+                        className="flex items-center gap-1.5 text-sm font-bold text-primary hover:text-primary-dark transition-colors cursor-pointer"
                       >
                         Live Demo <ExternalLink size={14} />
-                      </a>
+                      </motion.a>
                     )}
                     {project.repoUrl && (
-                      <a
+                      <motion.a
                         href={project.repoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-sm font-bold hover:text-primary transition-colors"
+                        whileHover={{ scale: 1.05 }}
+                        className="flex items-center gap-1.5 text-sm font-bold text-secondary hover:text-foreground transition-colors cursor-pointer"
                       >
                         Source <Github size={14} />
-                      </a>
+                      </motion.a>
                     )}
                     <Link
                       href={`/projects/${project.slug}`}
                       className="flex items-center gap-1 text-sm font-bold hover:text-primary transition-colors ml-auto group/details"
                     >
-                      Details <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                      Details <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
                     </Link>
                   </div>
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>

@@ -1,84 +1,147 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { ArrowRight, Download, Github, Instagram, Linkedin } from 'lucide-react';
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 35 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 90,
+      damping: 15
+    }
+  }
+};
 
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
-      {/* Abstract Background Shapes */}
-      <div className="absolute top-20 -left-20 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-20 -right-20 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse delay-1000" />
+    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-background">
+      {/* Abstract Background Glows */}
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.15, 1], 
+          x: [0, 20, 0], 
+          y: [0, -20, 0] 
+        }}
+        transition={{ 
+          duration: 15, 
+          repeat: Infinity, 
+          ease: "easeInOut" 
+        }}
+        className="absolute top-20 -left-20 w-80 h-80 bg-primary/15 rounded-full blur-3xl" 
+      />
+      <motion.div 
+        animate={{ 
+          scale: [1, 1.2, 1], 
+          x: [0, -30, 0], 
+          y: [0, 20, 0] 
+        }}
+        transition={{ 
+          duration: 18, 
+          repeat: Infinity, 
+          ease: "easeInOut",
+          delay: 2
+        }}
+        className="absolute bottom-20 -right-20 w-[450px] h-[450px] bg-accent/15 rounded-full blur-3xl" 
+      />
 
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-7xl">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: false, amount: 0.2 }}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
           >
-            <h2 className="text-primary font-bold tracking-widest mb-4 uppercase text-sm">
+            {/* Greeting */}
+            <motion.h2 
+              variants={itemVariants} 
+              className="text-primary font-extrabold tracking-widest mb-4 uppercase text-xs sm:text-sm"
+            >
               Hello, I am
-            </h2>
-            <h1 className="text-6xl md:text-8xl font-bold mb-6 leading-tight tracking-tighter">
-              Ahmad <span className='text-primary'>Sani</span> Jabarulloh<span className='text-primary'>.</span>
-            </h1>
-            <p className="text-secondary text-xl md:text-2xl mb-10 max-w-4xl leading-relaxed font-medium">
+            </motion.h2>
+            
+            {/* Title / Name */}
+            <motion.h1 
+              variants={itemVariants} 
+              className="text-5xl md:text-8xl font-black mb-6 leading-tight tracking-tighter text-foreground"
+            >
+              Ahmad <span className="text-primary bg-clip-text">Sani</span> Jabarulloh<span className="text-primary">.</span>
+            </motion.h1>
+            
+            {/* Tagline */}
+            <motion.p 
+              variants={itemVariants} 
+              className="text-secondary text-lg md:text-2xl mb-10 max-w-4xl leading-relaxed font-medium"
+            >
               Frontend Developer specializing in{' '}
-              <span className="text-foreground">React.js</span>,{' '}
-              <span className="text-foreground">Next.js</span>, and{' '}
-              <span className="text-foreground">Node.js</span>. I transform
+              <span className="text-foreground font-bold border-b border-primary/20">React.js</span>,{' '}
+              <span className="text-foreground font-bold border-b border-primary/20">Next.js</span>, and{' '}
+              <span className="text-foreground font-bold border-b border-primary/20">Node.js</span>. I transform
               complex ideas into elegant, high-performance web experiences.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-wrap gap-4">
-              <a
+            {/* Buttons */}
+            <motion.div variants={itemVariants} className="flex flex-wrap gap-4">
+              <motion.a
                 href="#projects"
-                className="bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all hover:gap-3 shadow-xl shadow-primary/30"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-primary text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-primary-dark transition-all shadow-xl shadow-primary/30 cursor-pointer"
               >
-                Explore Projects <ArrowRight size={20} />
-              </a>
-              <a
+                Explore Projects <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              </motion.a>
+              <motion.a
                 href="../CV/CV-Ahmad_Sani_Jabarulloh-Web_Developer.pdf"
                 target="_blank"
-                className="bg-surface border border-secondary/20 px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-secondary/5 transition-all shadow-sm"
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                className="bg-surface border border-secondary/20 px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-secondary/5 transition-all shadow-sm cursor-pointer"
               >
                 Download CV <Download size={20} />
-              </a>
-            </div>
+              </motion.a>
+            </motion.div>
 
-            <div className="mt-20 flex items-center gap-6">
-              <span className="text-secondary font-bold uppercase text-xs tracking-widest">
+            {/* Digital Footprint Linkage */}
+            <motion.div variants={itemVariants} className="mt-20 flex items-center gap-6">
+              <span className="text-secondary font-bold uppercase text-[10px] tracking-widest">
                 Digital Footprint
               </span>
               <div className="h-px w-12 bg-secondary/30" />
               <div className="flex gap-4">
-                <a
-                  href="https://github.com/ahmadsanny2"
-                  target="_blank"
-                  className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm"
-                >
-                  <Github size={20} />
-                </a>
-                <a
-                  href="https://linkedin.com/in/ahmadsanny02"
-                  target="_blank"
-                  className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm"
-                >
-                  <Linkedin size={20} />
-                </a>
-                 <a
-                  href="https://instagram.com/ahmadsanny02"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm"
-                >
-                  <Instagram size={20} />
-                </a>
+                {[
+                  { href: "https://github.com/ahmadsanny2", Icon: Github },
+                  { href: "https://linkedin.com/in/ahmadsanny02", Icon: Linkedin },
+                  { href: "https://instagram.com/ahmadsanny02", Icon: Instagram },
+                ].map(({ href, Icon }, i) => (
+                  <motion.a
+                    key={i}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1, y: -3 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm flex items-center justify-center cursor-pointer"
+                  >
+                    <Icon size={20} />
+                  </motion.a>
+                ))}
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

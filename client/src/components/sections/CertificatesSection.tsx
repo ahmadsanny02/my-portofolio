@@ -1,17 +1,40 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Variants } from 'framer-motion';
 import { useCertificates } from '@/hooks/useCertificates';
 import { Award, ExternalLink } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
 
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.1
+    }
+  }
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 80,
+      damping: 16
+    }
+  }
+};
+
 export default function CertificatesSection() {
   const { certificates, loading } = useCertificates();
 
   return (
-    <section id="certificates" className="py-24 bg-surface/30">
+    <section id="certificates" className="py-24 bg-surface/30 dark:bg-slate-950/30 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-primary font-bold tracking-widest mb-2 uppercase text-sm">Achievements</h2>
@@ -40,15 +63,19 @@ export default function CertificatesSection() {
             ))}
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {certificates.map((cert, index) => (
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.1 }}
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {certificates.map((cert) => (
               <motion.div
                 key={cert.id}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1}}
-                viewport={{ once: false, amount: 0.1 }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-background rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all overflow-hidden shadow-sm hover:shadow-xl group"
+                variants={cardVariants}
+                whileHover={{ y: -8, scale: 1.015 }}
+                className="bg-background rounded-[32px] border border-secondary/10 dark:border-white/5 hover:border-primary/20 dark:hover:border-primary/10 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
               >
                 {cert.imageUrl && (
                   <div className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative">
@@ -56,40 +83,42 @@ export default function CertificatesSection() {
                       src={cert.imageUrl}
                       alt={cert.title}
                       fill
-                      className="object-fill h-full w-full group-hover:scale-110 transition-transform duration-500"
+                      className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-700 ease-out"
                     />
+                    <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                 )}
-                <div className="p-6">
+                <div className="p-6 flex flex-col flex-1">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="bg-primary/10 p-2 rounded-lg text-primary flex-shrink-0">
+                    <div className="bg-primary/10 p-3 rounded-2xl text-primary flex-shrink-0 border border-primary/5">
                       <Award size={20} />
                     </div>
                     <div>
-                      <p className="text-secondary text-sm font-medium">{cert.issuer}</p>
-                      <h4 className="font-bold mb-1 leading-tight text-xl line-clamp-2 h-12">{cert.title}</h4>
+                      <p className="text-secondary text-sm font-semibold truncate">{cert.issuer}</p>
+                      <h4 className="font-bold mb-1 leading-tight text-xl text-foreground line-clamp-2 h-12">{cert.title}</h4>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 border-t border-secondary/5">
+                  <div className="flex items-center justify-between pt-4 mt-auto border-t border-secondary/5 dark:border-white/5">
                     <span className="text-[10px] font-bold text-secondary uppercase tracking-widest">
                       {formatDate(cert.issuedAt)}
                     </span>
                     {cert.credentialUrl && (
-                      <a
+                      <motion.a
                         href={cert.credentialUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-2 transition-all"
+                        whileHover={{ scale: 1.05 }}
+                        className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-1.5 transition-all cursor-pointer"
                       >
                         Verify <ExternalLink size={12} />
-                      </a>
+                      </motion.a>
                     )}
                   </div>
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         )}
       </div>
     </section>
