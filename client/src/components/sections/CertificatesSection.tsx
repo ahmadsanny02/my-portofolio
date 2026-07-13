@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { motion, Variants } from 'framer-motion';
 import { useCertificates } from '@/hooks/useCertificates';
 import { Award, ExternalLink } from 'lucide-react';
@@ -32,6 +33,9 @@ const cardVariants: Variants = {
 
 export default function CertificatesSection() {
   const { certificates, loading } = useCertificates();
+  const [visibleCount, setVisibleCount] = useState(10);
+
+  const visibleCertificates = certificates.slice(0, visibleCount);
 
   return (
     <section id="certificates" className="py-24 bg-surface/30 dark:bg-slate-950/30 overflow-hidden">
@@ -70,7 +74,7 @@ export default function CertificatesSection() {
             viewport={{ once: true, amount: 0.1 }}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {certificates.map((cert) => (
+            {visibleCertificates.map((cert) => (
               <motion.div
                 key={cert.id}
                 variants={cardVariants}
@@ -119,6 +123,19 @@ export default function CertificatesSection() {
               </motion.div>
             ))}
           </motion.div>
+        )}
+
+        {!loading && certificates.length > visibleCount && (
+          <div className="flex justify-center mt-12">
+            <motion.button
+              whileHover={{ scale: 1.03, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setVisibleCount((prev) => prev + 10)}
+              className="px-8 py-3.5 bg-primary/10 hover:bg-primary text-primary hover:text-white rounded-2xl font-bold transition-all shadow-sm flex items-center gap-2 cursor-pointer border border-primary/20 hover:border-primary"
+            >
+              Show More
+            </motion.button>
+          </div>
         )}
       </div>
     </section>
