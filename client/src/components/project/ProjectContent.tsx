@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -34,6 +34,23 @@ export default function ProjectContent({ project }: ProjectContentProps) {
     project.thumbnail,
     ...(project.images || [])
   ].filter(Boolean) as string[];
+
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev !== null ? (prev - 1 + allImages.length) % allImages.length : null));
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev !== null ? (prev + 1) % allImages.length : null));
+      } else if (e.key === 'Escape') {
+        setLightboxIndex(null);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxIndex, allImages.length]);
 
   const handlePrev = (e: React.MouseEvent) => {
     e.stopPropagation();
