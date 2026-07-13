@@ -141,7 +141,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
       <div className="container mx-auto px-6 py-16">
         <div className="grid lg:grid-cols-3 gap-12 items-start">
           
-          {/* LEFT: Project Overview & Gallery (2 Columns wide) */}
+          {/* LEFT: Project Overview (2 Columns wide) */}
           <div className="lg:col-span-2 space-y-12">
             
             {/* Project Overview Card */}
@@ -158,46 +158,10 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 {project.longDescription || 'Detailed information about this project is coming soon.'}
               </div>
             </motion.div>
-
-            {/* Gallery Card */}
-            {project.images && project.images.length > 0 && (
-              <motion.div 
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 sm:p-10 shadow-lg"
-              >
-                <h3 className="text-2xl font-bold mb-6 text-foreground border-b border-secondary/10 dark:border-white/5 pb-4">
-                  Project Gallery
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {project.images.map((img, idx) => (
-                    <div 
-                      key={idx} 
-                      onClick={() => setLightboxIndex(idx + 1)} // idx + 1 because idx 0 is the main thumbnail
-                      className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block h-48 sm:h-56 cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300"
-                    >
-                      <Image 
-                        src={img} 
-                        alt={`Gallery screenshot ${idx + 1}`} 
-                        fill 
-                        className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out" 
-                        unoptimized 
-                      />
-                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <div className="p-3 bg-white/10 backdrop-blur-md rounded-full text-white shadow-lg border border-white/20">
-                          <Maximize2 size={20} />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
           </div>
 
-          {/* RIGHT: Metadata & Action Links Sidebar (1 Column wide) */}
-          <div className="space-y-8 lg:sticky lg:top-32">
+          {/* RIGHT: Metadata, Links, Tech & Gallery Sidebar (1 Column wide) */}
+          <div className="space-y-8">
             
             {/* Primary Visual Thumbnail Card */}
             <motion.div 
@@ -281,6 +245,42 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 ))}
               </div>
             </motion.div>
+
+            {/* Gallery Card (Moved to Right, 1 Column Vertical scrollable style) */}
+            {project.images && project.images.length > 0 && (
+              <motion.div 
+                initial={{ opacity: 0, y: 25 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+                className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 shadow-lg space-y-5"
+              >
+                <h4 className="font-extrabold uppercase text-[10px] tracking-widest text-secondary flex items-center gap-2">
+                  Project Gallery
+                </h4>
+                <div className="grid grid-cols-1 gap-6">
+                  {project.images.map((img, idx) => (
+                    <div 
+                      key={idx} 
+                      onClick={() => setLightboxIndex(idx + 1)} // idx + 1 because idx 0 is the main thumbnail
+                      className="rounded-2xl overflow-hidden border border-secondary/10 dark:border-white/5 relative block h-48 sm:h-56 cursor-pointer group shadow-sm hover:shadow-xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300"
+                    >
+                      <Image 
+                        src={img} 
+                        alt={`Gallery screenshot ${idx + 1}`} 
+                        fill 
+                        className="object-cover group-hover:scale-103 transition-transform duration-500 ease-out" 
+                        unoptimized 
+                      />
+                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                        <div className="p-3 bg-white/10 backdrop-blur-md rounded-full text-white shadow-lg border border-white/20">
+                          <Maximize2 size={20} />
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </div>
         </div>
       </div>
