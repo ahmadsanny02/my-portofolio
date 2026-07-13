@@ -23,7 +23,9 @@ export class SkillSupabaseRepository implements ISkillRepository {
       proficiency: skill.proficiency,
       order_index: skill.orderIndex,
     };
-    Object.keys(dbItem).forEach(key => dbItem[key] === undefined && delete dbItem[key]);
+    Object.keys(dbItem).forEach(
+      (key) => dbItem[key] === undefined && delete dbItem[key],
+    );
     return dbItem;
   }
 
@@ -32,9 +34,9 @@ export class SkillSupabaseRepository implements ISkillRepository {
       .from('skills')
       .select('*')
       .order('order_index', { ascending: true });
-    
+
     if (error) throw new Error(error.message);
-    return data.map(item => this.mapToDomain(item));
+    return data.map((item) => this.mapToDomain(item));
   }
 
   async create(data: Omit<Skill, 'id' | 'createdAt'>): Promise<Skill> {
@@ -44,7 +46,7 @@ export class SkillSupabaseRepository implements ISkillRepository {
       .insert(dbData)
       .select()
       .single();
-    
+
     if (error) throw new Error(error.message);
     return this.mapToDomain(created);
   }
@@ -57,7 +59,7 @@ export class SkillSupabaseRepository implements ISkillRepository {
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error) throw new Error(error.message);
     return this.mapToDomain(updated);
   }

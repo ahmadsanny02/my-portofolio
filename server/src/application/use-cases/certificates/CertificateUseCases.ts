@@ -12,7 +12,9 @@ export class GetAllCertificatesUseCase {
 export class CreateCertificateUseCase {
   constructor(private certRepo: ICertificateRepository) {}
 
-  async execute(data: Omit<Certificate, 'id' | 'createdAt'>): Promise<Certificate> {
+  async execute(
+    data: Omit<Certificate, 'id' | 'createdAt'>,
+  ): Promise<Certificate> {
     return this.certRepo.create(data);
   }
 }

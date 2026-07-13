@@ -27,7 +27,10 @@ export class CertificateSupabaseRepository implements ICertificateRepository {
       credential_url: cert.credentialUrl,
       category: cert.category,
     };
-    Object.keys(dbItem).forEach(key => (dbItem[key] === undefined || dbItem[key] === '') && delete dbItem[key]);
+    Object.keys(dbItem).forEach(
+      (key) =>
+        (dbItem[key] === undefined || dbItem[key] === '') && delete dbItem[key],
+    );
     return dbItem;
   }
 
@@ -36,19 +39,21 @@ export class CertificateSupabaseRepository implements ICertificateRepository {
       .from('certificates')
       .select('*')
       .order('issued_at', { ascending: false });
-    
+
     if (error) throw new Error(error.message);
-    return data.map(item => this.mapToDomain(item));
+    return data.map((item) => this.mapToDomain(item));
   }
 
-  async create(data: Omit<Certificate, 'id' | 'createdAt'>): Promise<Certificate> {
+  async create(
+    data: Omit<Certificate, 'id' | 'createdAt'>,
+  ): Promise<Certificate> {
     const dbData = this.mapToDb(data);
     const { data: created, error } = await supabase
       .from('certificates')
       .insert(dbData)
       .select()
       .single();
-    
+
     if (error) throw new Error(error.message);
     return this.mapToDomain(created);
   }
@@ -61,7 +66,7 @@ export class CertificateSupabaseRepository implements ICertificateRepository {
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error) throw new Error(error.message);
     return this.mapToDomain(updated);
   }

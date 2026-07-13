@@ -8,7 +8,10 @@ import { DeleteProjectUseCase } from '../../application/use-cases/projects/Delet
 import { ProjectSupabaseRepository } from '../../infrastructure/database/supabase/ProjectSupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { validateRequest } from '../middlewares/validateRequest';
-import { createProjectSchema, updateProjectSchema } from '../validators/projectValidator';
+import {
+  createProjectSchema,
+  updateProjectSchema,
+} from '../validators/projectValidator';
 
 const router = Router();
 
@@ -25,32 +28,32 @@ const projectController = new ProjectController(
   getProjectBySlugUseCase,
   createProjectUseCase,
   updateProjectUseCase,
-  deleteProjectUseCase
+  deleteProjectUseCase,
 );
 
 // Public Routes
 router.get('/', (req, res, next) => projectController.getAll(req, res, next));
-router.get('/:slug', (req, res, next) => projectController.getBySlug(req, res, next));
+router.get('/:slug', (req, res, next) =>
+  projectController.getBySlug(req, res, next),
+);
 
 // Admin Routes (Protected)
 router.post(
-  '/', 
-  authMiddleware, 
-  validateRequest(createProjectSchema), 
-  (req, res, next) => projectController.create(req, res, next)
+  '/',
+  authMiddleware,
+  validateRequest(createProjectSchema),
+  (req, res, next) => projectController.create(req, res, next),
 );
 
 router.put(
-  '/:id', 
-  authMiddleware, 
-  validateRequest(updateProjectSchema), 
-  (req, res, next) => projectController.update(req, res, next)
+  '/:id',
+  authMiddleware,
+  validateRequest(updateProjectSchema),
+  (req, res, next) => projectController.update(req, res, next),
 );
 
-router.delete(
-  '/:id', 
-  authMiddleware, 
-  (req, res, next) => projectController.delete(req, res, next)
+router.delete('/:id', authMiddleware, (req, res, next) =>
+  projectController.delete(req, res, next),
 );
 
 export default router;

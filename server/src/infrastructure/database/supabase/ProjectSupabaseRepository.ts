@@ -36,23 +36,28 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       is_published: project.isPublished,
       order_index: project.orderIndex,
     };
-    
+
     // Remove undefined keys
-    Object.keys(dbItem).forEach(key => dbItem[key] === undefined && delete dbItem[key]);
+    Object.keys(dbItem).forEach(
+      (key) => dbItem[key] === undefined && delete dbItem[key],
+    );
     return dbItem;
   }
 
   async findAll(onlyPublished = true): Promise<Project[]> {
-    let query = supabase.from('projects').select('*').order('order_index', { ascending: true });
-    
+    let query = supabase
+      .from('projects')
+      .select('*')
+      .order('order_index', { ascending: true });
+
     if (onlyPublished) {
       query = query.eq('is_published', true);
     }
-    
+
     const { data, error } = await query;
     if (error) throw new Error(error.message);
-    
-    return data.map(item => this.mapToDomain(item));
+
+    return data.map((item) => this.mapToDomain(item));
   }
 
   async findBySlug(slug: string): Promise<Project | null> {
@@ -61,7 +66,7 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       .select('*')
       .eq('slug', slug)
       .single();
-    
+
     if (error) return null;
     return this.mapToDomain(data);
   }
@@ -72,19 +77,21 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       .select('*')
       .eq('id', id)
       .single();
-    
+
     if (error) return null;
     return this.mapToDomain(data);
   }
 
-  async create(data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>): Promise<Project> {
+  async create(
+    data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>,
+  ): Promise<Project> {
     const dbData = this.mapToDb(data);
     const { data: created, error } = await supabase
       .from('projects')
       .insert(dbData)
       .select()
       .single();
-    
+
     if (error) throw new Error(error.message);
     return this.mapToDomain(created);
   }
@@ -97,7 +104,7 @@ export class ProjectSupabaseRepository implements IProjectRepository {
       .eq('id', id)
       .select()
       .single();
-    
+
     if (error) throw new Error(error.message);
     return this.mapToDomain(updated);
   }

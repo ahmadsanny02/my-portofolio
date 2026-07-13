@@ -9,7 +9,9 @@ export const validateRequest = (schema: ZodSchema) => {
       next();
     } catch (error) {
       if (error instanceof ZodError) {
-        const message = error.issues.map(e => `${e.path.join('.')}: ${e.message}`).join(', ');
+        const message = error.issues
+          .map((e) => `${e.path.join('.')}: ${e.message}`)
+          .join(', ');
         return next(new BadRequestError(message));
       }
       next(error);

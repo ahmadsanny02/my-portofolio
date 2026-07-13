@@ -11,7 +11,7 @@ export class ProjectController {
     private getProjectBySlugUseCase: GetProjectBySlugUseCase,
     private createProjectUseCase: CreateProjectUseCase,
     private updateProjectUseCase: UpdateProjectUseCase,
-    private deleteProjectUseCase: DeleteProjectUseCase
+    private deleteProjectUseCase: DeleteProjectUseCase,
   ) {}
 
   async getAll(req: Request, res: Response, next: NextFunction) {

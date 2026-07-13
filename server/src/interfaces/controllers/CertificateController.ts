@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { 
-  GetAllCertificatesUseCase, 
-  CreateCertificateUseCase, 
+import {
+  GetAllCertificatesUseCase,
+  CreateCertificateUseCase,
   UpdateCertificateUseCase,
-  DeleteCertificateUseCase 
+  DeleteCertificateUseCase,
 } from '../../application/use-cases/certificates/CertificateUseCases';
 
 export class CertificateController {
@@ -11,7 +11,7 @@ export class CertificateController {
     private getAllCerts: GetAllCertificatesUseCase,
     private createCert: CreateCertificateUseCase,
     private updateCert: UpdateCertificateUseCase,
-    private deleteCert: DeleteCertificateUseCase
+    private deleteCert: DeleteCertificateUseCase,
   ) {}
 
   async getAll(req: Request, res: Response, next: NextFunction) {
