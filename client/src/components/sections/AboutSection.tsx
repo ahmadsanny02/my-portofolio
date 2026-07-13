@@ -4,15 +4,15 @@ import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, x: -50, scale: 0.95 },
+  hidden: { opacity: 0, y: 35, scale: 0.98 },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     scale: 1,
     transition: {
       type: "spring",
-      stiffness: 70,
-      damping: 15
+      stiffness: 75,
+      damping: 16
     }
   }
 };

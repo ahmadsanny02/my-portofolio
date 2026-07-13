@@ -320,16 +320,27 @@ export default function ProjectContent({ project }: ProjectContentProps) {
               onClick={(e) => e.stopPropagation()} 
               className="relative max-w-6xl w-full aspect-[16/10] max-h-[85vh] rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex items-center justify-center bg-zinc-950/40"
             >
-              <Image 
-                src={allImages[lightboxIndex]} 
-                alt="" 
-                fill 
-                className="object-contain p-2" 
-                unoptimized 
-              />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={lightboxIndex}
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute inset-0 w-full h-full"
+                >
+                  <Image 
+                    src={allImages[lightboxIndex]} 
+                    alt="" 
+                    fill 
+                    className="object-contain p-2" 
+                    unoptimized 
+                  />
+                </motion.div>
+              </AnimatePresence>
               
               {/* Pagination Info Badge */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-white border border-white/10 tracking-widest select-none">
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold text-white border border-white/10 tracking-widest select-none z-10">
                 {lightboxIndex + 1} / {allImages.length}
               </div>
             </div>

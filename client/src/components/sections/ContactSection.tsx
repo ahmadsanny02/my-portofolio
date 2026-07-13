@@ -31,15 +31,15 @@ const infoItemVariants: Variants = {
 };
 
 const formVariants: Variants = {
-  hidden: { opacity: 0, x: 40, scale: 0.96 },
+  hidden: { opacity: 0, y: 35, scale: 0.98 },
   visible: {
     opacity: 1,
-    x: 0,
+    y: 0,
     scale: 1,
     transition: {
       type: "spring",
       stiffness: 75,
-      damping: 15
+      damping: 16
     }
   }
 };
