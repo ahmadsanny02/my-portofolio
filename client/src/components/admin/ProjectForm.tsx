@@ -9,6 +9,7 @@ import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
 import { Project } from 'types';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 const projectSchema = z.object({
   title: z.string().min(3, 'Title too short'),
@@ -97,29 +98,94 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
         <div className="space-y-6">
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Project Title</label>
-            <input {...register('title')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="e.g. E-Commerce Platform" />
+            <input 
+              {...register('title')} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                errors.title 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="e.g. E-Commerce Platform" 
+            />
             {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
           </div>
 
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Slug (URL)</label>
-            <input {...register('slug')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="e.g. ecommerce-platform" />
+            <input 
+              {...register('slug')} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                errors.slug 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="e.g. ecommerce-platform" 
+            />
+            {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug.message as string}</p>}
           </div>
 
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Tech Stack (comma separated)</label>
-            <input {...register('techStack')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="Next.js, Tailwind, Supabase" />
+            <input 
+              {...register('techStack')} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                errors.techStack 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="Next.js, Tailwind, Supabase" 
+            />
+            {errors.techStack && <p className="text-red-500 text-xs mt-1">{errors.techStack.message as string}</p>}
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Demo URL</label>
-              <input {...register('demoUrl')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="https://..." />
+              <input 
+                {...register('demoUrl')} 
+                className={cn(
+                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  errors.demoUrl 
+                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                )} 
+                placeholder="https://..." 
+              />
+              {errors.demoUrl && <p className="text-red-500 text-xs mt-1">{errors.demoUrl.message as string}</p>}
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Repo URL</label>
-              <input {...register('repoUrl')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="https://github.com/..." />
+              <input 
+                {...register('repoUrl')} 
+                className={cn(
+                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  errors.repoUrl 
+                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                )} 
+                placeholder="https://github.com/..." 
+              />
+              {errors.repoUrl && <p className="text-red-500 text-xs mt-1">{errors.repoUrl.message as string}</p>}
             </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-wider text-secondary">Long Description (Detailed)</label>
+            <textarea 
+              {...register('longDescription')} 
+              rows={4} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
+                errors.longDescription 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="Detailed description of the project, features, challenges..." 
+            />
+            {errors.longDescription && <p className="text-red-500 text-xs mt-1">{errors.longDescription.message as string}</p>}
           </div>
         </div>
 
@@ -154,7 +220,18 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Short Description</label>
-            <textarea {...register('description')} rows={3} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none text-sm" placeholder="Briefly describe the project..." />
+            <textarea 
+              {...register('description')} 
+              rows={3} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
+                errors.description 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="Briefly describe the project..." 
+            />
+            {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message as string}</p>}
           </div>
 
           <div className="flex flex-wrap gap-6 py-2 bg-secondary/5 dark:bg-white/[0.02] rounded-2xl px-4 border border-secondary/10 dark:border-white/5">

@@ -74,7 +74,7 @@ export default function ContactSection() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+                    className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm"
                     placeholder="John Doe"
                   />
                 </div>
@@ -85,7 +85,7 @@ export default function ContactSection() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+                    className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -97,7 +97,7 @@ export default function ContactSection() {
                   type="text"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors"
+                  className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm"
                   placeholder="Project Inquiry"
                 />
               </div>
@@ -108,14 +108,14 @@ export default function ContactSection() {
                   rows={4}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-background border border-secondary/10 rounded-xl px-4 py-3 focus:outline-none focus:border-primary transition-colors resize-none"
+                  className="w-full bg-background/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none text-sm"
                   placeholder="Tell me more about your project..."
                 />
               </div>
               <button
                 disabled={loading}
                 type="submit"
-                className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50"
+                className="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
               >
                 {loading ? <Loader2 className="animate-spin" /> : <><Send size={18} /> Send Message</>}
               </button>

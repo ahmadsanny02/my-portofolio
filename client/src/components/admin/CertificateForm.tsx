@@ -9,11 +9,12 @@ import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
 import { Certificate } from 'types';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 const certSchema = z.object({
   title: z.string().min(3, 'Title too short'),
   issuer: z.string().min(2, 'Issuer too short'),
-  issuedAt: z.string(),
+  issuedAt: z.string().min(1, 'Issued date is required'),
   expiredAt: z.string().optional(),
   category: z.string().min(2, 'Category too short'),
   credentialUrl: z.string().url().optional().or(z.literal('')),
@@ -89,36 +90,85 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
         <div className="space-y-6">
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Certificate Title</label>
-            <input {...register('title')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="e.g. Meta Front-End Developer" />
+            <input 
+              {...register('title')} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                errors.title 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="e.g. Meta Front-End Developer" 
+            />
             {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
           </div>
 
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Issuer</label>
-            <input {...register('issuer')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="e.g. Coursera" />
+            <input 
+              {...register('issuer')} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                errors.issuer 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="e.g. Coursera" 
+            />
+            {errors.issuer && <p className="text-red-500 text-xs mt-1">{errors.issuer.message as string}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Issued Date</label>
-              <input type="date" {...register('issuedAt')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all text-sm" />
+              <input 
+                type="date" 
+                {...register('issuedAt')} 
+                className={cn(
+                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm",
+                  errors.issuedAt 
+                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                )} 
+              />
+              {errors.issuedAt && <p className="text-red-500 text-xs mt-1">{errors.issuedAt.message as string}</p>}
             </div>
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Category</label>
-              <input {...register('category')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="Web Development" />
+              <input 
+                {...register('category')} 
+                className={cn(
+                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  errors.category 
+                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+                )} 
+                placeholder="Web Development" 
+              />
+              {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message as string}</p>}
             </div>
           </div>
 
           <div className="space-y-2">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Credential URL</label>
-            <input {...register('credentialUrl')} className="w-full bg-background/50 dark:bg-slate-950/50 border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/30 text-sm" placeholder="https://..." />
+            <input 
+              {...register('credentialUrl')} 
+              className={cn(
+                "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                errors.credentialUrl 
+                  ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
+                  : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
+              )} 
+              placeholder="https://..." 
+            />
+            {errors.credentialUrl && <p className="text-red-500 text-xs mt-1">{errors.credentialUrl.message as string}</p>}
           </div>
         </div>
 
         <div className="space-y-6 flex flex-col justify-between">
           <div className="space-y-2 flex-1">
             <label className="text-xs font-bold uppercase tracking-wider text-secondary">Certificate Image / Badge</label>
-            <div className="border-2 border-dashed border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02] rounded-[24px] p-6 flex flex-col items-center justify-center min-h-[180px] h-[calc(100%-2rem)] relative overflow-hidden group transition-all duration-300">
+            <div className="border-2 border-dashed border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-955/20 hover:bg-primary/[0.02] rounded-[24px] p-6 flex flex-col items-center justify-center min-h-[180px] h-[calc(100%-2rem)] relative overflow-hidden group transition-all duration-300">
               {imageUrl ? (
                 <>
                   <Image src={imageUrl} className="absolute inset-0 w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" alt="Certificate Preview" fill unoptimized />
