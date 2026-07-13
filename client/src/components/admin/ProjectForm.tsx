@@ -224,16 +224,21 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-secondary">Category</label>
-                <input 
+                <select 
                   {...register('category')} 
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer appearance-none",
                     errors.category 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
                   )} 
-                  placeholder="e.g. Web Application" 
-                />
+                >
+                  <option value="Web Application" className="bg-background dark:bg-slate-900 text-foreground">Web Application</option>
+                  <option value="Mobile Application" className="bg-background dark:bg-slate-900 text-foreground">Mobile Application</option>
+                  <option value="UI/UX Design" className="bg-background dark:bg-slate-900 text-foreground">UI/UX Design</option>
+                  <option value="Desktop Application" className="bg-background dark:bg-slate-900 text-foreground">Desktop Application</option>
+                  <option value="Machine Learning / AI" className="bg-background dark:bg-slate-900 text-foreground">Machine Learning / AI</option>
+                </select>
                 {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message as string}</p>}
               </div>
               <div className="space-y-2">
