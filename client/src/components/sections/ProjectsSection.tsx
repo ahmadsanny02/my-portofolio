@@ -1,35 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useProjects } from '@/hooks/useProjects';
 import { ExternalLink, Github } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1
-    }
-  }
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 80,
-      damping: 16
-    }
-  }
-};
 
 export default function ProjectsSection() {
   const { projects, loading } = useProjects();
@@ -74,17 +50,19 @@ export default function ProjectsSection() {
             ))}
           </div>
         ) : (
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {visibleProjects.map((project) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {visibleProjects.map((project, index) => (
               <motion.div
                 key={project.id}
-                variants={cardVariants}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 80,
+                  damping: 16,
+                  delay: (index % 10) * 0.05
+                }}
                 whileHover={{ y: -8, scale: 1.015 }}
                 className="group relative bg-background rounded-[32px] overflow-hidden border border-secondary/10 dark:border-white/5 shadow-md hover:shadow-2xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300 flex flex-col h-full"
               >
@@ -155,7 +133,7 @@ export default function ProjectsSection() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         )}
 
         {!loading && projects.length > visibleCount && (

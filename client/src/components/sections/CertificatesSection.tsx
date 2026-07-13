@@ -1,35 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { motion, Variants } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useCertificates } from '@/hooks/useCertificates';
 import { Award, ExternalLink } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.1
-    }
-  }
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 80,
-      damping: 16
-    }
-  }
-};
 
 export default function CertificatesSection() {
   const { certificates, loading } = useCertificates();
@@ -67,17 +43,19 @@ export default function CertificatesSection() {
             ))}
           </div>
         ) : (
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.1 }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          >
-            {visibleCertificates.map((cert) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {visibleCertificates.map((cert, index) => (
               <motion.div
                 key={cert.id}
-                variants={cardVariants}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 80,
+                  damping: 16,
+                  delay: (index % 10) * 0.05
+                }}
                 whileHover={{ y: -8, scale: 1.015 }}
                 className="bg-background rounded-[32px] border border-secondary/10 dark:border-white/5 hover:border-primary/20 dark:hover:border-primary/10 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
               >
@@ -122,7 +100,7 @@ export default function CertificatesSection() {
                 </div>
               </motion.div>
             ))}
-          </motion.div>
+          </div>
         )}
 
         {!loading && certificates.length > visibleCount && (
