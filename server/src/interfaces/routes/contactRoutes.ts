@@ -1,49 +1,41 @@
 import { Router } from 'express';
-import { supabase } from '../../infrastructure/database/supabase/SupabaseClient';
+import { ContactController } from '../controllers/ContactController';
+import {
+  GetAllContactMessagesUseCase,
+  CreateContactMessageUseCase,
+  DeleteContactMessageUseCase,
+} from '../../application/use-cases/contact/ContactUseCases';
+import { ContactSupabaseRepository } from '../../infrastructure/database/supabase/ContactSupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
+import { validateRequest } from '../middlewares/validateRequest';
+import { createContactMessageSchema } from '../validators/contactValidator';
 
 const router = Router();
 
-router.post('/', async (req, res, next) => {
-  try {
-    const { name, email, subject, message } = req.body;
-    const { error } = await supabase
-      .from('contact_messages')
-      .insert({ name, email, subject, message });
+// Dependency Injection
+const contactRepo = new ContactSupabaseRepository();
+const getAllMessagesUseCase = new GetAllContactMessagesUseCase(contactRepo);
+const createMessageUseCase = new CreateContactMessageUseCase(contactRepo);
+const deleteMessageUseCase = new DeleteContactMessageUseCase(contactRepo);
 
-    if (error) throw error;
-    res.json({ success: true, message: 'Message sent successfully' });
-  } catch (error) {
-    next(error);
-  }
-});
+const contactController = new ContactController(
+  getAllMessagesUseCase,
+  createMessageUseCase,
+  deleteMessageUseCase,
+);
 
-router.get('/', authMiddleware, async (req, res, next) => {
-  try {
-    // For admin to see messages
-    const { data, error } = await supabase
-      .from('contact_messages')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    res.json({ success: true, data });
-  } catch (error) {
-    next(error);
-  }
-});
+// Public Routes
+router.post('/', validateRequest(createContactMessageSchema), (req, res, next) =>
+  contactController.create(req, res, next),
+);
 
-router.delete('/:id', authMiddleware, async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const { error } = await supabase
-      .from('contact_messages')
-      .delete()
-      .eq('id', id);
-    if (error) throw error;
-    res.json({ success: true, message: 'Message deleted successfully' });
-  } catch (error) {
-    next(error);
-  }
-});
+// Admin Routes (Protected)
+router.get('/', authMiddleware, (req, res, next) =>
+  contactController.getAll(req, res, next),
+);
+
+router.delete('/:id', authMiddleware, (req, res, next) =>
+  contactController.delete(req, res, next),
+);
 
 export default router;
