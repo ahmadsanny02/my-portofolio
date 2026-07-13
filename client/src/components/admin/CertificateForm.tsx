@@ -30,6 +30,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(certificate?.imageUrl || '');
+  const [isDragging, setIsDragging] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(certSchema),
@@ -43,10 +44,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
     }
   });
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
+  const uploadFile = async (file: File) => {
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
@@ -62,6 +60,31 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
       showToast('error', 'Upload failed. Ensure "certificates" bucket exists.');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) await uploadFile(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      await uploadFile(file);
+    } else {
+      showToast('error', 'Please drop an image file');
     }
   };
 
@@ -169,7 +192,17 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
           <div className="space-y-6 flex flex-col justify-start">
             <div className="space-y-2 flex-1">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Certificate Image / Badge</label>
-              <div className="border-2 border-dashed border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-955/20 hover:bg-primary/[0.02] rounded-[24px] p-6 flex flex-col items-center justify-center h-[340px] relative overflow-hidden group transition-all duration-300">
+              <div 
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+                className={cn(
+                  "border-2 border-dashed rounded-[24px] p-6 flex flex-col items-center justify-center h-[340px] relative overflow-hidden group transition-all duration-300",
+                  isDragging
+                    ? "border-primary bg-primary/10"
+                    : "border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-955/20 hover:bg-primary/[0.02]"
+                )}
+              >
                 {imageUrl ? (
                   <>
                     <Image src={imageUrl} className="absolute inset-0 w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" alt="Certificate Preview" fill unoptimized />
@@ -186,7 +219,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
                       {uploading ? <Loader2 className="animate-spin" /> : <Upload size={22} />}
                     </div>
                     <div>
-                      <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click to upload certificate image</span>
+                      <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click or drop image here</span>
                       <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
                     </div>
                     <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />

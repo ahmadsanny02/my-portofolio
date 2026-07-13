@@ -3,31 +3,47 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Database, Layout, Server, Cloud } from 'lucide-react';
+import { useSkills } from '@/hooks/useSkills';
 
-const skillCategories = [
-  {
-    title: 'Frontend',
-    icon: <Layout className="text-primary" />,
-    skills: ['React.js', 'Next.js', 'Tailwind CSS', 'Bootstrap', 'JavaScript', 'TypeScript'],
-  },
-  {
-    title: 'Backend',
-    icon: <Server className="text-primary" />,
-    skills: ['Node.js', 'Express.js', 'PHP', 'Laravel', 'MySQL', 'PostgreSQL'],
-  },
-  {
-    title: 'Tools & DB',
-    icon: <Database className="text-primary" />,
-    skills: ['Supabase', 'Git', 'GitHub', 'Postman', 'Figma', 'Vercel'],
-  },
-  {
-    title: 'Expertise',
-    icon: <Cloud className="text-primary" />,
-    skills: ['Cloud Computing', 'REST API', 'Agile', 'OpenAI API'],
-  },
-];
+const getCategoryIcon = (category: string) => {
+  switch (category.toLowerCase()) {
+    case 'frontend':
+      return <Layout className="text-primary" />;
+    case 'backend':
+      return <Server className="text-primary" />;
+    case 'devops':
+    case 'mobile':
+    case 'tools':
+    case 'tools & db':
+      return <Database className="text-primary" />;
+    default:
+      return <Cloud className="text-primary" />;
+  }
+};
 
 export default function SkillsSection() {
+  const { skills, loading } = useSkills();
+
+  // Group skills by category
+  const groupedSkills = skills.reduce((acc, skill) => {
+    const category = skill.category || 'Other';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(skill);
+    return acc;
+  }, {} as Record<string, typeof skills>);
+
+  // Sort skills within categories by orderIndex then proficiency
+  Object.keys(groupedSkills).forEach((cat) => {
+    groupedSkills[cat].sort((a, b) => {
+      if (a.orderIndex !== b.orderIndex) return a.orderIndex - b.orderIndex;
+      return b.proficiency - a.proficiency;
+    });
+  });
+
+  const categories = Object.keys(groupedSkills);
+
   return (
     <section id="skills" className="py-24">
       <div className="container mx-auto px-6">
@@ -41,30 +57,46 @@ export default function SkillsSection() {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skillCategories.map((category, idx) => (
-            <motion.div
-              key={category.title}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: false, amount: 0.2 }}
-              transition={{ duration: 1, delay: idx * 0.1 }}
-              className="p-8 bg-surface rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all group"
-            >
-              <div className="mb-6 p-4 bg-background w-fit rounded-2xl group-hover:rotate-12 transition-transform shadow-sm">
-                {category.icon}
-              </div>
-              <h4 className="text-xl font-bold mb-4">{category.title}</h4>
-              <div className="flex flex-wrap gap-2">
-                {category.skills.map((skill) => (
-                  <span key={skill} className="px-3 py-1 bg-background text-secondary text-xs font-semibold rounded-lg border border-secondary/10">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="p-8 bg-surface rounded-3xl border border-secondary/5 animate-pulse min-h-[220px]" />
+            ))}
+          </div>
+        ) : categories.length === 0 ? (
+          <div className="text-center text-secondary py-12 bg-surface/30 rounded-3xl border border-secondary/5 w-full">
+            No skills uploaded yet.
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {categories.map((category, idx) => (
+              <motion.div
+                key={category}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: false, amount: 0.2 }}
+                transition={{ duration: 1, delay: idx * 0.1 }}
+                className="p-8 bg-surface rounded-3xl border border-secondary/5 hover:border-primary/20 transition-all group"
+              >
+                <div className="mb-6 p-4 bg-background w-fit rounded-2xl group-hover:rotate-12 transition-transform shadow-sm">
+                  {getCategoryIcon(category)}
+                </div>
+                <h4 className="text-xl font-bold mb-4">{category}</h4>
+                <div className="flex flex-wrap gap-2">
+                  {groupedSkills[category].map((skill) => (
+                    <span 
+                      key={skill.id} 
+                      className="px-3 py-1 bg-background text-secondary text-xs font-semibold rounded-lg border border-secondary/10 hover:border-primary/30 transition-all"
+                      title={`Proficiency: ${skill.proficiency}%`}
+                    >
+                      {skill.name}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -93,6 +93,19 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 ))}
               </div>
             </div>
+
+            {project.images && project.images.length > 0 && (
+              <div className="mt-8 p-8 bg-surface rounded-3xl border border-secondary/5">
+                <h4 className="font-bold mb-4 uppercase text-xs tracking-widest text-secondary">Project Gallery</h4>
+                <div className="grid grid-cols-2 gap-4">
+                  {project.images.map((img, idx) => (
+                    <a key={idx} href={img} target="_blank" rel="noopener noreferrer" className="rounded-2xl overflow-hidden border border-secondary/10 relative block h-40 sm:h-48 cursor-pointer group">
+                      <Image src={img} alt={`Gallery ${idx + 1}`} fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>

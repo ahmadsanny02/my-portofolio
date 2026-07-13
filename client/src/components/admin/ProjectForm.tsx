@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Upload, Loader2, Save } from 'lucide-react';
+import { Upload, Loader2, Save, Trash } from 'lucide-react';
 import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
 import { Project } from 'types';
@@ -13,7 +13,6 @@ import { cn } from '@/lib/utils';
 
 const projectSchema = z.object({
   title: z.string().min(3, 'Title too short'),
-  slug: z.string().min(3, 'Slug too short'),
   description: z.string().min(10, 'Description too short'),
   longDescription: z.string().optional(),
   techStack: z.string().transform(val => val.split(',').map(s => s.trim())),
@@ -32,14 +31,17 @@ interface ProjectFormProps {
 
 export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFormProps) {
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const [uploadingThumbnail, setUploadingThumbnail] = useState(false);
+  const [uploadingGallery, setUploadingGallery] = useState(false);
   const [thumbnailUrl, setThumbnailUrl] = useState(project?.thumbnail || '');
+  const [images, setImages] = useState<string[]>(project?.images || []);
+  const [isDraggingThumbnail, setIsDraggingThumbnail] = useState(false);
+  const [isDraggingGallery, setIsDraggingGallery] = useState(false);
 
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(projectSchema),
     defaultValues: {
       title: project?.title || '',
-      slug: project?.slug || '',
       description: project?.description || '',
       longDescription: project?.longDescription || '',
       techStack: project?.techStack?.join(', ') || '',
@@ -51,11 +53,8 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
     }
   });
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploading(true);
+  const uploadThumbnailFile = async (file: File) => {
+    setUploadingThumbnail(true);
     const formData = new FormData();
     formData.append('file', file);
     formData.append('bucket', 'portfolio');
@@ -65,18 +64,78 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       setThumbnailUrl(data.url);
-      showToast('success', 'Image uploaded!');
+      showToast('success', 'Thumbnail uploaded!');
     } catch {
       showToast('error', 'Upload failed');
     } finally {
-      setUploading(false);
+      setUploadingThumbnail(false);
+    }
+  };
+
+  const uploadGalleryFiles = async (files: FileList) => {
+    setUploadingGallery(true);
+    try {
+      const uploadPromises = Array.from(files).map(async (file) => {
+        if (!file.type.startsWith('image/')) return;
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('bucket', 'portfolio');
+        
+        const { data } = await api.post('/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        return data.url;
+      });
+      
+      const urls = await Promise.all(uploadPromises);
+      const validUrls = urls.filter(Boolean) as string[];
+      setImages(prev => [...prev, ...validUrls]);
+      showToast('success', `${validUrls.length} gallery image(s) uploaded!`);
+    } catch {
+      showToast('error', 'Gallery upload failed');
+    } finally {
+      setUploadingGallery(false);
+    }
+  };
+
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) await uploadThumbnailFile(file);
+  };
+
+  const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files && files.length > 0) {
+      await uploadGalleryFiles(files);
+    }
+  };
+
+  const handleThumbnailDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingThumbnail(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      await uploadThumbnailFile(file);
+    } else {
+      showToast('error', 'Please drop an image file');
+    }
+  };
+
+  const handleGalleryDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDraggingGallery(false);
+    const files = e.dataTransfer.files;
+    if (files && files.length > 0) {
+      await uploadGalleryFiles(files);
     }
   };
 
   const onSubmit = async (data: z.infer<typeof projectSchema>) => {
     setLoading(true);
     try {
-      const payload = { ...data, thumbnail: thumbnailUrl };
+      const generatedSlug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const payload = { ...data, slug: generatedSlug, thumbnail: thumbnailUrl, images };
+      
       if (project) {
         await api.put(`/projects/${project.id}`, payload);
         showToast('success', 'Project updated!');
@@ -110,21 +169,6 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 placeholder="e.g. E-Commerce Platform" 
               />
               {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Slug (URL)</label>
-              <input 
-                {...register('slug')} 
-                className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
-                  errors.slug 
-                    ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
-                    : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-                )} 
-                placeholder="e.g. ecommerce-platform" 
-              />
-              {errors.slug && <p className="text-red-500 text-xs mt-1">{errors.slug.message as string}</p>}
             </div>
 
             <div className="space-y-2">
@@ -193,27 +237,37 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
           <div className="space-y-6">
             <div className="space-y-2">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Thumbnail Image</label>
-              <div className="border-2 border-dashed border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02] rounded-[24px] p-6 flex flex-col items-center justify-center h-[240px] relative overflow-hidden group transition-all duration-300">
+              <div 
+                onDragOver={(e) => { e.preventDefault(); setIsDraggingThumbnail(true); }}
+                onDragLeave={() => setIsDraggingThumbnail(false)}
+                onDrop={handleThumbnailDrop}
+                className={cn(
+                  "border-2 border-dashed rounded-[24px] p-6 flex flex-col items-center justify-center h-[200px] relative overflow-hidden group transition-all duration-300",
+                  isDraggingThumbnail
+                    ? "border-primary bg-primary/10"
+                    : "border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02]"
+                )}
+              >
                 {thumbnailUrl ? (
                   <>
                     <Image src={thumbnailUrl} className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Preview" fill unoptimized />
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                       <label className="cursor-pointer bg-primary p-3.5 rounded-2xl hover:bg-primary-dark transition-all hover:scale-110 shadow-lg shadow-primary/20 flex items-center justify-center">
                         <Upload size={20} className="text-white" />
-                        <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                        <input type="file" className="hidden" onChange={handleThumbnailUpload} accept="image/*" />
                       </label>
                     </div>
                   </>
                 ) : (
                   <label className="cursor-pointer flex flex-col items-center gap-3 w-full text-center group/btn">
                     <div className="p-4 bg-primary/15 rounded-2xl text-primary transition-all group-hover/btn:scale-110 shadow-inner">
-                      {uploading ? <Loader2 className="animate-spin" /> : <Upload size={22} />}
+                      {uploadingThumbnail ? <Loader2 className="animate-spin" /> : <Upload size={22} />}
                     </div>
                     <div>
-                      <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click to upload thumbnail</span>
+                      <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click or drop thumbnail here</span>
                       <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
                     </div>
-                    <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                    <input type="file" className="hidden" onChange={handleThumbnailUpload} accept="image/*" />
                   </label>
                 )}
               </div>
@@ -233,6 +287,49 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 placeholder="Briefly describe the project..." 
               />
               {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message as string}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Project Gallery (Multiple Screenshots)</label>
+              <div 
+                onDragOver={(e) => { e.preventDefault(); setIsDraggingGallery(true); }}
+                onDragLeave={() => setIsDraggingGallery(false)}
+                onDrop={handleGalleryDrop}
+                className={cn(
+                  "border-2 border-dashed rounded-[24px] p-6 flex flex-col items-center justify-center min-h-[120px] relative overflow-hidden group transition-all duration-300",
+                  isDraggingGallery
+                    ? "border-primary bg-primary/10"
+                    : "border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02]"
+                )}
+              >
+                <label className="cursor-pointer flex flex-col items-center gap-2 w-full text-center group/btn">
+                  <div className="p-3 bg-primary/15 rounded-xl text-primary transition-all group-hover/btn:scale-105 shadow-inner">
+                    {uploadingGallery ? <Loader2 className="animate-spin" /> : <Upload size={18} />}
+                  </div>
+                  <div>
+                    <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click or drop multiple images here</span>
+                    <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
+                  </div>
+                  <input type="file" className="hidden" onChange={handleGalleryUpload} accept="image/*" multiple />
+                </label>
+              </div>
+
+              {images.length > 0 && (
+                <div className="grid grid-cols-4 gap-3 mt-4 max-h-[180px] overflow-y-auto p-1 border border-secondary/5 rounded-2xl bg-secondary/[0.01]">
+                  {images.map((img, idx) => (
+                    <div key={idx} className="relative rounded-xl overflow-hidden border border-secondary/15 h-16 group">
+                      <Image src={img} alt={`Gallery Preview ${idx + 1}`} fill className="object-cover" unoptimized />
+                      <button 
+                        type="button"
+                        onClick={() => setImages(images.filter((_, i) => i !== idx))}
+                        className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white p-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center cursor-pointer shadow-md"
+                      >
+                        <Trash size={10} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="flex flex-wrap gap-6 py-2 bg-secondary/5 dark:bg-white/[0.02] rounded-2xl px-4 border border-secondary/10 dark:border-white/5">
@@ -257,7 +354,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             Cancel
           </button>
           <button
-            disabled={loading || uploading}
+            disabled={loading || uploadingThumbnail || uploadingGallery}
             type="submit"
             className="px-6 py-3 bg-primary hover:bg-primary-dark text-white rounded-2xl font-bold flex items-center justify-center gap-2 transition-all disabled:opacity-50 cursor-pointer text-sm shadow-lg shadow-primary/10 hover:shadow-primary/20"
           >

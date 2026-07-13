@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { useProjects } from '@/hooks/useProjects';
 import { ExternalLink, Github } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function ProjectsSection() {
   const { projects, loading } = useProjects();
@@ -54,21 +55,22 @@ export default function ProjectsSection() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: false, amount: 0.1 }}
                 transition={{ delay: index * 0.1 }}
-                className="group relative bg-background rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-secondary/5"
+                className="group relative bg-background rounded-3xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 border border-secondary/5 flex flex-col h-full"
               >
-                <div className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative">
+                <Link href={`/projects/${project.slug}`} className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative block">
                   <Image
                     src={
                       project.thumbnail || 'https://via.placeholder.com/600x400'
                     }
                     alt={project.title}
                     fill
-                    className="object-fill h-full w-full group-hover:scale-110 transition-transform duration-500"
+                    className="object-cover h-full w-full group-hover:scale-105 transition-transform duration-500"
+                    unoptimized
                   />
-                  <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
+                  <div className="absolute inset-0 bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </Link>
 
-                <div className="p-8">
+                <div className="p-8 flex flex-col flex-1">
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.techStack.slice(0, 3).map((tech) => (
                       <span
@@ -79,12 +81,16 @@ export default function ProjectsSection() {
                       </span>
                     ))}
                   </div>
-                  <h4 className="text-xl font-bold mb-2">{project.title}</h4>
+                  <h4 className="text-xl font-bold mb-2">
+                    <Link href={`/projects/${project.slug}`} className="hover:text-primary transition-colors">
+                      {project.title}
+                    </Link>
+                  </h4>
                   <p className="text-secondary text-sm mb-6 line-clamp-2">
                     {project.description}
                   </p>
 
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 mt-auto">
                     {project.demoUrl && (
                       <a
                         href={project.demoUrl}
@@ -105,6 +111,12 @@ export default function ProjectsSection() {
                         Source <Github size={14} />
                       </a>
                     )}
+                    <Link
+                      href={`/projects/${project.slug}`}
+                      className="flex items-center gap-1 text-sm font-bold hover:text-primary transition-colors ml-auto group/details"
+                    >
+                      Details <span className="group-hover:translate-x-0.5 transition-transform">→</span>
+                    </Link>
                   </div>
                 </div>
               </motion.div>
