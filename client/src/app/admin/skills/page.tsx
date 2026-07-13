@@ -6,7 +6,6 @@ import api from '@/lib/api-client';
 import SkillForm from '@/components/admin/SkillForm';
 import { Skill } from 'types';
 import TableControls from '@/components/admin/TableControls';
-import Modal from '@/components/admin/Modal';
 import { showToast, showConfirm } from '@/lib/sweetalert';
 import { motion, Variants } from 'framer-motion';
 
@@ -105,6 +104,30 @@ export default function AdminSkillsPage() {
     }
   };
 
+  if (isFormOpen) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">{editingSkill ? 'Edit Skill' : 'Add Skill'}</h1>
+          <p className="text-secondary text-sm sm:text-base">
+            {editingSkill ? `Editing details for "${editingSkill.name}"` : 'Fill in the details to add a new technical skill.'}
+          </p>
+        </div>
+
+        <div className="bg-surface/50 p-6 sm:p-10 rounded-3xl border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md max-w-xl mx-auto">
+          <SkillForm 
+            skill={editingSkill}
+            onSuccess={() => {
+              setIsFormOpen(false);
+              fetchSkills();
+            }}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
@@ -165,7 +188,7 @@ export default function AdminSkillsPage() {
                     <span>Proficiency</span>
                     <span>{skill.proficiency}%</span>
                   </div>
-                  <div className="w-full h-1.5 bg-secondary/10 dark:bg-slate-950/40 rounded-full overflow-hidden border border-secondary/5">
+                  <div className="w-full h-1.5 bg-secondary/10 dark:bg-slate-955/40 rounded-full overflow-hidden border border-secondary/5">
                     <motion.div 
                       initial={{ width: 0 }}
                       animate={{ width: `${skill.proficiency}%` }}
@@ -195,22 +218,6 @@ export default function AdminSkillsPage() {
           showSearchAndFilter={false}
         />
       </div>
-
-      <Modal 
-        isOpen={isFormOpen} 
-        onClose={() => setIsFormOpen(false)} 
-        title={editingSkill ? 'Edit Skill' : 'Add Skill'}
-        size="md"
-      >
-        <SkillForm 
-          skill={editingSkill}
-          onSuccess={() => {
-            setIsFormOpen(false);
-            fetchSkills();
-          }}
-          onCancel={() => setIsFormOpen(false)}
-        />
-      </Modal>
     </div>
   );
 }

@@ -9,7 +9,6 @@ import { Project } from 'types';
 import api from '@/lib/api-client';
 import Image from 'next/image';
 import TableControls from '@/components/admin/TableControls';
-import Modal from '@/components/admin/Modal';
 import { showToast, showConfirm } from '@/lib/sweetalert';
 import { motion, Variants } from 'framer-motion';
 
@@ -89,6 +88,30 @@ export default function AdminProjectsPage() {
       }
     }
   };
+
+  if (isFormOpen) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">{editingProject ? 'Edit Project' : 'Add Project'}</h1>
+          <p className="text-secondary text-sm sm:text-base">
+            {editingProject ? `Editing details for "${editingProject.title}"` : 'Fill in the details to create a new portfolio project.'}
+          </p>
+        </div>
+
+        <div className="bg-surface/50 p-6 sm:p-10 rounded-3xl border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
+          <ProjectForm 
+            project={editingProject} 
+            onSuccess={() => {
+              setIsFormOpen(false);
+              window.location.reload();
+            }}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -246,22 +269,6 @@ export default function AdminProjectsPage() {
           showSearchAndFilter={false}
         />
       </div>
-
-      <Modal 
-        isOpen={isFormOpen} 
-        onClose={() => setIsFormOpen(false)} 
-        title={editingProject ? 'Edit Project' : 'Add Project'}
-        size="xl"
-      >
-        <ProjectForm 
-          project={editingProject} 
-          onSuccess={() => {
-            setIsFormOpen(false);
-            window.location.reload();
-          }}
-          onCancel={() => setIsFormOpen(false)}
-        />
-      </Modal>
     </div>
   );
 }

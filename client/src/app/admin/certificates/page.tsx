@@ -8,7 +8,6 @@ import api from '@/lib/api-client';
 import CertificateForm from '@/components/admin/CertificateForm';
 import { Certificate } from 'types';
 import TableControls from '@/components/admin/TableControls';
-import Modal from '@/components/admin/Modal';
 import { showToast, showConfirm } from '@/lib/sweetalert';
 import Image from 'next/image';
 import { motion, Variants } from 'framer-motion';
@@ -93,6 +92,30 @@ export default function AdminCertificatesPage() {
       }
     }
   };
+
+  if (isFormOpen) {
+    return (
+      <div className="space-y-8">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">{editingCert ? 'Edit Certificate' : 'Add Certificate'}</h1>
+          <p className="text-secondary text-sm sm:text-base">
+            {editingCert ? `Editing details for "${editingCert.title}"` : 'Fill in the details to add a new professional certification.'}
+          </p>
+        </div>
+
+        <div className="bg-surface/50 p-6 sm:p-10 rounded-3xl border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
+          <CertificateForm 
+            certificate={editingCert}
+            onSuccess={() => {
+              setIsFormOpen(false);
+              window.location.reload();
+            }}
+            onCancel={() => setIsFormOpen(false)}
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-8">
@@ -226,22 +249,6 @@ export default function AdminCertificatesPage() {
           showSearchAndFilter={false}
         />
       </div>
-
-      <Modal 
-        isOpen={isFormOpen} 
-        onClose={() => setIsFormOpen(false)} 
-        title={editingCert ? 'Edit Certificate' : 'Add Certificate'}
-        size="xl"
-      >
-        <CertificateForm 
-          certificate={editingCert}
-          onSuccess={() => {
-            setIsFormOpen(false);
-            window.location.reload();
-          }}
-          onCancel={() => setIsFormOpen(false)}
-        />
-      </Modal>
     </div>
   );
 }
