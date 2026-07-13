@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { 
   LayoutDashboard, 
   Briefcase, 
+  Award,
   Settings, 
   MessageSquare, 
   LogOut, 
@@ -14,8 +15,6 @@ import {
   Menu,
   X,
   ChevronsUpDown,
-  ChevronRight,
-  ChevronDown,
   Folder,
   PanelLeft
 } from 'lucide-react';
@@ -28,7 +27,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isDesktopSidebarCollapsed, setIsDesktopSidebarCollapsed] = useState(false);
-  const [isProjectsExpanded, setIsProjectsExpanded] = useState(true);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -63,8 +61,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <Folder size={16} className="text-white" />
           </div>
           <div className="flex flex-col text-left">
-            <span className="font-bold text-sm leading-none text-foreground">Acme Inc</span>
-            <span className="text-[10px] text-secondary leading-none mt-0.5">Enterprise</span>
+            <span className="font-bold text-sm leading-none text-foreground">Ahmad Sani Jabarulloh</span>
+            <span className="text-[10px] text-secondary leading-none mt-0.5">Fullstack Developer</span>
           </div>
         </Link>
         <button 
@@ -96,8 +94,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Folder size={18} className="text-white" />
             </div>
             <div className="flex flex-col text-left flex-1 min-w-0">
-              <span className="font-semibold text-sm text-foreground truncate group-hover:text-primary">Acme Inc</span>
-              <span className="text-[11px] text-secondary truncate">Enterprise</span>
+              <span className="font-semibold text-sm text-foreground truncate group-hover:text-primary">Ahmad Sani Jabarulloh</span>
+              <span className="text-[11px] text-secondary truncate">Fullstack Developer</span>
             </div>
             <ChevronsUpDown size={16} className="text-secondary group-hover:text-foreground shrink-0" />
           </div>
@@ -105,7 +103,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {/* Navigation Links */}
           <nav className="flex-1 space-y-4">
             <div>
-              <p className="text-[11px] font-bold text-secondary uppercase tracking-widest px-3 mb-2">Platform</p>
+              <p className="text-[11px] font-bold text-secondary uppercase tracking-widest px-3 mb-2">Menu</p>
               <div className="space-y-1">
                 {/* Dashboard Link */}
                 <Link 
@@ -121,55 +119,33 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <span>Dashboard</span>
                 </Link>
 
-                {/* Collapsible Projects Section */}
-                <div className="space-y-1">
-                  <button 
-                    onClick={() => setIsProjectsExpanded(!isProjectsExpanded)}
-                    className={cn(
-                      "w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm transition-all cursor-pointer group",
-                      (pathname === '/admin/projects' || pathname === '/admin/certificates')
-                        ? "text-primary bg-primary/5 font-semibold"
-                        : "text-secondary hover:text-foreground hover:bg-secondary/5"
-                    )}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Briefcase size={18} className={cn("transition-transform group-hover:scale-105", (pathname === '/admin/projects' || pathname === '/admin/certificates') ? "text-primary" : "text-secondary")} />
-                      <span>Projects</span>
-                    </div>
-                    {isProjectsExpanded ? (
-                      <ChevronDown size={14} className="text-secondary" />
-                    ) : (
-                      <ChevronRight size={14} className="text-secondary" />
-                    )}
-                  </button>
-
-                  {isProjectsExpanded && (
-                    <div className="border-l border-secondary/15 ml-5 pl-4 py-1 space-y-1">
-                      <Link 
-                        href="/admin/projects"
-                        className={cn(
-                          "block py-1.5 px-2 text-xs rounded-md transition-all",
-                          pathname === '/admin/projects' 
-                            ? "text-primary font-semibold bg-primary/10" 
-                            : "text-secondary hover:text-foreground hover:bg-secondary/5"
-                        )}
-                      >
-                        All Projects
-                      </Link>
-                      <Link 
-                        href="/admin/certificates"
-                        className={cn(
-                          "block py-1.5 px-2 text-xs rounded-md transition-all",
-                          pathname === '/admin/certificates' 
-                            ? "text-primary font-semibold bg-primary/10" 
-                            : "text-secondary hover:text-foreground hover:bg-secondary/5"
-                        )}
-                      >
-                        Certificates
-                      </Link>
-                    </div>
+                {/* Projects Link */}
+                <Link 
+                  href="/admin/projects"
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group",
+                    pathname === '/admin/projects'
+                      ? "text-primary bg-primary/10 font-semibold"
+                      : "text-secondary hover:text-foreground hover:bg-secondary/5"
                   )}
-                </div>
+                >
+                  <Briefcase size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/projects' ? "text-primary" : "text-secondary")} />
+                  <span>Projects</span>
+                </Link>
+
+                {/* Certificates Link */}
+                <Link 
+                  href="/admin/certificates"
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group",
+                    pathname === '/admin/certificates'
+                      ? "text-primary bg-primary/10 font-semibold"
+                      : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                  )}
+                >
+                  <Award size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/certificates' ? "text-primary" : "text-secondary")} />
+                  <span>Certificates</span>
+                </Link>
 
                 {/* Skills Link */}
                 <Link 
