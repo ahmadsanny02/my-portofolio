@@ -1,5 +1,5 @@
 import express from 'express';
-import cors from 'cors';
+
 import helmet from 'helmet';
 import dotenv from 'dotenv';
 import projectRoutes from './interfaces/routes/projectRoutes';
@@ -32,26 +32,31 @@ const allowedOrigins = process.env.FRONTEND_URL
       'https://ahmadsanny2.vercel.app',
     ];
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow requests with no origin (like mobile apps, curl, or postman)
-      if (!origin) return callback(null, true);
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    const isAllowed =
+      allowedOrigins.includes(origin) ||
+      /^http:\/\/localhost:\d+$/.test(origin) ||
+      /^https:\/\/.*\.vercel\.app$/.test(origin);
 
-      const isAllowed =
-        allowedOrigins.includes(origin) ||
-        /^http:\/\/localhost:\d+$/.test(origin) ||
-        /^https:\/\/.*\.vercel\.app$/.test(origin);
+    if (isAllowed) {
+      res.setHeader('Access-Control-Allow-Origin', origin);
+      res.setHeader('Access-Control-Allow-Credentials', 'true');
+    }
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT,HEAD');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization',
+  );
 
-      if (isAllowed) {
-        callback(null, true);
-      } else {
-        callback(null, false);
-      }
-    },
-    credentials: true,
-  }),
-);
+  if (req.method === 'OPTIONS') {
+    res.status(204).end();
+    return;
+  }
+  next();
+});
 app.use(express.json());
 
 // Routes
