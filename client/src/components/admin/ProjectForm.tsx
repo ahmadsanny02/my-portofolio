@@ -63,7 +63,13 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   const categoryValue = watch('category');
   const statusValue = watch('status');
 
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
   const uploadThumbnailFile = async (file: File) => {
+    if (file.size > MAX_FILE_SIZE) {
+      showToast('error', 'File is too large. Max size allowed is 4MB.');
+      return;
+    }
     setUploadingThumbnail(true);
     const formData = new FormData();
     formData.append('file', file);
@@ -83,10 +89,20 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   };
 
   const uploadGalleryFiles = async (files: FileList) => {
+    const validFiles = Array.from(files).filter((file) => {
+      if (!file.type.startsWith('image/')) return false;
+      if (file.size > MAX_FILE_SIZE) {
+        showToast('error', `"${file.name}" is too large. Max size allowed is 4MB.`);
+        return false;
+      }
+      return true;
+    });
+
+    if (validFiles.length === 0) return;
+
     setUploadingGallery(true);
     try {
-      const uploadPromises = Array.from(files).map(async (file) => {
-        if (!file.type.startsWith('image/')) return;
+      const uploadPromises = validFiles.map(async (file) => {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('bucket', 'portfolio');

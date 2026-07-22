@@ -44,7 +44,13 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
     }
   });
 
+  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+
   const uploadFile = async (file: File) => {
+    if (file.size > MAX_FILE_SIZE) {
+      showToast('error', 'File is too large. Max size allowed is 4MB.');
+      return;
+    }
     setUploading(true);
     const formData = new FormData();
     formData.append('file', file);
