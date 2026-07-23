@@ -1,146 +1,206 @@
-# Ahmad Sani Jabarulloh - Full-Stack Developer Portfolio & CMS
+# Modern Fullstack Developer Portfolio & CMS Monorepo
 
-This repository contains a modern, highly interactive, and responsive developer portfolio website combined with a custom Content Management System (CMS) Admin Panel. The project is designed with modularity, performance, and security in mind.
+A state-of-the-art, high-performance **Fullstack Developer Portfolio & Content Management System (CMS)** built as a **pnpm Monorepo**. This project features a modern public portfolio frontend alongside a comprehensive administrative dashboard for managing projects, skills, certifications, contact inquiries, global categories, and certificate issuers.
 
 ---
 
-## 🏗️ Project Architecture
+## 📑 Table of Contents
 
-The project is structured as a **Monorepo** managed using `pnpm` workspaces. It is divided into three main packages to ensure clear separation of concerns, high reusability, and clean code:
+- [1. Project Overview](#1-project-overview)
+- [2. Key Features](#2-key-features)
+- [3. Tech Stack & Prerequisites](#3-tech-stack--prerequisites)
+- [4. Folder Structure & Architecture](#4-folder-structure--architecture)
+- [5. Environment Variables & Setup](#5-environment-variables--setup)
+- [6. Installation & Local Development](#6-installation--local-development)
+- [7. Core Modules & API Routes](#7-core-modules--api-routes)
+- [8. Quality Assurance & Scripts](#8-quality-assurance--scripts)
+
+---
+
+## 1. Project Overview
+
+This repository is designed to showcase modern web engineering practices. It provides:
+- A **Public Frontend** powered by Next.js 16 (React 19) featuring dynamic glassmorphism aesthetics, dark/light theme toggle, interactive photo lightboxes, vertical reveal animations (`y: 35`), and responsive layouts.
+- An **Admin Dashboard** allowing authorized users to perform CRUD operations on portfolio items, manage certificate issuers and global category definitions, inspect contact messages, and securely upload media assets.
+- A **Clean Architecture (Domain-Driven Design) Backend** powered by Express.js and Supabase (PostgreSQL, Auth, Storage) that strictly separates business logic from infrastructure and interfaces.
+
+---
+
+## 2. Key Features
+
+- **Projects Showcase & Case Study**: Interactive gallery lightbox with keyboard navigation (`AnimatePresence` fade transitions), tech stack badges, live demo & source repository links.
+- **Skills Expertise Matrix**: Dynamic skill categorization (Frontend, Backend, DevOps, Database, Tools) with proficiency indicators.
+- **Certifications & Achievements**: List verified accomplishments, credentials, and issuer logos.
+- **Contact Inquiries**: Interactive contact form with server-side validation and read/unread status tracking in the admin panel.
+- **System Settings (Category & Issuer Management)**: Centralized management of categories (project, skill, certificate, general) and certification issuers with custom dynamic dropdowns (`rounded-2xl`, `backdrop-blur-md`).
+- **Dark / Light Mode**: Unified theme switching via `next-themes` and `@custom-variant dark (&:where(.dark, .dark *))` CSS integration.
+- **Security & Validation**: JWT Supabase authentication, Zod request payload validation, Multer memory buffer limit (5MB), MIME type checks, and Helmet HTTP header security.
+
+---
+
+## 3. Tech Stack & Prerequisites
+
+### Core Monorepo Technologies
+- **Package Manager**: [pnpm](https://pnpm.io/) (v10+ workspaces)
+- **Shared Types**: `@packages/types` workspace package
+
+### Client (`client/`)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+- **UI Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with Geist Sans & Geist Mono typography
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
+- **Form & Validation**: `react-hook-form`, `@hookform/resolvers`, `zod`
+- **UI Utilities**: `lucide-react`, `sweetalert2`, `next-themes`, `axios`
+
+### Server (`server/`)
+- **Runtime**: [Node.js](https://nodejs.org/) & [TypeScript](https://www.typescriptlang.org/)
+- **Framework**: [Express.js v5](https://expressjs.com/)
+- **Build Tool**: [tsup](https://tsup.uno/)
+- **Database & Auth**: [Supabase](https://supabase.com/) (PostgreSQL, GoTrue Auth, Storage)
+- **Security & Utilities**: `helmet`, `cors`, `multer`, `dotenv`, `zod`
+
+### Prerequisites
+- Node.js `v20.x` or higher
+- pnpm `v10.x` or higher
+- Supabase project (URL and API/Service Role Keys)
+
+---
+
+## 4. Folder Structure & Architecture
+
+The monorepo follows a clean high-level separation between frontend, backend, and shared packages:
 
 ```
-├── client/              # Next.js 16 Frontend & Admin Portal
-├── server/              # Express.js 5 Backend (Clean Architecture / DDD)
-└── packages/
-    └── types/           # Shared TypeScript interfaces
+my-portofolio/
+├── client/          # Next.js 16 App Router Frontend & Admin Dashboard
+├── server/          # Express.js REST API Server (Clean Architecture: Domain, Application, Infrastructure, Interfaces)
+├── packages/
+│   └── types/      # Shared TypeScript data types & interfaces
+├── LAPORAN_AUDIT.md # Code Audit & Quality Assurance Report
+├── RULES.md         # Monorepo Development & Style Guidelines
+└── pnpm-workspace.yaml
 ```
 
-### 1. Frontend (`client`)
-Built with **Next.js 16 (React 19)** using the App Router. It contains two main sections:
-- **Public Portfolio:** A showcase of projects, skills, certificates, and a contact form with rich micro-animations using `framer-motion`.
-- **CMS Admin Portal (`/admin`):** A secure dashboard for CRUD operations on projects, certificates, skills, and viewing contact inbox messages. It uses a custom hook pattern to separate UI layout from state logic.
-
-### 2. Backend (`server`)
-An **Express.js** API server that follows **Clean Architecture / Domain-Driven Design (DDD)** concepts, ensuring the core business logic remains independent of databases or third-party web frameworks:
-- **Domain Layer:** Defines core entity shapes and repository contracts (interfaces).
-- **Application Layer:** Contains specific use-cases (e.g., `CreateProjectUseCase`, `GetAllProjectsUseCase`).
-- **Infrastructure Layer:** Implements database connections (Supabase JS SDK) and repository implementations.
-- **Interfaces Layer:** Holds routes, controllers, custom middlewares (error handlers, auth verifiers), and validation schemas (Zod).
-
-### 3. Shared Types (`packages/types`)
-Contains shared TypeScript models used by both the frontend and backend, preventing type duplication and keeping data contracts strict.
-
 ---
 
-## 💻 Tech Stack & Key Libraries
+## 5. Environment Variables & Setup
 
-### Frontend (`client/`)
-- **Framework:** Next.js 16.2.4 (React 19.2.4)
-- **Styling:** CSS Variables + TailwindCSS (v4)
-- **Animations:** Framer Motion (v12)
-- **Forms & Validation:** React Hook Form + Zod
-- **API Client:** Axios (configured with automated interceptors for JWT token propagation)
-- **Alerts & Modals:** SweetAlert2 + React Hot Toast
-- **Icons:** Lucide React
+Create `.env` configuration files for both the client and server.
 
-### Backend (`server/`)
-- **Framework:** Express.js 5.2.1
-- **Database & Storage:** Supabase (PostgreSQL) via `@supabase/supabase-js`
-- **Compiler/Bundler:** `tsup` (esbuild-based TypeScript bundler)
-- **Validation:** Zod 4
-- **Security:** Helmet (secure HTTP headers) + CORS (cross-origin validation)
-- **File Upload:** Multer (memory-buffered multipart processor)
-
----
-
-## 🗝️ Environment Setup
-
-Before starting, create configuration files in both `client/` and `server/` directories.
-
-### Backend (`server/.env`)
-Create a `.env` file inside the `server` directory:
+### Server Environment (`server/.env`)
 ```env
 PORT=5000
 NODE_ENV=development
-SUPABASE_URL=your_supabase_project_url
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+SUPABASE_URL=https://your-supabase-project.supabase.co
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
 FRONTEND_URL=http://localhost:3000,http://localhost:3001
 ```
-> [!IMPORTANT]
-> The backend uses the `SUPABASE_SERVICE_ROLE_KEY` to bypass Row Level Security (RLS) policies. Security checks are handled in the application layer via [authMiddleware.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/server/src/interfaces/middlewares/authMiddleware.ts).
 
-### Frontend (`client/.env`)
-Create a `.env` file inside the `client` directory:
+### Client Environment (`client/.env`)
 ```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_public_key
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_SUPABASE_URL=https://your-supabase-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 ```
 
 ---
 
-## 🛠️ Database Setup & Migrations
+## 6. Installation & Local Development
 
-Database tables and storage buckets are hosted on Supabase. SQL migration scripts are located in [server/src/infrastructure/database/migrations](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/server/src/infrastructure/database/migrations).
-
-Run the scripts in your Supabase SQL Editor in the following order:
-1. `001_create_projects.sql` — Creates the projects table.
-2. `002_create_certificates.sql` — Creates the certificates table.
-3. `003_create_skills.sql` — Creates the skills table.
-4. `004_create_contact_messages.sql` — Creates the contact messages table.
-
-Additionally, create a public storage bucket in Supabase called **`portfolio`** (or change the default name in your upload configurations) to handle file uploads.
-
----
-
-## 🚀 Running the Project Locally
-
-### 1. Installation
-Install all dependencies for the entire workspace from the root directory:
+### 1. Clone the repository and install dependencies:
 ```bash
+git clone https://github.com/ahmadsanny02/my-portofolio.git
+cd my-portofolio
+
+# Install all workspace dependencies via pnpm
 pnpm install
 ```
 
-### 2. Run Development Servers
-Start both client and server development servers simultaneously:
-```bash
-# Run server only (from workspace root)
-pnpm --filter server dev
+### 2. Run Database Migrations:
+Execute the SQL files in `server/src/infrastructure/database/migrations/` (from `001_create_projects.sql` to `007_create_categories_and_issuers.sql`) within your Supabase SQL Editor to create table schemas, RLS policies, and seed data.
 
-# Run client only (from workspace root)
+### 3. Start Development Servers:
+
+To start the **backend server**:
+```bash
+pnpm --filter server dev
+```
+*(Runs on `http://localhost:5000`)*
+
+To start the **frontend application**:
+```bash
 pnpm --filter client dev
 ```
+*(Runs on `http://localhost:3000`)*
 
-### 3. Check Code Quality (Linting & Types)
-Run Type Checking and ESLint audits to ensure code is clean:
+---
+
+## 7. Core Modules & API Routes
+
+All write operations (`POST`, `PUT`, `DELETE`) require a valid Bearer JWT token in the `Authorization` header (`Bearer <token>`).
+
+| Module | Method | Endpoint | Access | Description |
+| :--- | :--- | :--- | :--- | :--- |
+| **Projects** | `GET` | `/api/projects` | Public | Fetch all published projects |
+| **Projects** | `GET` | `/api/projects/:id` | Public | Fetch project details by ID or slug |
+| **Projects** | `POST` | `/api/projects` | Admin | Create a new project |
+| **Projects** | `PUT` | `/api/projects/:id` | Admin | Update existing project details |
+| **Projects** | `DELETE` | `/api/projects/:id` | Admin | Delete a project |
+| **Certificates**| `GET` | `/api/certificates` | Public | Fetch all certificates |
+| **Certificates**| `POST` | `/api/certificates` | Admin | Create a new certificate |
+| **Certificates**| `PUT` | `/api/certificates/:id` | Admin | Update certificate information |
+| **Certificates**| `DELETE` | `/api/certificates/:id` | Admin | Delete a certificate |
+| **Skills** | `GET` | `/api/skills` | Public | Fetch all skills |
+| **Skills** | `POST` | `/api/skills` | Admin | Create a skill entry |
+| **Skills** | `PUT` | `/api/skills/:id` | Admin | Update skill details |
+| **Skills** | `DELETE` | `/api/skills/:id` | Admin | Delete a skill |
+| **Categories** | `GET` | `/api/categories?type=:type` | Public | Fetch global categories (filtered by type) |
+| **Categories** | `POST` | `/api/categories` | Admin | Create a new category |
+| **Categories** | `PUT` | `/api/categories/:id` | Admin | Update category details |
+| **Categories** | `DELETE` | `/api/categories/:id` | Admin | Delete a category |
+| **Issuers** | `GET` | `/api/issuers` | Public | Fetch all certification issuers |
+| **Issuers** | `POST` | `/api/issuers` | Admin | Create a new issuer |
+| **Issuers** | `PUT` | `/api/issuers/:id` | Admin | Update issuer details |
+| **Issuers** | `DELETE` | `/api/issuers/:id` | Admin | Delete an issuer |
+| **Contact** | `POST` | `/api/contact` | Public | Submit contact inquiry message |
+| **Contact** | `GET` | `/api/contact` | Admin | Fetch all contact messages |
+| **Upload** | `POST` | `/api/upload` | Admin | Upload image asset (Max 5MB, JPG/PNG/WebP/SVG) |
+
+---
+
+## 8. Quality Assurance & Scripts
+
+Ensure code quality and type safety before committing changes:
+
+### Type Checking
 ```bash
-# Compile and check TypeScript types
-pnpm --filter server exec tsc --noEmit
+# Verify Client TypeScript types
 pnpm --filter client exec tsc --noEmit
 
-# Lint check
-pnpm --filter client lint
-pnpm --filter server lint
+# Verify Server TypeScript types
+pnpm --filter server exec tsc --noEmit
 ```
 
-### 4. Build for Production
-Create production bundles for both projects:
+### Code Linting
 ```bash
-# Build server API
-pnpm --filter server build
+# Run ESLint on client codebase
+pnpm --filter client run lint
 
-# Build client App
-pnpm --filter client build
+# Run ESLint on server codebase
+pnpm --filter server run lint
+```
+
+### Production Bundling
+```bash
+# Build production bundle for server
+pnpm --filter server run build
+
+# Build production bundle for client
+pnpm --filter client run build
 ```
 
 ---
 
-## 🔒 Security & Middleware Configuration
+## 📄 License
 
-1. **JWT Verification:** All administrative routes (POST, PUT, DELETE) on projects, skills, certificates, and contact messages are protected by [authMiddleware.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/server/src/interfaces/middlewares/authMiddleware.ts). This middleware decodes the authorization header bearer token using Supabase Auth:
-   ```typescript
-   const { data, error } = await supabase.auth.getUser(token);
-   ```
-2. **CORS:** Configuration restricts client communication to designated URLs specified in the `FRONTEND_URL` environment variable, localhost ports, or Vercel deployments.
-3. **Helmet:** Secures Express endpoints by automatically injecting HTTP headers.
-4. **Validation Layer:** Express requests are validated at the middleware level using Zod schemas (e.g. [projectValidator.ts](file:///home/ahmadsanny02/Workspace/02_coding/web/fullstack/projects/my-portofolio/server/src/interfaces/validators/projectValidator.ts)) before hitting controllers.
+Distributed under the **ISC License**. Created by [Ahmad Sani Jabarulloh](https://github.com/ahmadsanny02).
