@@ -9,6 +9,7 @@ import {
   Briefcase, 
   Award,
   Settings, 
+  Cpu,
   MessageSquare, 
   LogOut, 
   ExternalLink,
@@ -157,7 +158,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                       : "text-secondary hover:text-foreground hover:bg-secondary/5"
                   )}
                 >
-                  <Settings size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/skills' ? "text-primary" : "text-secondary")} />
+                  <Cpu size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/skills' ? "text-primary" : "text-secondary")} />
                   <span>Skills</span>
                 </Link>
 
@@ -174,9 +175,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                   <MessageSquare size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/messages' ? "text-primary" : "text-secondary")} />
                   <span>Messages</span>
                 </Link>
+
+                {/* Settings Link */}
+                <Link 
+                  href="/admin/settings"
+                  className={cn(
+                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group",
+                    pathname === '/admin/settings'
+                      ? "text-primary bg-primary/10 font-semibold"
+                      : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                  )}
+                >
+                  <Settings size={18} className={cn("transition-transform group-hover:scale-105 shrink-0", pathname === '/admin/settings' ? "text-primary" : "text-secondary")} />
+                  <span>Settings</span>
+                </Link>
               </div>
             </div>
           </nav>
+
 
           {/* User Profile Card (Footer) */}
           <div className="relative border-t border-secondary/10 pt-4">
