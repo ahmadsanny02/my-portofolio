@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Loader2, Save, ChevronDown } from 'lucide-react';
@@ -39,7 +39,7 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
   );
 
 
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, setValue, control, formState: { errors } } = useForm({
     resolver: zodResolver(skillSchema),
     defaultValues: {
       name: skill?.name || '',
@@ -49,7 +49,7 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
     }
   });
 
-  const categoryValue = watch('category');
+  const categoryValue = useWatch({ control, name: 'category' });
 
   const onSubmit = async (data: z.infer<typeof skillSchema>) => {
     setLoading(true);
