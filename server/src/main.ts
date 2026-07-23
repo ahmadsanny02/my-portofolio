@@ -40,7 +40,7 @@ app.use((req, res, next) => {
     const isAllowed =
       allowedOrigins.includes(origin) ||
       /^http:\/\/localhost:\d+$/.test(origin) ||
-      /^https:\/\/.*\.vercel\.app$/.test(origin);
+      /^https:\/\/ahmadsanny[a-zA-Z0-9-]*\.vercel\.app$/.test(origin);
 
     if (isAllowed) {
       res.setHeader('Access-Control-Allow-Origin', origin);
