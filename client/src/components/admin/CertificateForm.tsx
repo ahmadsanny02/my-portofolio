@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Upload, Loader2, Save, ChevronDown } from 'lucide-react';
@@ -58,7 +58,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
     ])
   );
 
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, setValue, control, formState: { errors } } = useForm({
     resolver: zodResolver(certSchema),
     defaultValues: {
       title: certificate?.title || '',
@@ -70,8 +70,8 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
     }
   });
 
-  const categoryValue = watch('category');
-  const issuerValue = watch('issuer');
+  const categoryValue = useWatch({ control, name: 'category' });
+  const issuerValue = useWatch({ control, name: 'issuer' });
 
   const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 
