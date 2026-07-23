@@ -56,3 +56,20 @@ export interface ApiResponse<T> {
   message?: string;
   error?: string;
 }
+
+export type CategoryType = 'project' | 'certificate' | 'skill' | 'general';
+
+export interface Category {
+  id: string;
+  name: string;
+  type: CategoryType;
+  createdAt: string;
+}
+
+export interface Issuer {
+  id: string;
+  name: string;
+  logoUrl?: string;
+  createdAt: string;
+}
+
