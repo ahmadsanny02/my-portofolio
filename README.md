@@ -76,8 +76,6 @@ my-portofolio/
 ├── server/          # Express.js REST API Server (Clean Architecture: Domain, Application, Infrastructure, Interfaces)
 ├── packages/
 │   └── types/      # Shared TypeScript data types & interfaces
-├── LAPORAN_AUDIT.md # Code Audit & Quality Assurance Report
-├── RULES.md         # Monorepo Development & Style Guidelines
 └── pnpm-workspace.yaml
 ```
 
@@ -196,11 +194,4 @@ pnpm --filter server run lint
 pnpm --filter server run build
 
 # Build production bundle for client
-pnpm --filter client run build
 ```
-
----
-
-## 📄 License
-
-Distributed under the **ISC License**. Created by [Ahmad Sani Jabarulloh](https://github.com/ahmadsanny02).
