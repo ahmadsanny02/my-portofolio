@@ -9,6 +9,7 @@ import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
 import { Skill } from 'types';
 import { cn } from '@/lib/utils';
+import { useCategories } from '@/hooks/useCategories';
 
 const skillSchema = z.object({
   name: z.string().min(1, 'Name required'),
@@ -24,8 +25,19 @@ interface SkillFormProps {
 }
 
 export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps) {
+  const { categories: fetchedCategories } = useCategories('skill');
   const [loading, setLoading] = useState(false);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+
+  const defaultCategories = ["Frontend", "Backend", "Mobile", "DevOps", "Database", "Tools"];
+  const dynamicCategories = Array.from(
+    new Set([
+      ...(fetchedCategories.map((c) => c.name)),
+      ...defaultCategories,
+      ...(skill?.category ? [skill.category] : []),
+    ])
+  );
+
 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     resolver: zodResolver(skillSchema),
@@ -99,7 +111,7 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
 
           {isCategoryOpen && (
             <div className="absolute top-full mt-2 left-0 right-0 bg-surface border border-secondary/15 rounded-2xl p-1.5 shadow-2xl z-30 space-y-0.5 backdrop-blur-md max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
-              {["Frontend", "Backend", "Mobile", "DevOps", "Other"].map((cat) => (
+              {dynamicCategories.map((cat) => (
                 <button
                   key={cat}
                   type="button"
