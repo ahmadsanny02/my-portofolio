@@ -4,19 +4,21 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Upload, Loader2, Save } from 'lucide-react';
+import { Upload, Loader2, Save, ChevronDown } from 'lucide-react';
 import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
 import { Certificate } from 'types';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { useCategories } from '@/hooks/useCategories';
+import { useIssuers } from '@/hooks/useIssuers';
 
 const certSchema = z.object({
   title: z.string().min(3, 'Title too short'),
-  issuer: z.string().min(2, 'Issuer too short'),
+  issuer: z.string().min(1, 'Issuer is required'),
   issuedAt: z.string().min(1, 'Issued date is required'),
   expiredAt: z.string().optional(),
-  category: z.string().min(2, 'Category too short'),
+  category: z.string().min(1, 'Category is required'),
   credentialUrl: z.string().url().optional().or(z.literal('')),
 });
 
@@ -27,22 +29,49 @@ interface CertificateFormProps {
 }
 
 export default function CertificateForm({ certificate, onSuccess, onCancel }: CertificateFormProps) {
+  const { categories: fetchedCategories } = useCategories('certificate');
+  const { issuers: fetchedIssuers } = useIssuers();
+
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [imageUrl, setImageUrl] = useState(certificate?.imageUrl || '');
   const [isDragging, setIsDragging] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isIssuerOpen, setIsIssuerOpen] = useState(false);
+
+  const defaultCategories = ["Web Development", "Cloud Computing", "Cyber Security", "Data Science", "Mobile Development"];
+  const dynamicCategories = Array.from(
+    new Set([
+      ...(fetchedCategories.map((c) => c.name)),
+      ...defaultCategories,
+      ...(certificate?.category ? [certificate.category] : []),
+    ])
+  );
+
+  const defaultIssuers = ["Coursera", "Udemy", "Dicoding", "Google", "Meta", "AWS", "FreeCodeCamp", "Hackerrank"];
+  const dynamicIssuers = Array.from(
+    new Set([
+      ...(fetchedIssuers.map((i) => i.name)),
+      ...defaultIssuers,
+      ...(certificate?.issuer ? [certificate.issuer] : []),
+    ])
+  );
+
+  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
     resolver: zodResolver(certSchema),
     defaultValues: {
       title: certificate?.title || '',
-      issuer: certificate?.issuer || '',
+      issuer: certificate?.issuer || dynamicIssuers[0] || 'Coursera',
       issuedAt: certificate?.issuedAt ? new Date(certificate.issuedAt).toISOString().split('T')[0] : '',
       expiredAt: certificate?.expiredAt ? new Date(certificate.expiredAt).toISOString().split('T')[0] : '',
-      category: certificate?.category || '',
+      category: certificate?.category || dynamicCategories[0] || 'Web Development',
       credentialUrl: certificate?.credentialUrl || '',
     }
   });
+
+  const categoryValue = watch('category');
+  const issuerValue = watch('issuer');
 
   const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 
@@ -133,22 +162,55 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
               {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message as string}</p>}
             </div>
 
-            <div className="space-y-2">
+            {/* Custom Issuer Dropdown */}
+            <div className="space-y-2 relative">
               <label className="text-xs font-bold uppercase tracking-wider text-secondary">Issuer</label>
-              <input 
-                {...register('issuer')} 
+              <input type="hidden" {...register('issuer')} />
+
+              {isIssuerOpen && (
+                <div className="fixed inset-0 z-10" onClick={() => setIsIssuerOpen(false)} />
+              )}
+
+              <button
+                type="button"
+                onClick={() => setIsIssuerOpen(!isIssuerOpen)}
                 className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  "w-full flex items-center justify-between bg-background border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer text-foreground/80 font-medium text-left relative z-20",
                   errors.issuer 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-                )} 
-                placeholder="e.g. Coursera" 
-              />
+                )}
+              >
+                <span>{issuerValue || 'Select Issuer'}</span>
+                <ChevronDown size={16} className={cn("text-secondary transition-transform", isIssuerOpen && "rotate-180")} />
+              </button>
+
+              {isIssuerOpen && (
+                <div className="absolute top-full mt-2 left-0 right-0 bg-surface border border-secondary/15 rounded-2xl p-1.5 shadow-2xl z-30 space-y-0.5 backdrop-blur-md max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                  {dynamicIssuers.map((iss) => (
+                    <button
+                      key={iss}
+                      type="button"
+                      onClick={() => {
+                        setValue('issuer', iss, { shouldValidate: true });
+                        setIsIssuerOpen(false);
+                      }}
+                      className={cn(
+                        "w-full flex items-center px-4 py-2.5 text-xs text-left rounded-xl transition-all cursor-pointer font-semibold",
+                        issuerValue === iss
+                          ? "text-primary bg-primary/10 font-bold"
+                          : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                      )}
+                    >
+                      {iss}
+                    </button>
+                  ))}
+                </div>
+              )}
               {errors.issuer && <p className="text-red-500 text-xs mt-1">{errors.issuer.message as string}</p>}
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label className="text-xs font-bold uppercase tracking-wider text-secondary">Issued Date</label>
                 <input 
@@ -163,18 +225,52 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
                 />
                 {errors.issuedAt && <p className="text-red-500 text-xs mt-1">{errors.issuedAt.message as string}</p>}
               </div>
-              <div className="space-y-2">
+
+              {/* Custom Category Dropdown */}
+              <div className="space-y-2 relative">
                 <label className="text-xs font-bold uppercase tracking-wider text-secondary">Category</label>
-                <input 
-                  {...register('category')} 
+                <input type="hidden" {...register('category')} />
+
+                {isCategoryOpen && (
+                  <div className="fixed inset-0 z-10" onClick={() => setIsCategoryOpen(false)} />
+                )}
+
+                <button
+                  type="button"
+                  onClick={() => setIsCategoryOpen(!isCategoryOpen)}
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                    "w-full flex items-center justify-between bg-background border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm cursor-pointer text-foreground/80 font-medium text-left relative z-20",
                     errors.category 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
-                  )} 
-                  placeholder="Web Development" 
-                />
+                  )}
+                >
+                  <span>{categoryValue || 'Select Category'}</span>
+                  <ChevronDown size={16} className={cn("text-secondary transition-transform", isCategoryOpen && "rotate-180")} />
+                </button>
+
+                {isCategoryOpen && (
+                  <div className="absolute top-full mt-2 left-0 right-0 bg-surface border border-secondary/15 rounded-2xl p-1.5 shadow-2xl z-30 space-y-0.5 backdrop-blur-md max-h-60 overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+                    {dynamicCategories.map((cat) => (
+                      <button
+                        key={cat}
+                        type="button"
+                        onClick={() => {
+                          setValue('category', cat, { shouldValidate: true });
+                          setIsCategoryOpen(false);
+                        }}
+                        className={cn(
+                          "w-full flex items-center px-4 py-2.5 text-xs text-left rounded-xl transition-all cursor-pointer font-semibold",
+                          categoryValue === cat
+                            ? "text-primary bg-primary/10 font-bold"
+                            : "text-secondary hover:text-foreground hover:bg-secondary/5"
+                        )}
+                      >
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 {errors.category && <p className="text-red-500 text-xs mt-1">{errors.category.message as string}</p>}
               </div>
             </div>
