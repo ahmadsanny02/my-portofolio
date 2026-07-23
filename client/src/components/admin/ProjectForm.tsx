@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Upload, Loader2, Save, Trash, ChevronDown } from 'lucide-react';
@@ -55,7 +55,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   );
 
 
-  const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
+  const { register, handleSubmit, setValue, control, formState: { errors } } = useForm({
     resolver: zodResolver(projectSchema),
     defaultValues: {
       title: project?.title || '',
@@ -72,8 +72,8 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
     }
   });
 
-  const categoryValue = watch('category');
-  const statusValue = watch('status');
+  const categoryValue = useWatch({ control, name: 'category' });
+  const statusValue = useWatch({ control, name: 'status' });
 
   const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
 
