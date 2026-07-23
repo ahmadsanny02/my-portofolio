@@ -7,6 +7,8 @@ import certificateRoutes from './interfaces/routes/certificateRoutes';
 import skillRoutes from './interfaces/routes/skillRoutes';
 import contactRoutes from './interfaces/routes/contactRoutes';
 import uploadRoutes from './interfaces/routes/uploadRoutes';
+import categoryRoutes from './interfaces/routes/categoryRoutes';
+import issuerRoutes from './interfaces/routes/issuerRoutes';
 import { errorHandler } from './interfaces/middlewares/errorHandler';
 
 dotenv.config();
@@ -65,6 +67,9 @@ app.use('/api/certificates', certificateRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/categories', categoryRoutes);
+app.use('/api/issuers', issuerRoutes);
+
 
 // Health check
 app.get('/health', (req, res) => {
