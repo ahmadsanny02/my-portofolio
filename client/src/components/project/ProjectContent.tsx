@@ -350,6 +350,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
               <>
                 <button 
                   onClick={handlePrev}
+                  aria-label="Previous image"
                   className="absolute left-6 p-4 bg-white/5 hover:bg-white/15 text-white rounded-full transition-all border border-white/5 cursor-pointer shadow-lg"
                   title="Previous Image"
                 >
@@ -357,6 +358,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 </button>
                 <button 
                   onClick={handleNext}
+                  aria-label="Next image"
                   className="absolute right-6 p-4 bg-white/5 hover:bg-white/15 text-white rounded-full transition-all border border-white/5 cursor-pointer shadow-lg"
                   title="Next Image"
                 >
