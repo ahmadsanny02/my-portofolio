@@ -64,7 +64,7 @@ export default function ProjectsSection() {
                   delay: (index % 10) * 0.05
                 }}
                 whileHover={{ y: -8, scale: 1.015 }}
-                className="group relative bg-background rounded-[32px] overflow-hidden border border-secondary/10 dark:border-white/5 shadow-md hover:shadow-2xl hover:border-primary/20 dark:hover:border-primary/10 transition-all duration-300 flex flex-col h-full"
+                className="group relative bg-background rounded-[32px] overflow-hidden border border-secondary/10 shadow-md hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col h-full"
               >
                 {/* Image Container with Zoom effect */}
                 <Link href={`/projects/${project.slug}`} className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative block">
@@ -85,7 +85,7 @@ export default function ProjectsSection() {
                     {project.techStack.slice(0, 3).map((tech) => (
                       <span
                         key={tech}
-                        className="text-[10px] font-extrabold uppercase tracking-wider bg-secondary/10 dark:bg-white/5 text-secondary px-2.5 py-1 rounded-lg"
+                        className="text-[10px] font-extrabold uppercase tracking-wider bg-secondary/10 text-secondary px-2.5 py-1 rounded-lg"
                       >
                         {tech}
                       </span>
@@ -106,8 +106,9 @@ export default function ProjectsSection() {
                         href={project.demoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`View live demo of ${project.title}`}
                         whileHover={{ scale: 1.05 }}
-                        className="flex items-center gap-1.5 text-sm font-bold text-primary hover:text-primary-dark transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 text-sm font-bold text-primary hover:text-primary-dark transition-colors cursor-pointer py-1"
                       >
                         Live Demo <ExternalLink size={14} />
                       </motion.a>
@@ -117,15 +118,16 @@ export default function ProjectsSection() {
                         href={project.repoUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`View source code of ${project.title}`}
                         whileHover={{ scale: 1.05 }}
-                        className="flex items-center gap-1.5 text-sm font-bold text-secondary hover:text-foreground transition-colors cursor-pointer"
+                        className="flex items-center gap-1.5 text-sm font-bold text-secondary hover:text-foreground transition-colors cursor-pointer py-1"
                       >
                         Source <Github size={14} />
                       </motion.a>
                     )}
                     <Link
                       href={`/projects/${project.slug}`}
-                      className="flex items-center gap-1 text-sm font-bold hover:text-primary transition-colors ml-auto group/details"
+                      className="flex items-center gap-1 text-sm font-bold hover:text-primary transition-colors ml-auto group/details py-1"
                     >
                       Details <span className="group-hover:translate-x-1 transition-transform duration-200">→</span>
                     </Link>
