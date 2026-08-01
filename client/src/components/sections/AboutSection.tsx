@@ -74,7 +74,7 @@ export default function AboutSection() {
               viewport={{ once: true }}
               transition={{ type: "spring", stiffness: 100, damping: 12, delay: 0.4 }}
               whileHover={{ y: -5 }}
-              className="absolute -bottom-6 -right-6 bg-surface/90 dark:bg-slate-900/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-secondary/15 flex flex-col items-center justify-center min-w-[120px]"
+              className="absolute -bottom-6 -right-6 bg-surface/90 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-secondary/15 flex flex-col items-center justify-center min-w-[120px]"
             >
               <p className="text-4xl font-extrabold text-primary">2+</p>
               <p className="text-[10px] font-extrabold text-secondary uppercase tracking-widest text-center mt-1">
