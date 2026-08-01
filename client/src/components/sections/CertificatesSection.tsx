@@ -57,7 +57,7 @@ export default function CertificatesSection() {
                   delay: (index % 10) * 0.05
                 }}
                 whileHover={{ y: -8, scale: 1.015 }}
-                className="bg-background rounded-[32px] border border-secondary/10 dark:border-white/5 hover:border-primary/20 dark:hover:border-primary/10 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
+                className="bg-background rounded-[32px] border border-secondary/10 hover:border-primary/20 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
               >
                 {cert.imageUrl && (
                   <div className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative">
@@ -81,7 +81,7 @@ export default function CertificatesSection() {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between pt-4 mt-auto border-t border-secondary/5 dark:border-white/5">
+                  <div className="flex items-center justify-between pt-4 mt-auto border-t border-secondary/10">
                     <span className="text-[10px] font-bold text-secondary uppercase tracking-widest">
                       {formatDate(cert.issuedAt)}
                     </span>
@@ -90,8 +90,9 @@ export default function CertificatesSection() {
                         href={cert.credentialUrl}
                         target="_blank"
                         rel="noopener noreferrer"
+                        aria-label={`Verify credential for ${cert.title}`}
                         whileHover={{ scale: 1.05 }}
-                        className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-1.5 transition-all cursor-pointer"
+                        className="text-xs font-bold text-primary flex items-center gap-1 hover:gap-1.5 transition-all cursor-pointer py-1"
                       >
                         Verify <ExternalLink size={12} />
                       </motion.a>
