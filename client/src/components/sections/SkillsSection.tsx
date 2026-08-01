@@ -83,11 +83,11 @@ export default function SkillsSection() {
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="p-8 bg-surface rounded-[32px] border border-secondary/10 dark:border-white/5 animate-pulse min-h-[220px]" />
+              <div key={i} className="p-8 bg-surface rounded-[32px] border border-secondary/10 animate-pulse min-h-[220px]" />
             ))}
           </div>
         ) : categories.length === 0 ? (
-          <div className="text-center text-secondary py-12 bg-surface/30 rounded-[32px] border border-secondary/10 dark:border-white/5 w-full">
+          <div className="text-center text-secondary py-12 bg-surface/30 rounded-[32px] border border-secondary/10 w-full">
             No skills uploaded yet.
           </div>
         ) : (
@@ -103,7 +103,7 @@ export default function SkillsSection() {
                 key={category}
                 variants={categoryVariants}
                 whileHover={{ y: -6, scale: 1.01 }}
-                className="p-8 bg-surface/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/[0.02] transition-all duration-300 group"
+                className="p-8 bg-surface/40 backdrop-blur-md rounded-[32px] border border-secondary/10 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/[0.02] transition-all duration-300 group"
               >
                 <div className="mb-6 p-4 bg-background w-fit rounded-2xl group-hover:rotate-12 transition-transform duration-300 shadow-sm border border-secondary/5">
                   {getCategoryIcon(category)}
