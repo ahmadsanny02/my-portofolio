@@ -27,3 +27,6 @@ dist/
 Thumbs.db
 
 *.md
+.agents
+.codex
+.impeccable
