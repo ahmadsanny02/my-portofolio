@@ -39,18 +39,22 @@ export default function Home() {
             <p className="text-secondary text-sm">
               © 2026 Ahmad Sani Jabarulloh. All rights reserved.
             </p>
-            <div className="flex gap-6">
+            <div className="flex gap-4">
               <a
                 href="https://github.com/ahmadsanny2"
                 target="_blank"
-                className="p-2 bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
+                rel="noopener noreferrer"
+                aria-label="GitHub Profile"
+                className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
               >
                 <Github size={18} />
               </a>
               <a
                 href="https://linkedin.com/in/ahmadsanny02"
                 target="_blank"
-                className="p-2 bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn Profile"
+                className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
               >
                 <Linkedin size={18} />
               </a>
@@ -58,7 +62,8 @@ export default function Home() {
                 href="https://instagram.com/ahmadsanny02"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
+                aria-label="Instagram Profile"
+                className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
               >
                 <Instagram size={18} />
               </a>
