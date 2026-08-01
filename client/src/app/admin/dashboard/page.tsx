@@ -135,7 +135,7 @@ export default function DashboardPage() {
       className="space-y-10"
     >
       <motion.div variants={itemVariants}>
-        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-foreground via-foreground to-secondary bg-clip-text text-transparent">Dashboard Overview</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Dashboard Overview</h1>
         <p className="text-secondary text-sm sm:text-base mt-1">Welcome back! Here&apos;s what&apos;s happening with your portfolio.</p>
       </motion.div>
 
