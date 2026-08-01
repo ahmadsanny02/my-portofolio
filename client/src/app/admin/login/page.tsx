@@ -68,7 +68,7 @@ export default function LoginPage() {
             >
               <Lock size={28} />
             </motion.div>
-            <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-foreground via-foreground to-secondary bg-clip-text text-transparent">Admin Portal</h1>
+            <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Admin Portal</h1>
             <p className="text-secondary text-sm mt-2">Sign in to manage your professional portfolio</p>
           </div>
 
