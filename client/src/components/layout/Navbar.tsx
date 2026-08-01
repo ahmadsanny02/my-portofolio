@@ -61,7 +61,13 @@ export default function Navbar() {
         {/* Mobile Toggle */}
         <div className="flex gap-4 items-center md:hidden">
           <ThemeToggle />
-          <button className="p-2" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            type="button"
+            aria-label="Toggle navigation menu"
+            aria-expanded={isOpen}
+            className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center rounded-lg hover:bg-secondary/10 transition-colors"
+            onClick={() => setIsOpen(!isOpen)}
+          >
             {isOpen ? <X /> : <Menu />}
           </button>
         </div>
