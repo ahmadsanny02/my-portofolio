@@ -126,52 +126,66 @@ export default function ContactSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
-            className="bg-surface dark:bg-slate-900/50 backdrop-blur-md p-8 rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all duration-300"
+            className="bg-surface backdrop-blur-md p-8 rounded-[32px] border border-secondary/10 shadow-xl hover:shadow-2xl transition-all duration-300"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground ml-1">Name</label>
+                  <label htmlFor="contact-name" className="text-sm font-bold text-foreground ml-1">Name</label>
                   <input
                     required
+                    id="contact-name"
                     type="text"
+                    autoComplete="name"
+                    maxLength={100}
+                    aria-required="true"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
+                    className="w-full bg-background border border-secondary/20 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
                     placeholder="John Doe"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-bold text-foreground ml-1">Email</label>
+                  <label htmlFor="contact-email" className="text-sm font-bold text-foreground ml-1">Email</label>
                   <input
                     required
+                    id="contact-email"
                     type="email"
+                    autoComplete="email"
+                    maxLength={150}
+                    aria-required="true"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
+                    className="w-full bg-background border border-secondary/20 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
                     placeholder="john@example.com"
                   />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-foreground ml-1">Subject</label>
+                <label htmlFor="contact-subject" className="text-sm font-bold text-foreground ml-1">Subject</label>
                 <input
                   required
+                  id="contact-subject"
                   type="text"
+                  maxLength={150}
+                  aria-required="true"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
+                  className="w-full bg-background border border-secondary/20 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all placeholder:text-secondary/50 text-sm font-medium text-foreground"
                   placeholder="Project Inquiry"
                 />
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-foreground ml-1">Message</label>
+                <label htmlFor="contact-message" className="text-sm font-bold text-foreground ml-1">Message</label>
                 <textarea
                   required
+                  id="contact-message"
                   rows={4}
+                  maxLength={2000}
+                  aria-required="true"
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full bg-background border border-secondary/20 dark:border-white/10 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none text-sm font-medium placeholder:text-secondary/50 text-foreground"
+                  className="w-full bg-background border border-secondary/20 rounded-2xl px-4 py-3.5 focus:border-primary focus:ring-4 focus:ring-primary/10 outline-none transition-all resize-none text-sm font-medium placeholder:text-secondary/50 text-foreground"
                   placeholder="Tell me more about your project..."
                 />
               </div>
