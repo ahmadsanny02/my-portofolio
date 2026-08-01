@@ -108,6 +108,7 @@ export default function HeroSection() {
               <motion.a
                 href="../CV/CV-Ahmad_Sani_Jabarulloh-Web_Developer.pdf"
                 target="_blank"
+                rel="noopener noreferrer"
                 whileHover={{ scale: 1.03, y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 className="bg-surface border border-secondary/20 px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-secondary/5 transition-all shadow-sm cursor-pointer"
@@ -124,18 +125,19 @@ export default function HeroSection() {
               <div className="h-px w-12 bg-secondary/30" />
               <div className="flex gap-4">
                 {[
-                  { href: "https://github.com/ahmadsanny2", Icon: Github },
-                  { href: "https://linkedin.com/in/ahmadsanny02", Icon: Linkedin },
-                  { href: "https://instagram.com/ahmadsanny02", Icon: Instagram },
-                ].map(({ href, Icon }, i) => (
+                  { href: "https://github.com/ahmadsanny2", label: "GitHub Profile", Icon: Github },
+                  { href: "https://linkedin.com/in/ahmadsanny02", label: "LinkedIn Profile", Icon: Linkedin },
+                  { href: "https://instagram.com/ahmadsanny02", label: "Instagram Profile", Icon: Instagram },
+                ].map(({ href, label, Icon }, i) => (
                   <motion.a
                     key={i}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={label}
                     whileHover={{ scale: 1.1, y: -3 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm flex items-center justify-center cursor-pointer"
+                    className="p-3 bg-surface rounded-xl hover:text-primary transition-colors border border-secondary/10 hover:border-primary/30 shadow-sm flex items-center justify-center cursor-pointer min-h-[44px] min-w-[44px]"
                   >
                     <Icon size={20} />
                   </motion.a>
