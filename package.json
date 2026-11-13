@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "pnpm --filter server test",
+    "typecheck": "pnpm --filter server typecheck && pnpm --filter client exec tsc --noEmit"
   },
   "keywords": [],
   "author": "",
