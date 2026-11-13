@@ -73,3 +73,9 @@ export interface Issuer {
   createdAt: string;
 }
 
+
+/** Maximum accepted upload size (bytes), shared by client validation and server multer limit. */
+export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+
+/** Image MIME types accepted by the upload endpoint (SVG deliberately excluded). */
+export const ALLOWED_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
