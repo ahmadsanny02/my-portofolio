@@ -7,9 +7,10 @@ import { z } from 'zod';
 import { Upload, Loader2, Save, ChevronDown } from 'lucide-react';
 import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
-import { Certificate } from 'types';
+import { Certificate, MAX_UPLOAD_BYTES, ALLOWED_IMAGE_MIME_TYPES } from 'types';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, isAllowedImage } from '@/lib/utils';
+import { getApiError } from '@/lib/api-error';
 import { useCategories } from '@/hooks/useCategories';
 import { useIssuers } from '@/hooks/useIssuers';
 
@@ -63,8 +64,8 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
     defaultValues: {
       title: certificate?.title || '',
       issuer: certificate?.issuer || dynamicIssuers[0] || 'Coursera',
-      issuedAt: certificate?.issuedAt ? new Date(certificate.issuedAt).toISOString().split('T')[0] : '',
-      expiredAt: certificate?.expiredAt ? new Date(certificate.expiredAt).toISOString().split('T')[0] : '',
+      issuedAt: certificate?.issuedAt ? certificate.issuedAt.slice(0, 10) : '',
+      expiredAt: certificate?.expiredAt ? certificate.expiredAt.slice(0, 10) : '',
       category: certificate?.category || dynamicCategories[0] || 'Web Development',
       credentialUrl: certificate?.credentialUrl || '',
     }
@@ -73,11 +74,15 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
   const categoryValue = useWatch({ control, name: 'category' });
   const issuerValue = useWatch({ control, name: 'issuer' });
 
-  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+  const MAX_FILE_SIZE = MAX_UPLOAD_BYTES;
 
   const uploadFile = async (file: File) => {
+    if (!isAllowedImage(file)) {
+      showToast('error', 'Only JPG, PNG or WebP images are allowed.');
+      return;
+    }
     if (file.size > MAX_FILE_SIZE) {
-      showToast('error', 'File is too large. Max size allowed is 4MB.');
+      showToast('error', `File is too large. Max size allowed is ${MAX_UPLOAD_BYTES / 1024 / 1024}MB.`);
       return;
     }
     setUploading(true);
@@ -91,8 +96,8 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
       });
       setImageUrl(data.url);
       showToast('success', 'Image uploaded!');
-    } catch {
-      showToast('error', 'Upload failed. Ensure "certificates" bucket exists.');
+    } catch (err) {
+      showToast('error', getApiError(err, 'Upload failed'));
     } finally {
       setUploading(false);
     }
@@ -116,10 +121,10 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
     e.preventDefault();
     setIsDragging(false);
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && isAllowedImage(file)) {
       await uploadFile(file);
     } else {
-      showToast('error', 'Please drop an image file');
+      showToast('error', 'Please drop a JPG, PNG or WebP image');
     }
   };
 
@@ -135,8 +140,8 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
         showToast('success', 'Certificate created!');
       }
       onSuccess();
-    } catch {
-      showToast('error', 'Failed to save certificate');
+    } catch (err) {
+      showToast('error', getApiError(err, 'Failed to save certificate'));
     } finally {
       setLoading(false);
     }
@@ -148,11 +153,11 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Certificate Title</label>
+              <label htmlFor="cert-title" className="text-xs font-bold uppercase tracking-wider text-secondary">Certificate Title</label>
               <input 
-                {...register('title')} 
+                id="cert-title" {...register('title')} 
                 className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  "w-full bg-background/50 dark:bg-background/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                   errors.title 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -212,12 +217,12 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-secondary">Issued Date</label>
+                <label htmlFor="cert-issuedAt" className="text-xs font-bold uppercase tracking-wider text-secondary">Issued Date</label>
                 <input 
                   type="date" 
-                  {...register('issuedAt')} 
+                  id="cert-issuedAt" {...register('issuedAt')} 
                   className={cn(
-                    "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm",
+                    "w-full bg-background/50 dark:bg-background/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm",
                     errors.issuedAt 
                       ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                       : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -276,11 +281,11 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Credential URL</label>
+              <label htmlFor="cert-credentialUrl" className="text-xs font-bold uppercase tracking-wider text-secondary">Credential URL</label>
               <input 
-                {...register('credentialUrl')} 
+                id="cert-credentialUrl" {...register('credentialUrl')} 
                 className={cn(
-                  "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+                  "w-full bg-background/50 dark:bg-background/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                   errors.credentialUrl 
                     ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                     : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -299,10 +304,10 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
                 className={cn(
-                  "border-2 border-dashed rounded-[24px] p-6 flex flex-col items-center justify-center h-[340px] relative overflow-hidden group transition-all duration-300",
+                  "border-2 border-dashed rounded-drop p-6 flex flex-col items-center justify-center h-[340px] relative overflow-hidden group transition-all duration-300",
                   isDragging
                     ? "border-primary bg-primary/10"
-                    : "border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-955/20 hover:bg-primary/[0.02]"
+                    : "border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-background/20 hover:bg-primary/[0.02]"
                 )}
               >
                 {imageUrl ? (
@@ -311,7 +316,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                       <label className="cursor-pointer bg-primary p-3.5 rounded-2xl hover:bg-primary-dark transition-all hover:scale-110 shadow-lg shadow-primary/20 flex items-center justify-center">
                         <Upload size={20} className="text-white" />
-                        <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                        <input type="file" className="hidden" onChange={handleFileUpload} accept={ALLOWED_IMAGE_MIME_TYPES.join(',')} />
                       </label>
                     </div>
                   </>
@@ -324,7 +329,7 @@ export default function CertificateForm({ certificate, onSuccess, onCancel }: Ce
                       <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click or drop image here</span>
                       <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
                     </div>
-                    <input type="file" className="hidden" onChange={handleFileUpload} accept="image/*" />
+                    <input type="file" className="hidden" onChange={handleFileUpload} accept={ALLOWED_IMAGE_MIME_TYPES.join(',')} />
                   </label>
                 )}
               </div>
