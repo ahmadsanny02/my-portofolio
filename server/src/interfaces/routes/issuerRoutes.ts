@@ -4,6 +4,7 @@ import { IssuerUseCases } from '../../application/use-cases/issuers/IssuerUseCas
 import { IssuerSupabaseRepository } from '../../infrastructure/database/supabase/IssuerSupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { validateRequest } from '../middlewares/validateRequest';
+import { validateId } from '../middlewares/validateId';
 import {
   createIssuerSchema,
   updateIssuerSchema,
@@ -26,11 +27,12 @@ router.post(
 router.put(
   '/:id',
   authMiddleware,
+  validateId,
   validateRequest(updateIssuerSchema),
   (req, res, next) => controller.update(req, res, next),
 );
 
-router.delete('/:id', authMiddleware, (req, res, next) =>
+router.delete('/:id', authMiddleware, validateId, (req, res, next) =>
   controller.delete(req, res, next),
 );
 

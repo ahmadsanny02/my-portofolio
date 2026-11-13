@@ -4,6 +4,7 @@ import { SkillUseCases } from '../../application/use-cases/skills/SkillUseCases'
 import { SkillSupabaseRepository } from '../../infrastructure/database/supabase/SkillSupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { validateRequest } from '../middlewares/validateRequest';
+import { validateId } from '../middlewares/validateId';
 import {
   createSkillSchema,
   updateSkillSchema,
@@ -26,11 +27,12 @@ router.post(
 router.put(
   '/:id',
   authMiddleware,
+  validateId,
   validateRequest(updateSkillSchema),
   (req, res, next) => controller.update(req, res, next),
 );
 
-router.delete('/:id', authMiddleware, (req, res, next) =>
+router.delete('/:id', authMiddleware, validateId, (req, res, next) =>
   controller.delete(req, res, next),
 );
 

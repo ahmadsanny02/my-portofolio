@@ -4,6 +4,7 @@ import { CategoryUseCases } from '../../application/use-cases/categories/Categor
 import { CategorySupabaseRepository } from '../../infrastructure/database/supabase/CategorySupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { validateRequest } from '../middlewares/validateRequest';
+import { validateId } from '../middlewares/validateId';
 import {
   createCategorySchema,
   updateCategorySchema,
@@ -26,11 +27,12 @@ router.post(
 router.put(
   '/:id',
   authMiddleware,
+  validateId,
   validateRequest(updateCategorySchema),
   (req, res, next) => controller.update(req, res, next),
 );
 
-router.delete('/:id', authMiddleware, (req, res, next) =>
+router.delete('/:id', authMiddleware, validateId, (req, res, next) =>
   controller.delete(req, res, next),
 );
 
