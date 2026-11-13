@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Mail, Trash2, Calendar, User, MessageSquare } from 'lucide-react';
+import { Mail, MailOpen, Trash2, Calendar, User, MessageSquare } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { useMessages } from '@/hooks/useMessages';
 import TableControls from '@/components/admin/TableControls';
@@ -28,7 +28,7 @@ const itemVariants: Variants = {
 };
 
 export default function AdminMessagesPage() {
-  const { messages, loading, deleteMessage } = useMessages();
+  const { messages, loading, deleteMessage, setRead } = useMessages();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterRead, setFilterRead] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -77,9 +77,14 @@ export default function AdminMessagesPage() {
       if (deleteResult.success) {
         showToast('success', 'Message deleted');
       } else {
-        showToast('error', 'Failed to delete message');
+        showToast('error', deleteResult.error);
       }
     }
+  };
+
+  const handleToggleRead = async (id: string, isRead: boolean) => {
+    const result = await setRead(id, isRead);
+    if (!result.success) showToast('error', result.error);
   };
 
   return (
@@ -89,7 +94,7 @@ export default function AdminMessagesPage() {
         <p className="text-secondary">Read and manage inquiries from your portfolio visitors.</p>
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-[32px] border border-secondary/10">
+      <div className="bg-surface/50 p-6 rounded-card border border-secondary/10">
         <TableControls
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -111,7 +116,7 @@ export default function AdminMessagesPage() {
       <div className="space-y-4">
         {loading ? (
           [1, 2, 3].map(i => (
-            <div key={i} className="p-8 bg-surface rounded-[32px] border border-secondary/5 animate-pulse">
+            <div key={i} className="p-8 bg-surface rounded-card border border-secondary/5 animate-pulse">
               <div className="flex justify-between items-start mb-6">
                 <div className="flex gap-4">
                   <div className="w-12 h-12 bg-secondary/10 rounded-2xl" />
@@ -126,7 +131,7 @@ export default function AdminMessagesPage() {
             </div>
           ))
         ) : filteredMessages.length === 0 ? (
-          <div className="text-center py-20 bg-surface rounded-[32px] border border-secondary/5">
+          <div className="text-center py-20 bg-surface rounded-card border border-secondary/5">
             <MessageSquare size={48} className="mx-auto text-secondary/30 mb-4" />
             <p className="text-secondary">No messages yet.</p>
           </div>
@@ -141,7 +146,7 @@ export default function AdminMessagesPage() {
               <motion.div 
                 key={msg.id} 
                 variants={itemVariants}
-                className="p-6 sm:p-8 bg-surface/50 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-md shadow-primary/[0.01] hover:shadow-lg transition-all duration-300 hover:border-primary/20 dark:hover:border-primary/10 group relative"
+                className="p-6 sm:p-8 bg-surface/50 backdrop-blur-md rounded-card border border-secondary/10 dark:border-white/5 shadow-md shadow-primary/[0.01] hover:shadow-lg transition-all duration-300 hover:border-primary/20 dark:hover:border-primary/10 group relative"
               >
                 <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
                   <div className="flex gap-4 items-center">
@@ -167,18 +172,31 @@ export default function AdminMessagesPage() {
                     <p className="text-xs text-secondary font-bold uppercase tracking-widest flex items-center gap-2">
                       <Calendar size={14} /> {formatDate(msg.created_at)}
                     </p>
-                    <button 
-                      onClick={() => handleDelete(msg.id)}
-                      className="sm:mt-4 p-2 text-secondary hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer opacity-60 group-hover:opacity-100"
-                    >
-                      <Trash2 size={20} />
-                    </button>
+                    <div className="sm:mt-4 flex items-center gap-1">
+                      <button
+                        type="button"
+                        onClick={() => handleToggleRead(msg.id, !msg.isRead)}
+                        aria-label={msg.isRead ? `Mark message from ${msg.name} as unread` : `Mark message from ${msg.name} as read`}
+                        title={msg.isRead ? 'Mark as unread' : 'Mark as read'}
+                        className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-secondary hover:text-primary hover:bg-primary/10 rounded-xl transition-all cursor-pointer"
+                      >
+                        {msg.isRead ? <Mail size={20} /> : <MailOpen size={20} />}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(msg.id)}
+                        aria-label={`Delete message from ${msg.name}`}
+                        className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-secondary hover:text-red-500 hover:bg-red-500/10 rounded-xl transition-all cursor-pointer"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
                   </div>
                 </div>
                 
                 <div className="bg-background/40 dark:bg-slate-950/40 p-6 rounded-2xl border border-secondary/10 dark:border-white/5">
                   <p className="text-xs font-bold text-primary uppercase tracking-widest mb-2">Subject: {msg.subject || 'No Subject'}</p>
-                  <p className="text-secondary leading-relaxed text-sm">{msg.message}</p>
+                  <p className="text-secondary leading-relaxed text-sm whitespace-pre-line break-words">{msg.message}</p>
                 </div>
               </motion.div>
             ))}

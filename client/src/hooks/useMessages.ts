@@ -1,41 +1,32 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import api from '@/lib/api-client';
-import { ContactMessage, ApiResponse } from 'types';
+import { getApiError } from '@/lib/api-error';
+import type { ContactMessage } from 'types';
+import { useApiList } from './useApiList';
 
 export function useMessages() {
-  const [messages, setMessages] = useState<ContactMessage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchMessages = async () => {
-    setLoading(true);
-    try {
-      const response = await api.get<ApiResponse<ContactMessage[]>>('/contact');
-      if (response.data.success) {
-        setMessages(response.data.data || []);
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchMessages();
-  }, []);
+  const { data: messages, setData, loading, error, refresh } = useApiList<ContactMessage>('/contact');
 
   const deleteMessage = async (id: string) => {
     try {
       await api.delete(`/contact/${id}`);
-      setMessages(prev => prev.filter(msg => msg.id !== id));
-      return { success: true };
+      setData((prev) => prev.filter((msg) => msg.id !== id));
+      return { success: true as const };
     } catch (err) {
-      return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
+      return { success: false as const, error: getApiError(err, 'Failed to delete message') };
     }
   };
 
-  return { messages, loading, error, fetchMessages, deleteMessage };
+  const setRead = async (id: string, isRead = true) => {
+    try {
+      await api.patch(`/contact/${id}/read`, { isRead });
+      setData((prev) => prev.map((msg) => (msg.id === id ? { ...msg, isRead } : msg)));
+      return { success: true as const };
+    } catch (err) {
+      return { success: false as const, error: getApiError(err, 'Failed to update message') };
+    }
+  };
+
+  return { messages, loading, error, fetchMessages: refresh, deleteMessage, setRead };
 }
