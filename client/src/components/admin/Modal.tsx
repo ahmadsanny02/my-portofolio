@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -21,15 +21,60 @@ const sizeClasses = {
 };
 
 export default function Modal({ isOpen, onClose, title, children, size = 'lg' }: ModalProps) {
-  // Prevent background scroll when modal is open
+  const titleId = useId();
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const onCloseRef = useRef(onClose);
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  // Lock background scroll, close on Escape, trap focus and restore it on close
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const focusable = () =>
+      Array.from(
+        dialogRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      );
+
+    // Focus the first field once the dialog is mounted
+    const raf = requestAnimationFrame(() => {
+      const items = focusable();
+      (items[1] ?? items[0])?.focus(); // skip the close button when possible
+    });
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onCloseRef.current();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const items = focusable();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.body.style.overflow = 'unset';
+      cancelAnimationFrame(raf);
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      previouslyFocused?.focus?.();
     };
   }, [isOpen]);
 
@@ -43,17 +88,22 @@ export default function Modal({ isOpen, onClose, title, children, size = 'lg' }:
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
+            aria-hidden="true"
             className="absolute inset-0 bg-background/80 backdrop-blur-sm"
           />
 
           {/* Modal Content Card */}
           <motion.div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={titleId}
             initial={{ opacity: 0, scale: 0.95, y: 15 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 15 }}
             transition={{ type: 'spring', stiffness: 350, damping: 28 }}
             className={cn(
-              "w-full bg-surface/90 backdrop-blur-xl border border-secondary/15 rounded-[32px] shadow-2xl shadow-primary/5 overflow-hidden relative z-10 max-h-[90vh] flex flex-col",
+              "w-full bg-surface/90 backdrop-blur-xl border border-secondary/15 rounded-card shadow-2xl shadow-primary/5 overflow-hidden relative z-10 max-h-[90vh] flex flex-col",
               sizeClasses[size]
             )}
           >
@@ -62,8 +112,9 @@ export default function Modal({ isOpen, onClose, title, children, size = 'lg' }:
             
             {/* Header */}
             <div className="p-6 border-b border-secondary/10 flex items-center justify-between bg-surface/50 backdrop-blur-sm">
-              <h3 className="text-xl font-bold text-foreground tracking-tight">{title}</h3>
+              <h2 id={titleId} className="text-xl font-bold text-foreground tracking-tight">{title}</h2>
               <button
+                type="button"
                 onClick={onClose}
                 aria-label="Close modal"
                 className="p-2 min-h-[44px] min-w-[44px] rounded-xl text-secondary hover:text-foreground hover:bg-secondary/10 transition-all cursor-pointer flex items-center justify-center"

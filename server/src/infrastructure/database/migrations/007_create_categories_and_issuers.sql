@@ -14,18 +14,28 @@ CREATE TABLE IF NOT EXISTS issuers (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Explicit grants: projects with "auto-expose new tables" disabled in the
+-- Data API settings otherwise get "Could not find the table in the schema cache".
+GRANT SELECT ON categories, issuers TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON categories, issuers TO authenticated, service_role;
+
 -- RLS policies (allow read to public, manage to authenticated users)
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE issuers ENABLE ROW LEVEL SECURITY;
 
+DROP POLICY IF EXISTS "Allow public read categories" ON categories;
 CREATE POLICY "Allow public read categories" ON categories FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow authenticated manage categories" ON categories;
 CREATE POLICY "Allow authenticated manage categories" ON categories FOR ALL USING (auth.role() = 'authenticated');
 
+DROP POLICY IF EXISTS "Allow public read issuers" ON issuers;
 CREATE POLICY "Allow public read issuers" ON issuers FOR SELECT USING (true);
+DROP POLICY IF EXISTS "Allow authenticated manage issuers" ON issuers;
 CREATE POLICY "Allow authenticated manage issuers" ON issuers FOR ALL USING (auth.role() = 'authenticated');
 
 -- Seed initial categories
-INSERT INTO categories (name, type) VALUES
+INSERT INTO categories (name, type)
+SELECT v.name, v.type FROM (VALUES
   ('Web Application', 'project'),
   ('Mobile Application', 'project'),
   ('UI/UX Design', 'project'),
@@ -42,10 +52,12 @@ INSERT INTO categories (name, type) VALUES
   ('Cyber Security', 'certificate'),
   ('Data Science', 'certificate'),
   ('Mobile Development', 'certificate')
-ON CONFLICT DO NOTHING;
+) AS v(name, type)
+WHERE NOT EXISTS (SELECT 1 FROM categories c WHERE c.name = v.name AND c.type = v.type);
 
 -- Seed initial issuers
-INSERT INTO issuers (name) VALUES
+INSERT INTO issuers (name)
+SELECT v.name FROM (VALUES
   ('Coursera'),
   ('Udemy'),
   ('Dicoding'),
@@ -54,4 +66,5 @@ INSERT INTO issuers (name) VALUES
   ('AWS'),
   ('FreeCodeCamp'),
   ('Hackerrank')
-ON CONFLICT DO NOTHING;
+) AS v(name)
+WHERE NOT EXISTS (SELECT 1 FROM issuers i WHERE i.name = v.name);

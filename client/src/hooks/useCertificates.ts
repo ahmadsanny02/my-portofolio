@@ -1,29 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import api from '@/lib/api-client';
-import { Certificate, ApiResponse } from 'types';
+import type { Certificate } from 'types';
+import { useApiList } from './useApiList';
 
-export function useCertificates() {
-  const [certificates, setCertificates] = useState<Certificate[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchCerts() {
-      try {
-        const response = await api.get<ApiResponse<Certificate[]>>('/certificates');
-        if (response.data.success) {
-          setCertificates(response.data.data || []);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchCerts();
-  }, []);
-
-  return { certificates, loading, error };
+export function useCertificates({ initialData }: { initialData?: Certificate[] } = {}) {
+  const { data, loading, error, refresh } = useApiList<Certificate>('/certificates', { initialData });
+  return { certificates: data, loading, error, refresh };
 }

@@ -35,7 +35,7 @@ const itemVariants: Variants = {
 };
 
 export default function DashboardPage() {
-  const { projects, loading: loadingProjects } = useProjects();
+  const { projects, loading: loadingProjects } = useProjects({ admin: true });
   const { certificates, loading: loadingCerts } = useCertificates();
   const { messages, loading: loadingMessages } = useMessages();
 
@@ -145,7 +145,7 @@ export default function DashboardPage() {
           <motion.div 
             variants={itemVariants}
             key={stat.name} 
-            className="p-6 bg-surface/50 border border-secondary/10 rounded-[32px] relative overflow-hidden group shadow-sm hover:shadow-md transition-all hover:border-secondary/20"
+            className="p-6 bg-surface/50 border border-secondary/10 rounded-card relative overflow-hidden group shadow-sm hover:shadow-md transition-all hover:border-secondary/20"
           >
             {/* Hover decoration sphere */}
             <div className={`absolute -right-8 -top-8 w-24 h-24 rounded-full ${stat.bg} blur-2xl group-hover:scale-150 transition-transform duration-500`} />
@@ -175,7 +175,7 @@ export default function DashboardPage() {
         {/* Recent Activity Timeline */}
         <motion.div 
           variants={itemVariants}
-          className="lg:col-span-3 p-8 bg-surface/50 rounded-[32px] border border-secondary/10 shadow-sm flex flex-col"
+          className="lg:col-span-3 p-8 bg-surface/50 rounded-card border border-secondary/10 shadow-sm flex flex-col"
         >
           <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
             Recent Activity
@@ -203,7 +203,7 @@ export default function DashboardPage() {
         {/* Quick Actions Grid */}
         <motion.div 
           variants={itemVariants}
-          className="lg:col-span-2 p-8 bg-surface/50 rounded-[32px] border border-secondary/10 shadow-sm"
+          className="lg:col-span-2 p-8 bg-surface/50 rounded-card border border-secondary/10 shadow-sm"
         >
           <h2 className="text-xl font-bold mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

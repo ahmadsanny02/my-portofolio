@@ -6,9 +6,10 @@ import { useProjects } from '@/hooks/useProjects';
 import { ExternalLink, Github } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import type { Project } from 'types';
 
-export default function ProjectsSection() {
-  const { projects, loading } = useProjects();
+export default function ProjectsSection({ initialProjects }: { initialProjects?: Project[] }) {
+  const { projects, loading } = useProjects({ initialData: initialProjects });
   const [visibleCount, setVisibleCount] = useState(10);
 
   const visibleProjects = projects.slice(0, visibleCount);
@@ -28,7 +29,7 @@ export default function ProjectsSection() {
             {[1, 2, 3].map((i) => (
               <div
                 key={i}
-                className="bg-surface rounded-[32px] border border-secondary/10 dark:border-white/5 overflow-hidden shadow-sm"
+                className="bg-surface rounded-card border border-secondary/10 dark:border-white/5 overflow-hidden shadow-sm"
               >
                 <div className="h-64 lg:h-80 bg-secondary/10 animate-pulse" />
                 <div className="p-8">
@@ -64,7 +65,7 @@ export default function ProjectsSection() {
                   delay: (index % 10) * 0.05
                 }}
                 whileHover={{ y: -8, scale: 1.015 }}
-                className="group relative bg-background rounded-[32px] overflow-hidden border border-secondary/10 shadow-md hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col h-full"
+                className="group relative bg-background rounded-card overflow-hidden border border-secondary/10 shadow-md hover:shadow-2xl hover:border-primary/20 transition-all duration-300 flex flex-col h-full"
               >
                 {/* Image Container with Zoom effect */}
                 <Link href={`/projects/${project.slug}`} className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative block">

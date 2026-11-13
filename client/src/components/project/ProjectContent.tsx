@@ -160,7 +160,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 sm:p-10 shadow-lg space-y-8"
+              className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-card border border-secondary/10 dark:border-white/5 p-8 sm:p-10 shadow-lg space-y-8"
             >
               <div>
                 <h3 className="text-2xl font-bold mb-4 text-foreground">
@@ -263,7 +263,7 @@ export default function ProjectContent({ project }: ProjectContentProps) {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.45 }}
-                className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 p-8 shadow-lg space-y-6"
+                className="bg-surface/40 dark:bg-slate-900/40 backdrop-blur-md rounded-card border border-secondary/10 dark:border-white/5 p-8 shadow-lg space-y-6"
               >
                 <h3 className="text-xl font-bold text-foreground border-b border-secondary/10 dark:border-white/5 pb-3">
                   Project Gallery

@@ -16,8 +16,18 @@ export class ProjectController {
 
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const onlyPublished = req.query.admin !== 'true';
-      const projects = await this.getAllProjectsUseCase.execute(onlyPublished);
+      // Public listing: always published only (drafts never leak)
+      const projects = await this.getAllProjectsUseCase.execute(true);
+      res.json({ success: true, data: projects });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getAllAdmin(req: Request, res: Response, next: NextFunction) {
+    try {
+      // Protected by authMiddleware: includes drafts
+      const projects = await this.getAllProjectsUseCase.execute(false);
       res.json({ success: true, data: projects });
     } catch (error) {
       next(error);

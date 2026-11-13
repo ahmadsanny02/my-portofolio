@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import ProjectForm from '@/components/admin/ProjectForm';
 import { Project } from 'types';
 import api from '@/lib/api-client';
+import { getApiError } from '@/lib/api-error';
 import Image from 'next/image';
 import TableControls from '@/components/admin/TableControls';
 import { showToast, showConfirm } from '@/lib/sweetalert';
@@ -28,7 +29,7 @@ const itemVariants: Variants = {
 };
 
 export default function AdminProjectsPage() {
-  const { projects, loading } = useProjects();
+  const { projects, loading, refresh } = useProjects({ admin: true });
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -82,9 +83,9 @@ export default function AdminProjectsPage() {
       try {
         await api.delete(`/projects/${id}`);
         showToast('success', 'Project deleted!');
-        window.location.reload(); // Quick refresh for now
-      } catch {
-        showToast('error', 'Failed to delete project');
+        refresh();
+      } catch (err) {
+        showToast('error', getApiError(err, 'Failed to delete project'));
       }
     }
   };
@@ -99,12 +100,12 @@ export default function AdminProjectsPage() {
           </p>
         </div>
 
-        <div className="bg-surface/50 p-6 sm:p-10 rounded-[32px] border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
+        <div className="bg-surface/50 p-6 sm:p-10 rounded-card border border-secondary/10 dark:border-white/5 shadow-2xl backdrop-blur-md">
           <ProjectForm 
             project={editingProject} 
             onSuccess={() => {
               setIsFormOpen(false);
-              window.location.reload();
+              refresh();
             }}
             onCancel={() => setIsFormOpen(false)}
           />
@@ -128,7 +129,7 @@ export default function AdminProjectsPage() {
         </button>
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-[32px] border border-secondary/10">
+      <div className="bg-surface/50 p-6 rounded-card border border-secondary/10">
         <TableControls
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -150,10 +151,10 @@ export default function AdminProjectsPage() {
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {loading ? (
           [1, 2, 3, 4, 5, 6].map(i => (
-            <div key={i} className="h-96 bg-secondary/10 rounded-[28px] animate-pulse" />
+            <div key={i} className="h-96 bg-secondary/10 rounded-card animate-pulse" />
           ))
         ) : filteredProjects.length === 0 ? (
-          <div className="col-span-full text-center py-20 bg-surface/50 rounded-[32px] border border-secondary/10">
+          <div className="col-span-full text-center py-20 bg-surface/50 rounded-card border border-secondary/10">
             <p className="text-secondary">No projects found.</p>
           </div>
         ) : (
@@ -168,7 +169,7 @@ export default function AdminProjectsPage() {
                 key={project.id} 
                 variants={itemVariants}
                 whileHover={{ y: -6, scale: 1.02 }}
-                className="flex flex-col bg-surface/50 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
+                className="flex flex-col bg-surface/50 backdrop-blur-md rounded-card border border-secondary/10 dark:border-white/5 overflow-hidden group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-lg shadow-primary/[0.01]"
               >
                 {/* Card Thumbnail */}
                 <div className="h-48 w-full bg-background border-b border-secondary/10 dark:border-white/5 relative overflow-hidden flex-shrink-0">

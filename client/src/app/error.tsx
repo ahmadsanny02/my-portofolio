@@ -3,7 +3,7 @@
 import React from 'react';
 import { AlertCircle, RefreshCcw } from 'lucide-react';
 
-export default function Error({
+export default function GlobalError({
   reset,
 }: {
   error: Error & { digest?: string };

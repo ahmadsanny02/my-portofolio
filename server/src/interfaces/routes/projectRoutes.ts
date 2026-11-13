@@ -8,6 +8,7 @@ import { DeleteProjectUseCase } from '../../application/use-cases/projects/Delet
 import { ProjectSupabaseRepository } from '../../infrastructure/database/supabase/ProjectSupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { validateRequest } from '../middlewares/validateRequest';
+import { validateId } from '../middlewares/validateId';
 import {
   createProjectSchema,
   updateProjectSchema,
@@ -33,6 +34,12 @@ const projectController = new ProjectController(
 
 // Public Routes
 router.get('/', (req, res, next) => projectController.getAll(req, res, next));
+
+// Admin listing including drafts (must be registered before '/:slug')
+router.get('/admin/all', authMiddleware, (req, res, next) =>
+  projectController.getAllAdmin(req, res, next),
+);
+
 router.get('/:slug', (req, res, next) =>
   projectController.getBySlug(req, res, next),
 );
@@ -48,11 +55,12 @@ router.post(
 router.put(
   '/:id',
   authMiddleware,
+  validateId,
   validateRequest(updateProjectSchema),
   (req, res, next) => projectController.update(req, res, next),
 );
 
-router.delete('/:id', authMiddleware, (req, res, next) =>
+router.delete('/:id', authMiddleware, validateId, (req, res, next) =>
   projectController.delete(req, res, next),
 );
 

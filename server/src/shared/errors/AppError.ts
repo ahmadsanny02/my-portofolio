@@ -6,7 +6,7 @@ export class AppError extends Error {
     super(message);
     this.statusCode = statusCode;
     this.isOperational = isOperational;
-    Object.setPrototypeOf(this, AppError.prototype);
+    Object.setPrototypeOf(this, new.target.prototype);
   }
 }
 
@@ -22,8 +22,26 @@ export class UnauthorizedError extends AppError {
   }
 }
 
+export class ForbiddenError extends AppError {
+  constructor(message = 'Forbidden') {
+    super(message, 403);
+  }
+}
+
 export class BadRequestError extends AppError {
   constructor(message = 'Bad Request') {
     super(message, 400);
+  }
+}
+
+export class ConflictError extends AppError {
+  constructor(message = 'Conflict') {
+    super(message, 409);
+  }
+}
+
+export class TooManyRequestsError extends AppError {
+  constructor(message = 'Too many requests, please try again later') {
+    super(message, 429);
   }
 }

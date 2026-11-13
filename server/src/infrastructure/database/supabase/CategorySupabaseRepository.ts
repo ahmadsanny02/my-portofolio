@@ -1,9 +1,18 @@
 import { supabase } from './SupabaseClient';
 import { ICategoryRepository } from '../../../domain/repositories/ICategoryRepository';
-import type { Category } from 'types';
+import type { Category, CategoryType } from 'types';
+import { mapDbError } from '../../../shared/errors/mapDbError';
+import { omitUndefined } from '../../../shared/utils/omitUndefined';
+
+interface CategoryRow {
+  id: string;
+  name: string;
+  type: CategoryType;
+  created_at: string;
+}
 
 export class CategorySupabaseRepository implements ICategoryRepository {
-  private mapToDomain(item: any): Category {
+  private mapToDomain(item: CategoryRow): Category {
     return {
       id: item.id,
       name: item.name,
@@ -12,15 +21,8 @@ export class CategorySupabaseRepository implements ICategoryRepository {
     };
   }
 
-  private mapToDb(category: Partial<Category>): any {
-    const dbItem: any = {
-      name: category.name,
-      type: category.type,
-    };
-    Object.keys(dbItem).forEach(
-      (key) => dbItem[key] === undefined && delete dbItem[key],
-    );
-    return dbItem;
+  private mapToDb(category: Partial<Category>) {
+    return omitUndefined({ name: category.name, type: category.type });
   }
 
   async findAll(type?: string): Promise<Category[]> {
@@ -31,8 +33,8 @@ export class CategorySupabaseRepository implements ICategoryRepository {
     }
 
     const { data, error } = await query;
-    if (error) throw new Error(error.message);
-    return (data || []).map((item) => this.mapToDomain(item));
+    if (error) throw mapDbError(error);
+    return (data || []).map((item) => this.mapToDomain(item as CategoryRow));
   }
 
   async findById(id: string): Promise<Category | null> {
@@ -40,39 +42,42 @@ export class CategorySupabaseRepository implements ICategoryRepository {
       .from('categories')
       .select('*')
       .eq('id', id)
-      .single();
+      .maybeSingle();
 
-    if (error || !data) return null;
-    return this.mapToDomain(data);
+    if (error) throw mapDbError(error);
+    return data ? this.mapToDomain(data as CategoryRow) : null;
   }
 
   async create(data: Omit<Category, 'id' | 'createdAt'>): Promise<Category> {
-    const dbData = this.mapToDb(data);
     const { data: created, error } = await supabase
       .from('categories')
-      .insert(dbData)
+      .insert(this.mapToDb(data))
       .select()
       .single();
 
-    if (error) throw new Error(error.message);
-    return this.mapToDomain(created);
+    if (error) throw mapDbError(error);
+    return this.mapToDomain(created as CategoryRow);
   }
 
   async update(id: string, data: Partial<Category>): Promise<Category> {
-    const dbData = this.mapToDb(data);
     const { data: updated, error } = await supabase
       .from('categories')
-      .update(dbData)
+      .update(this.mapToDb(data))
       .eq('id', id)
       .select()
       .single();
 
-    if (error) throw new Error(error.message);
-    return this.mapToDomain(updated);
+    if (error) throw mapDbError(error);
+    return this.mapToDomain(updated as CategoryRow);
   }
 
   async delete(id: string): Promise<void> {
-    const { error } = await supabase.from('categories').delete().eq('id', id);
-    if (error) throw new Error(error.message);
+    const { data, error } = await supabase
+      .from('categories')
+      .delete()
+      .eq('id', id)
+      .select('id');
+    if (error) throw mapDbError(error);
+    if (!data || data.length === 0) throw mapDbError({ code: 'PGRST116', message: '' });
   }
 }

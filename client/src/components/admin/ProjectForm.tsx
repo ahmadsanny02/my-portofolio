@@ -7,16 +7,17 @@ import { z } from 'zod';
 import { Upload, Loader2, Save, Trash, ChevronDown } from 'lucide-react';
 import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
-import { Project } from 'types';
+import { Project, MAX_UPLOAD_BYTES, ALLOWED_IMAGE_MIME_TYPES } from 'types';
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn, isAllowedImage } from '@/lib/utils';
+import { getApiError } from '@/lib/api-error';
 import { useCategories } from '@/hooks/useCategories';
 
 const projectSchema = z.object({
   title: z.string().min(3, 'Title too short'),
   description: z.string().min(10, 'Description too short'),
   longDescription: z.string().optional(),
-  techStack: z.string().transform(val => val.split(',').map(s => s.trim())),
+  techStack: z.string().transform(val => val.split(',').map(s => s.trim()).filter(Boolean)),
   demoUrl: z.string().url().optional().or(z.literal('')),
   repoUrl: z.string().url().optional().or(z.literal('')),
   category: z.string().min(1, 'Category is required'),
@@ -75,11 +76,15 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   const categoryValue = useWatch({ control, name: 'category' });
   const statusValue = useWatch({ control, name: 'status' });
 
-  const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB
+  const MAX_FILE_SIZE = MAX_UPLOAD_BYTES;
 
   const uploadThumbnailFile = async (file: File) => {
+    if (!isAllowedImage(file)) {
+      showToast('error', 'Only JPG, PNG or WebP images are allowed.');
+      return;
+    }
     if (file.size > MAX_FILE_SIZE) {
-      showToast('error', 'File is too large. Max size allowed is 4MB.');
+      showToast('error', `File is too large. Max size allowed is ${MAX_UPLOAD_BYTES / 1024 / 1024}MB.`);
       return;
     }
     setUploadingThumbnail(true);
@@ -93,8 +98,8 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
       });
       setThumbnailUrl(data.url);
       showToast('success', 'Thumbnail uploaded!');
-    } catch {
-      showToast('error', 'Upload failed');
+    } catch (err) {
+      showToast('error', getApiError(err, 'Upload failed'));
     } finally {
       setUploadingThumbnail(false);
     }
@@ -102,9 +107,12 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
   const uploadGalleryFiles = async (files: FileList) => {
     const validFiles = Array.from(files).filter((file) => {
-      if (!file.type.startsWith('image/')) return false;
+      if (!isAllowedImage(file)) {
+        showToast('error', `"${file.name}" is not a JPG, PNG or WebP image.`);
+        return false;
+      }
       if (file.size > MAX_FILE_SIZE) {
-        showToast('error', `"${file.name}" is too large. Max size allowed is 4MB.`);
+        showToast('error', `"${file.name}" is too large. Max size allowed is ${MAX_UPLOAD_BYTES / 1024 / 1024}MB.`);
         return false;
       }
       return true;
@@ -129,8 +137,8 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
       const validUrls = urls.filter(Boolean) as string[];
       setImages(prev => [...prev, ...validUrls]);
       showToast('success', `${validUrls.length} gallery image(s) uploaded!`);
-    } catch {
-      showToast('error', 'Gallery upload failed');
+    } catch (err) {
+      showToast('error', getApiError(err, 'Gallery upload failed'));
     } finally {
       setUploadingGallery(false);
     }
@@ -152,10 +160,10 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
     e.preventDefault();
     setIsDraggingThumbnail(false);
     const file = e.dataTransfer.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && isAllowedImage(file)) {
       await uploadThumbnailFile(file);
     } else {
-      showToast('error', 'Please drop an image file');
+      showToast('error', 'Please drop a JPG, PNG or WebP image');
     }
   };
 
@@ -171,9 +179,10 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
   const onSubmit = async (data: z.infer<typeof projectSchema>) => {
     setLoading(true);
     try {
-      const generatedSlug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-      const payload = { ...data, slug: generatedSlug, thumbnail: thumbnailUrl, images };
-      
+      const payload = { ...data, thumbnail: thumbnailUrl, images };
+
+      // The server derives the slug from the title on create and keeps it
+      // stable on update, so existing /projects/<slug> links never break.
       if (project) {
         await api.put(`/projects/${project.id}`, payload);
         showToast('success', 'Project updated!');
@@ -182,8 +191,8 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
         showToast('success', 'Project created!');
       }
       onSuccess();
-    } catch {
-      showToast('error', 'Failed to save project');
+    } catch (err) {
+      showToast('error', getApiError(err, 'Failed to save project'));
     } finally {
       setLoading(false);
     }
@@ -195,9 +204,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Project Title</label>
+              <label htmlFor="project-title" className="text-xs font-bold uppercase tracking-wider text-secondary">Project Title</label>
               <input 
-                {...register('title')} 
+                id="project-title" {...register('title')} 
                 className={cn(
                   "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                   errors.title 
@@ -210,9 +219,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Tech Stack (comma separated)</label>
+              <label htmlFor="project-techStack" className="text-xs font-bold uppercase tracking-wider text-secondary">Tech Stack (comma separated)</label>
               <input 
-                {...register('techStack')} 
+                id="project-techStack" {...register('techStack')} 
                 className={cn(
                   "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                   errors.techStack 
@@ -226,9 +235,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-secondary">Demo URL</label>
+                <label htmlFor="project-demoUrl" className="text-xs font-bold uppercase tracking-wider text-secondary">Demo URL</label>
                 <input 
-                  {...register('demoUrl')} 
+                  id="project-demoUrl" {...register('demoUrl')} 
                   className={cn(
                     "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                     errors.demoUrl 
@@ -240,9 +249,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 {errors.demoUrl && <p className="text-red-500 text-xs mt-1">{errors.demoUrl.message as string}</p>}
               </div>
               <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-secondary">Repo URL</label>
+                <label htmlFor="project-repoUrl" className="text-xs font-bold uppercase tracking-wider text-secondary">Repo URL</label>
                 <input 
-                  {...register('repoUrl')} 
+                  id="project-repoUrl" {...register('repoUrl')} 
                   className={cn(
                     "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
                     errors.repoUrl 
@@ -352,9 +361,9 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Long Description (Detailed)</label>
+              <label htmlFor="project-longDescription" className="text-xs font-bold uppercase tracking-wider text-secondary">Long Description (Detailed)</label>
               <textarea 
-                {...register('longDescription')} 
+                id="project-longDescription" {...register('longDescription')} 
                 rows={4} 
                 className={cn(
                   "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
@@ -376,7 +385,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 onDragLeave={() => setIsDraggingThumbnail(false)}
                 onDrop={handleThumbnailDrop}
                 className={cn(
-                  "border-2 border-dashed rounded-[24px] p-6 flex flex-col items-center justify-center h-[200px] relative overflow-hidden group transition-all duration-300",
+                  "border-2 border-dashed rounded-drop p-6 flex flex-col items-center justify-center h-[200px] relative overflow-hidden group transition-all duration-300",
                   isDraggingThumbnail
                     ? "border-primary bg-primary/10"
                     : "border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02]"
@@ -388,7 +397,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
                       <label className="cursor-pointer bg-primary p-3.5 rounded-2xl hover:bg-primary-dark transition-all hover:scale-110 shadow-lg shadow-primary/20 flex items-center justify-center">
                         <Upload size={20} className="text-white" />
-                        <input type="file" className="hidden" onChange={handleThumbnailUpload} accept="image/*" />
+                        <input type="file" className="hidden" onChange={handleThumbnailUpload} accept={ALLOWED_IMAGE_MIME_TYPES.join(',')} />
                       </label>
                     </div>
                   </>
@@ -401,16 +410,16 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                       <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click or drop thumbnail here</span>
                       <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
                     </div>
-                    <input type="file" className="hidden" onChange={handleThumbnailUpload} accept="image/*" />
+                    <input type="file" className="hidden" onChange={handleThumbnailUpload} accept={ALLOWED_IMAGE_MIME_TYPES.join(',')} />
                   </label>
                 )}
               </div>
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary">Short Description</label>
+              <label htmlFor="project-description" className="text-xs font-bold uppercase tracking-wider text-secondary">Short Description</label>
               <textarea 
-                {...register('description')} 
+                id="project-description" {...register('description')} 
                 rows={3} 
                 className={cn(
                   "w-full bg-background/50 dark:bg-slate-900/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all resize-none text-sm",
@@ -430,7 +439,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                 onDragLeave={() => setIsDraggingGallery(false)}
                 onDrop={handleGalleryDrop}
                 className={cn(
-                  "border-2 border-dashed rounded-[24px] p-6 flex flex-col items-center justify-center min-h-[120px] relative overflow-hidden group transition-all duration-300",
+                  "border-2 border-dashed rounded-drop p-6 flex flex-col items-center justify-center min-h-[120px] relative overflow-hidden group transition-all duration-300",
                   isDraggingGallery
                     ? "border-primary bg-primary/10"
                     : "border-secondary/20 dark:border-white/10 hover:border-primary/50 dark:hover:border-primary/50 bg-background/20 dark:bg-slate-950/20 hover:bg-primary/[0.02]"
@@ -444,7 +453,7 @@ export default function ProjectForm({ project, onSuccess, onCancel }: ProjectFor
                     <span className="text-sm font-semibold text-foreground group-hover/btn:text-primary transition-colors block">Click or drop multiple images here</span>
                     <span className="text-xs text-secondary mt-1 block">Supports PNG, JPG, WebP</span>
                   </div>
-                  <input type="file" className="hidden" onChange={handleGalleryUpload} accept="image/*" multiple />
+                  <input type="file" className="hidden" onChange={handleGalleryUpload} accept={ALLOWED_IMAGE_MIME_TYPES.join(',')} multiple />
                 </label>
               </div>
 

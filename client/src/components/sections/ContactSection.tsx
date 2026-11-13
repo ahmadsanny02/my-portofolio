@@ -5,6 +5,7 @@ import { motion, Variants } from 'framer-motion';
 import { Send, Mail, MapPin, Loader2 } from 'lucide-react';
 import api from '@/lib/api-client';
 import toast from 'react-hot-toast';
+import { getApiError } from '@/lib/api-error';
 
 const infoContainerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -60,8 +61,8 @@ export default function ContactSection() {
       await api.post('/contact', formData);
       toast.success('Message sent successfully!');
       setFormData({ name: '', email: '', subject: '', message: '' });
-    } catch {
-      toast.error('Failed to send message.');
+    } catch (err) {
+      toast.error(getApiError(err, 'Failed to send message.'));
     } finally {
       setLoading(false);
     }
@@ -126,7 +127,7 @@ export default function ContactSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
-            className="bg-surface backdrop-blur-md p-8 rounded-[32px] border border-secondary/10 shadow-xl hover:shadow-2xl transition-all duration-300"
+            className="bg-surface backdrop-blur-md p-8 rounded-card border border-secondary/10 shadow-xl hover:shadow-2xl transition-all duration-300"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
@@ -135,6 +136,7 @@ export default function ContactSection() {
                   <input
                     required
                     id="contact-name"
+                    minLength={2}
                     type="text"
                     autoComplete="name"
                     maxLength={100}
@@ -180,6 +182,7 @@ export default function ContactSection() {
                 <textarea
                   required
                   id="contact-message"
+                  minLength={10}
                   rows={4}
                   maxLength={2000}
                   aria-required="true"

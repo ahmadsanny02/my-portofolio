@@ -1,30 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import api from '@/lib/api-client';
-import { Project, ApiResponse } from 'types';
+import type { Project } from 'types';
+import { useApiList } from './useApiList';
 
-export function useProjects() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const response = await api.get<ApiResponse<Project[]>>('/projects');
-        if (response.data.success) {
-          setProjects(response.data.data || []);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Unknown error');
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchProjects();
-  }, []);
-
-  return { projects, loading, error };
+/**
+ * @param admin  when true, fetches drafts too via the protected admin endpoint
+ */
+export function useProjects({ admin = false, initialData }: { admin?: boolean; initialData?: Project[] } = {}) {
+  const { data, loading, error, refresh } = useApiList<Project>(
+    admin ? '/projects/admin/all' : '/projects',
+    { initialData },
+  );
+  return { projects: data, loading, error, refresh };
 }

@@ -204,7 +204,7 @@ export default function AdminSettingsPage() {
       </div>
 
       {/* Main Container Card */}
-      <div className="bg-surface/40 backdrop-blur-md border border-secondary/10 dark:border-white/5 rounded-[32px] p-6 lg:p-8 shadow-xl space-y-6">
+      <div className="bg-surface/40 backdrop-blur-md border border-secondary/10 dark:border-white/5 rounded-card p-6 lg:p-8 shadow-xl space-y-6">
         {/* Navigation Tabs */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-secondary/10 pb-6">
           <div className="flex bg-background/50 p-1.5 rounded-2xl border border-secondary/10 dark:border-white/5 gap-1">
@@ -410,7 +410,7 @@ export default function AdminSettingsPage() {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-surface border border-secondary/15 rounded-[32px] p-6 lg:p-8 max-w-md w-full z-10 shadow-2xl relative space-y-6"
+              className="bg-surface border border-secondary/15 rounded-card p-6 lg:p-8 max-w-md w-full z-10 shadow-2xl relative space-y-6"
             >
               <div className="flex justify-between items-center border-b border-secondary/10 pb-4">
                 <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
@@ -530,7 +530,7 @@ export default function AdminSettingsPage() {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              className="bg-surface border border-secondary/15 rounded-[32px] p-6 lg:p-8 max-w-md w-full z-10 shadow-2xl relative space-y-6"
+              className="bg-surface border border-secondary/15 rounded-card p-6 lg:p-8 max-w-md w-full z-10 shadow-2xl relative space-y-6"
             >
               <div className="flex justify-between items-center border-b border-secondary/10 pb-4">
                 <h3 className="font-bold text-lg text-foreground flex items-center gap-2">

@@ -9,6 +9,7 @@ import api from '@/lib/api-client';
 import { showToast } from '@/lib/sweetalert';
 import { Skill } from 'types';
 import { cn } from '@/lib/utils';
+import { getApiError } from '@/lib/api-error';
 import { useCategories } from '@/hooks/useCategories';
 
 const skillSchema = z.object({
@@ -44,8 +45,8 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
     defaultValues: {
       name: skill?.name || '',
       category: skill?.category || 'Frontend',
-      proficiency: skill?.proficiency || 80,
-      orderIndex: skill?.orderIndex || 0,
+      proficiency: skill?.proficiency ?? 80,
+      orderIndex: skill?.orderIndex ?? 0,
     }
   });
 
@@ -62,8 +63,8 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
         showToast('success', 'Skill created!');
       }
       onSuccess();
-    } catch {
-      showToast('error', 'Failed to save skill');
+    } catch (err) {
+      showToast('error', getApiError(err, 'Failed to save skill'));
     } finally {
       setLoading(false);
     }
@@ -73,11 +74,11 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
     <>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-foreground">
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-secondary">Skill Name</label>
+          <label htmlFor="skill-name" className="text-xs font-bold uppercase tracking-wider text-secondary">Skill Name</label>
           <input 
-            {...register('name')} 
+            id="skill-name" {...register('name')} 
             className={cn(
-              "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
+              "w-full bg-background/50 dark:bg-background/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all placeholder:text-secondary/30 text-sm",
               errors.name 
                 ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                 : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"
@@ -135,12 +136,12 @@ export default function SkillForm({ skill, onSuccess, onCancel }: SkillFormProps
         </div>
 
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-secondary">Proficiency (%)</label>
+          <label htmlFor="skill-proficiency" className="text-xs font-bold uppercase tracking-wider text-secondary">Proficiency (%)</label>
           <input 
             type="number" 
-            {...register('proficiency', { valueAsNumber: true })} 
+            id="skill-proficiency" {...register('proficiency', { valueAsNumber: true })} 
             className={cn(
-              "w-full bg-background/50 dark:bg-slate-955/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm",
+              "w-full bg-background/50 dark:bg-background/50 border rounded-2xl px-4 py-3.5 focus:ring-4 outline-none transition-all text-sm",
               errors.proficiency 
                 ? "border-red-500/50 focus:border-red-500 focus:ring-red-500/10" 
                 : "border-secondary/20 dark:border-white/10 focus:border-primary focus:ring-primary/10"

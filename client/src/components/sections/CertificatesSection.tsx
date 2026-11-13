@@ -6,15 +6,16 @@ import { useCertificates } from '@/hooks/useCertificates';
 import { Award, ExternalLink } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import Image from 'next/image';
+import type { Certificate } from 'types';
 
-export default function CertificatesSection() {
-  const { certificates, loading } = useCertificates();
+export default function CertificatesSection({ initialCertificates }: { initialCertificates?: Certificate[] }) {
+  const { certificates, loading } = useCertificates({ initialData: initialCertificates });
   const [visibleCount, setVisibleCount] = useState(10);
 
   const visibleCertificates = certificates.slice(0, visibleCount);
 
   return (
-    <section id="certificates" className="py-24 bg-surface/30 overflow-hidden">
+    <section id="certificates" className="py-24 bg-background overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           <h2 className="text-primary font-extrabold tracking-widest mb-2.5 uppercase text-xs sm:text-sm">Certifications</h2>
@@ -24,7 +25,7 @@ export default function CertificatesSection() {
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="bg-surface rounded-[32px] border border-secondary/10 dark:border-white/5 overflow-hidden shadow-sm">
+              <div key={i} className="bg-surface rounded-card border border-secondary/10 dark:border-white/5 overflow-hidden shadow-sm">
                 <div className="h-64 lg:h-80 bg-secondary/10 animate-pulse" />
                 <div className="p-6">
                   <div className="flex gap-4 mb-4">
@@ -57,7 +58,7 @@ export default function CertificatesSection() {
                   delay: (index % 10) * 0.05
                 }}
                 whileHover={{ y: -8, scale: 1.015 }}
-                className="bg-background rounded-[32px] border border-secondary/10 hover:border-primary/20 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
+                className="bg-surface rounded-card border border-secondary/10 hover:border-primary/20 overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 group flex flex-col h-full"
               >
                 {cert.imageUrl && (
                   <div className="h-64 lg:h-80 overflow-hidden bg-secondary/5 relative">

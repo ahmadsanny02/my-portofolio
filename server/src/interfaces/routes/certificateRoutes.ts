@@ -9,6 +9,7 @@ import {
 import { CertificateSupabaseRepository } from '../../infrastructure/database/supabase/CertificateSupabaseRepository';
 import { authMiddleware } from '../middlewares/authMiddleware';
 import { validateRequest } from '../middlewares/validateRequest';
+import { validateId } from '../middlewares/validateId';
 import {
   createCertificateSchema,
   updateCertificateSchema,
@@ -34,11 +35,12 @@ router.post(
 router.put(
   '/:id',
   authMiddleware,
+  validateId,
   validateRequest(updateCertificateSchema),
   (req, res, next) => controller.update(req, res, next),
 );
 
-router.delete('/:id', authMiddleware, (req, res, next) =>
+router.delete('/:id', authMiddleware, validateId, (req, res, next) =>
   controller.delete(req, res, next),
 );
 

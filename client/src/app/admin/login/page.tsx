@@ -55,9 +55,9 @@ export default function LoginPage() {
         transition={{ duration: 0.8, ease: 'easeOut' }}
         className="w-full max-w-md z-10"
       >
-        <div className="glass border border-secondary/15 rounded-[32px] p-8 sm:p-10 shadow-2xl relative">
+        <div className="glass border border-secondary/15 rounded-card p-8 sm:p-10 shadow-2xl relative">
           {/* Card Border Highlight effect */}
-          <div className="absolute -inset-px rounded-[32px] bg-gradient-to-tr from-primary/20 via-transparent to-accent/25 opacity-30 pointer-events-none" />
+          <div className="absolute -inset-px rounded-card bg-gradient-to-tr from-primary/20 via-transparent to-accent/25 opacity-30 pointer-events-none" />
 
           <div className="text-center mb-8">
             <motion.div 
@@ -74,12 +74,14 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary ml-1">Email Address</label>
+              <label htmlFor="login-email" className="text-xs font-bold uppercase tracking-wider text-secondary ml-1">Email Address</label>
               <div className="relative group">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary transition-colors" size={18} />
+                <Mail aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary transition-colors" size={18} />
                 <input
+                  id="login-email"
                   required
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-surface/50 dark:bg-background/40 border border-secondary/15 rounded-2xl pl-12 pr-4 py-3.5 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm placeholder:text-secondary/50"
@@ -89,12 +91,14 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-secondary ml-1">Password</label>
+              <label htmlFor="login-password" className="text-xs font-bold uppercase tracking-wider text-secondary ml-1">Password</label>
               <div className="relative group">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary transition-colors" size={18} />
+                <Lock aria-hidden="true" className="absolute left-4 top-1/2 -translate-y-1/2 text-secondary group-focus-within:text-primary transition-colors" size={18} />
                 <input
+                  id="login-password"
                   required
                   type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full bg-surface/50 dark:bg-background/40 border border-secondary/15 rounded-2xl pl-12 pr-12 py-3.5 focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all text-sm placeholder:text-secondary/50"
