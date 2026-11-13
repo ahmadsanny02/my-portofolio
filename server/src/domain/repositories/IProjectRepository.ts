@@ -2,7 +2,7 @@ import type { Project } from 'types';
 
 export interface IProjectRepository {
   findAll(onlyPublished?: boolean): Promise<Project[]>;
-  findBySlug(slug: string): Promise<Project | null>;
+  findBySlug(slug: string, onlyPublished?: boolean): Promise<Project | null>;
   findById(id: string): Promise<Project | null>;
   create(
     data: Omit<Project, 'id' | 'createdAt' | 'updatedAt'>,
