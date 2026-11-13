@@ -3,6 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Trash2, Code2, Edit } from 'lucide-react';
 import api from '@/lib/api-client';
+import { getApiError } from '@/lib/api-error';
+import { useSkills } from '@/hooks/useSkills';
 import SkillForm from '@/components/admin/SkillForm';
 import { Skill } from 'types';
 import TableControls from '@/components/admin/TableControls';
@@ -30,8 +32,7 @@ const itemVariants: Variants = {
 };
 
 export default function AdminSkillsPage() {
-  const [skills, setSkills] = useState<Skill[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { skills, loading, error: loadError, refresh: fetchSkills } = useSkills();
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,20 +65,9 @@ export default function AdminSkillsPage() {
   const categoryOptions = Array.from(new Set(skills.map(s => s.category)))
     .map(cat => ({ value: cat, label: cat }));
 
-  const fetchSkills = async () => {
-    try {
-      const { data } = await api.get('/skills');
-      setSkills(data.data || []);
-    } catch {
-      showToast('error', 'Failed to load skills');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchSkills();
-  }, []);
+    if (loadError) showToast('error', loadError);
+  }, [loadError]);
 
   const handleAdd = () => {
     setEditingSkill(undefined);
@@ -99,8 +89,8 @@ export default function AdminSkillsPage() {
         await api.delete(`/skills/${id}`);
         showToast('success', 'Skill deleted');
         fetchSkills();
-      } catch {
-        showToast('error', 'Failed to delete');
+      } catch (err) {
+        showToast('error', getApiError(err, 'Failed to delete skill'));
       }
     }
   };
@@ -120,7 +110,7 @@ export default function AdminSkillsPage() {
         </button>
       </div>
 
-      <div className="bg-surface/50 p-6 rounded-[32px] border border-secondary/10">
+      <div className="bg-surface/50 p-6 rounded-card border border-secondary/10">
         <TableControls
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -138,7 +128,7 @@ export default function AdminSkillsPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {loading ? (
-          [1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-36 bg-secondary/10 rounded-[32px] animate-pulse" />)
+          [1, 2, 3, 4, 5, 6, 7, 8].map(i => <div key={i} className="h-36 bg-secondary/10 rounded-card animate-pulse" />)
         ) : (
           <motion.div 
             variants={containerVariants}
@@ -151,7 +141,7 @@ export default function AdminSkillsPage() {
                 key={skill.id} 
                 variants={itemVariants}
                 whileHover={{ y: -5, scale: 1.02 }}
-                className="p-6 bg-surface/50 backdrop-blur-md rounded-[32px] border border-secondary/10 dark:border-white/5 flex flex-col items-center justify-center text-center group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-md shadow-primary/[0.01]"
+                className="p-6 bg-surface/50 backdrop-blur-md rounded-card border border-secondary/10 dark:border-white/5 flex flex-col items-center justify-center text-center group relative hover:border-primary/30 dark:hover:border-primary/20 transition-all duration-300 shadow-md shadow-primary/[0.01]"
               >
                 <div className="p-3 bg-primary/10 rounded-2xl text-primary mb-3 transition-transform duration-300 group-hover:scale-110 shadow-inner">
                   <Code2 size={24} />
