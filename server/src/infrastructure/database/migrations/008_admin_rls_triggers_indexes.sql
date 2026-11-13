@@ -2,7 +2,7 @@
 -- 008: Admin-only RLS, updated_at trigger, indexes & unique constraints
 --
 -- BEFORE RUNNING:
---   1. Replace 'admin@example.com' below with your real admin e-mail(s).
+--   1. Check the admin e-mail(s) inserted into private.admin_users below.
 --   2. Disable public sign-ups: Supabase Dashboard → Authentication →
 --      Sign In / Providers → turn off "Allow new users to sign up".
 --
@@ -13,53 +13,71 @@
 -- ---------------------------------------------------------------------------
 -- 1. Admin allowlist
 -- ---------------------------------------------------------------------------
-CREATE TABLE IF NOT EXISTS admin_users (
+-- Kept in a non-exposed schema so neither the table nor the SECURITY DEFINER
+-- helper is reachable through the Data API.
+CREATE SCHEMA IF NOT EXISTS private;
+REVOKE ALL ON SCHEMA private FROM PUBLIC;
+
+CREATE TABLE IF NOT EXISTS private.admin_users (
   email TEXT PRIMARY KEY
 );
-ALTER TABLE admin_users ENABLE ROW LEVEL SECURITY; -- no policies: invisible to anon/auth
+ALTER TABLE private.admin_users ENABLE ROW LEVEL SECURITY; -- defense in depth
 
-INSERT INTO admin_users (email) VALUES ('admin@example.com')
+INSERT INTO private.admin_users (email) VALUES ('ahmadsanijabarulloh.02@gmail.com')
 ON CONFLICT DO NOTHING;
 
-CREATE OR REPLACE FUNCTION public.is_admin()
+-- SECURITY DEFINER is required to read private.admin_users from a policy.
+-- It only answers "is the caller's own verified JWT e-mail an admin?".
+CREATE OR REPLACE FUNCTION private.is_admin()
 RETURNS BOOLEAN
 LANGUAGE sql
 STABLE
 SECURITY DEFINER
-SET search_path = public
+SET search_path = ''
 AS $$
   SELECT EXISTS (
-    SELECT 1 FROM admin_users
+    SELECT 1 FROM private.admin_users
     WHERE lower(email) = lower(auth.jwt() ->> 'email')
   );
 $$;
 
+REVOKE EXECUTE ON FUNCTION private.is_admin() FROM PUBLIC;
+GRANT USAGE ON SCHEMA private TO authenticated;
+GRANT EXECUTE ON FUNCTION private.is_admin() TO authenticated;
+
 -- ---------------------------------------------------------------------------
--- 2. Replace "any authenticated user" policies with admin-only policies
+-- 2. Replace "any authenticated user" policies with admin-only policies.
+--    `TO authenticated` excludes anon; `(select ...)` evaluates once per query.
 -- ---------------------------------------------------------------------------
-DROP POLICY IF EXISTS "Admin can do all" ON projects;
-CREATE POLICY "Admin can do all" ON projects FOR ALL
-  USING (public.is_admin()) WITH CHECK (public.is_admin());
+DROP POLICY IF EXISTS "Admin can do all" ON public.projects;
+DROP POLICY IF EXISTS "Admin can do all" ON public.projects;
+CREATE POLICY "Admin can do all" ON public.projects FOR ALL TO authenticated
+  USING ((SELECT private.is_admin())) WITH CHECK ((SELECT private.is_admin()));
 
-DROP POLICY IF EXISTS "Admin can do all" ON certificates;
-CREATE POLICY "Admin can do all" ON certificates FOR ALL
-  USING (public.is_admin()) WITH CHECK (public.is_admin());
+DROP POLICY IF EXISTS "Admin can do all" ON public.certificates;
+DROP POLICY IF EXISTS "Admin can do all" ON public.certificates;
+CREATE POLICY "Admin can do all" ON public.certificates FOR ALL TO authenticated
+  USING ((SELECT private.is_admin())) WITH CHECK ((SELECT private.is_admin()));
 
-DROP POLICY IF EXISTS "Admin can do all" ON skills;
-CREATE POLICY "Admin can do all" ON skills FOR ALL
-  USING (public.is_admin()) WITH CHECK (public.is_admin());
+DROP POLICY IF EXISTS "Admin can do all" ON public.skills;
+DROP POLICY IF EXISTS "Admin can do all" ON public.skills;
+CREATE POLICY "Admin can do all" ON public.skills FOR ALL TO authenticated
+  USING ((SELECT private.is_admin())) WITH CHECK ((SELECT private.is_admin()));
 
-DROP POLICY IF EXISTS "Only admin can manage messages" ON contact_messages;
-CREATE POLICY "Only admin can manage messages" ON contact_messages FOR ALL
-  USING (public.is_admin()) WITH CHECK (public.is_admin());
+DROP POLICY IF EXISTS "Only admin can manage messages" ON public.contact_messages;
+DROP POLICY IF EXISTS "Only admin can manage messages" ON public.contact_messages;
+CREATE POLICY "Only admin can manage messages" ON public.contact_messages FOR ALL TO authenticated
+  USING ((SELECT private.is_admin())) WITH CHECK ((SELECT private.is_admin()));
 
-DROP POLICY IF EXISTS "Allow authenticated manage categories" ON categories;
-CREATE POLICY "Admin manage categories" ON categories FOR ALL
-  USING (public.is_admin()) WITH CHECK (public.is_admin());
+DROP POLICY IF EXISTS "Allow authenticated manage categories" ON public.categories;
+DROP POLICY IF EXISTS "Admin manage categories" ON public.categories;
+CREATE POLICY "Admin manage categories" ON public.categories FOR ALL TO authenticated
+  USING ((SELECT private.is_admin())) WITH CHECK ((SELECT private.is_admin()));
 
-DROP POLICY IF EXISTS "Allow authenticated manage issuers" ON issuers;
-CREATE POLICY "Admin manage issuers" ON issuers FOR ALL
-  USING (public.is_admin()) WITH CHECK (public.is_admin());
+DROP POLICY IF EXISTS "Allow authenticated manage issuers" ON public.issuers;
+DROP POLICY IF EXISTS "Admin manage issuers" ON public.issuers;
+CREATE POLICY "Admin manage issuers" ON public.issuers FOR ALL TO authenticated
+  USING ((SELECT private.is_admin())) WITH CHECK ((SELECT private.is_admin()));
 
 -- ---------------------------------------------------------------------------
 -- 3. Keep projects.updated_at current
@@ -67,6 +85,7 @@ CREATE POLICY "Admin manage issuers" ON issuers FOR ALL
 CREATE OR REPLACE FUNCTION public.set_updated_at()
 RETURNS TRIGGER
 LANGUAGE plpgsql
+SET search_path = ''
 AS $$
 BEGIN
   NEW.updated_at = NOW();
