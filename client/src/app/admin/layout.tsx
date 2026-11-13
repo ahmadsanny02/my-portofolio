@@ -36,6 +36,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   }, [user, loading, pathname, router]);
 
+  // Close menus with Escape
+  useEffect(() => {
+    if (!isUserDropdownOpen && !isSidebarOpen) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setIsUserDropdownOpen(false);
+      setIsSidebarOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isUserDropdownOpen, isSidebarOpen]);
+
   // Close mobile sidebar on navigation
   useEffect(() => {
     setIsSidebarOpen(false);
@@ -66,9 +78,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <span className="text-[10px] text-secondary leading-none mt-0.5">Fullstack Developer</span>
           </div>
         </Link>
-        <button 
+        <button
+          type="button"
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className="p-2 text-secondary hover:text-primary transition-colors"
+          aria-label={isSidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={isSidebarOpen}
+          aria-controls="admin-sidebar"
+          className="p-2 min-h-[44px] min-w-[44px] flex items-center justify-center text-secondary hover:text-primary transition-colors"
         >
           {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
@@ -76,29 +92,29 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* Sidebar Backdrop (Mobile) */}
       {isSidebarOpen && (
-        <div 
+        <div
+          aria-hidden="true"
           className="fixed inset-0 bg-background/80 backdrop-blur-sm z-30 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside className={cn(
+      <aside id="admin-sidebar" className={cn(
         "w-64 bg-surface/85 dark:bg-surface/70 backdrop-blur-md border-r border-secondary/10 flex flex-col fixed h-full z-40 transition-all duration-300 lg:translate-x-0",
         isSidebarOpen ? "translate-x-0" : "-translate-x-full",
         isDesktopSidebarCollapsed && "lg:-translate-x-full"
       )}>
         <div className="p-4 flex flex-col h-full space-y-6">
           {/* Header Brand */}
-          <div className="flex items-center gap-3 p-2 rounded-xl hover:bg-secondary/5 cursor-pointer group transition-all duration-200">
+          <div className="flex items-center gap-3 p-2">
             <div className="w-9 h-9 bg-gradient-to-tr from-primary to-accent rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg shadow-primary/10">
               <Folder size={18} className="text-white" />
             </div>
             <div className="flex flex-col text-left flex-1 min-w-0">
-              <span className="font-semibold text-sm text-foreground truncate group-hover:text-primary">Ahmad Sani Jabarulloh</span>
+              <span className="font-semibold text-sm text-foreground truncate">Ahmad Sani Jabarulloh</span>
               <span className="text-[11px] text-secondary truncate">Fullstack Developer</span>
             </div>
-            <ChevronsUpDown size={16} className="text-secondary group-hover:text-foreground shrink-0" />
           </div>
 
           {/* Navigation Links */}
@@ -196,9 +212,13 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
           {/* User Profile Card (Footer) */}
           <div className="relative border-t border-secondary/10 pt-4">
-            <div 
+            <button
+              type="button"
               onClick={() => setIsUserDropdownOpen(!isUserDropdownOpen)}
-              className="flex items-center gap-3 p-2 rounded-xl hover:bg-secondary/5 cursor-pointer group transition-all duration-200"
+              aria-haspopup="menu"
+              aria-expanded={isUserDropdownOpen}
+              aria-controls="admin-user-menu"
+              className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-secondary/5 cursor-pointer group transition-all duration-200"
             >
               <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-primary to-accent flex items-center justify-center font-bold text-white text-sm shadow-md overflow-hidden shrink-0">
                 {user.email?.charAt(0).toUpperCase() || 'A'}
@@ -210,24 +230,28 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <span className="text-[11px] text-secondary truncate">{user.email}</span>
               </div>
               <ChevronsUpDown size={16} className="text-secondary group-hover:text-foreground shrink-0" />
-            </div>
+            </button>
 
             {/* Dropdown Menu */}
             {isUserDropdownOpen && (
               <>
-                <div 
-                  className="fixed inset-0 z-10" 
+                <div
+                  className="fixed inset-0 z-10"
+                  aria-hidden="true"
                   onClick={() => setIsUserDropdownOpen(false)}
                 />
-                <div className="absolute bottom-14 left-0 right-0 bg-surface/95 dark:bg-surface/90 border border-secondary/15 rounded-xl p-1.5 shadow-2xl z-20 space-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-200 backdrop-blur-md">
-                  <Link 
-                    href="/" 
+                <div id="admin-user-menu" role="menu" className="absolute bottom-14 left-0 right-0 bg-surface/95 dark:bg-surface/90 border border-secondary/15 rounded-xl p-1.5 shadow-2xl z-20 space-y-0.5 animate-in fade-in slide-in-from-bottom-2 duration-200 backdrop-blur-md">
+                  <Link
+                    href="/"
                     target="_blank"
+                    role="menuitem"
                     className="flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-secondary hover:text-foreground hover:bg-secondary/5 rounded-lg transition-all"
                   >
                     <ExternalLink size={14} /> View Website
                   </Link>
                   <button
+                    type="button"
+                    role="menuitem"
                     onClick={logout}
                     className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-semibold text-red-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all cursor-pointer"
                   >
@@ -257,6 +281,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             }}
             className="p-2 text-secondary hover:text-primary hover:bg-secondary/5 rounded-lg border border-secondary/10 hover:border-secondary/20 transition-all cursor-pointer flex items-center justify-center shadow-inner"
             title="Toggle Sidebar"
+            aria-label={isDesktopSidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            aria-expanded={!isDesktopSidebarCollapsed}
+            aria-controls="admin-sidebar"
           >
             <PanelLeft size={16} />
           </button>

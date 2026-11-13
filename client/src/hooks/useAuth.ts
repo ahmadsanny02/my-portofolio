@@ -36,7 +36,8 @@ export function useAuth({ redirectToDashboardIfLoggedIn = false } = {}) {
   const login = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-    router.push('/admin/dashboard');
+    // Redirect is handled by onAuthStateChange when redirectToDashboardIfLoggedIn is set
+    if (!redirectToDashboardIfLoggedIn) router.push('/admin/dashboard');
   };
 
   const logout = async () => {
