@@ -7,7 +7,8 @@
   --foreground: #0f172a;
   --primary: #0ea5e9;
   --primary-dark: #0284c7;
-  --secondary: #94a3b8;
+  /* slate-500: ≥4.5:1 on white/surface (WCAG AA). #94a3b8 was only ~2.6:1 */
+  --secondary: #64748b;
   --surface: #f8fafc;
   --accent: #a78bfa;
 }
@@ -32,6 +33,10 @@
   --color-secondary: var(--secondary);
   --color-surface: var(--surface);
   --color-accent: var(--accent);
+
+  /* Radius scale: use rounded-card / rounded-drop instead of arbitrary values */
+  --radius-card: 2rem;   /* 32px: cards, panels, modals */
+  --radius-drop: 1.5rem; /* 24px: upload dropzones */
 }
 
 html,
@@ -55,30 +60,34 @@ body {
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
 }
 
-/* Premium Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+/* Custom scrollbars.
+   Standard properties first; WebKit pseudo-elements only for browsers that do
+   not support them (in Chrome >= 121 `scrollbar-width` would override them). */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
-}
+@supports not (scrollbar-width: thin) {
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.25);
-  border-radius: 9999px;
-  transition: background-color 0.2s ease;
-}
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--primary);
-}
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.25);
+    border-radius: 9999px;
+  }
 
-/* Firefox compatibility */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
+  }
 }
 
 /* Global Interactive Cursor Pointer Reset */

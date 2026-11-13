@@ -57,7 +57,7 @@ export default function AboutSection() {
             <motion.div 
               whileHover={{ scale: 1.02 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="aspect-square bg-primary/10 rounded-[32px] overflow-hidden relative group border border-primary/10 shadow-lg"
+              className="aspect-square bg-primary/10 rounded-card overflow-hidden relative group border border-primary/10 shadow-lg"
             >
               <Image
                 src="/profile/profile.png"

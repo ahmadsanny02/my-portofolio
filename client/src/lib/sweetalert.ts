@@ -8,8 +8,9 @@ export const showToast = (icon: 'success' | 'error' | 'warning' | 'info', title:
     showConfirmButton: false,
     timer: 2500,
     timerProgressBar: true,
-    background: '#1e293b', // Slate-800 matching theme surface
-    color: '#f1f5f9',      // Light text
+    // Theme tokens so the toast follows light/dark mode
+    background: 'var(--surface)',
+    color: 'var(--foreground)',
     didOpen: (toast) => {
       toast.onmouseenter = Swal.stopTimer;
       toast.onmouseleave = Swal.resumeTimer;
@@ -34,10 +35,10 @@ export const showConfirm = async (title: string, text: string, confirmText: stri
     showCancelButton: true,
     confirmButtonText: confirmText,
     cancelButtonText: 'Cancel',
-    background: '#1e293b', 
-    color: '#f1f5f9',
+    background: 'var(--surface)',
+    color: 'var(--foreground)',
     customClass: {
-      popup: 'rounded-[28px] border border-secondary/10 shadow-2xl p-6 sm:p-8 font-sans',
+      popup: 'rounded-card border border-secondary/10 shadow-2xl p-6 sm:p-8 font-sans',
       title: 'text-xl font-bold text-foreground',
       htmlContainer: 'text-sm text-secondary mt-2',
       confirmButton: 'bg-red-500 hover:bg-red-600 text-white rounded-xl px-5 py-3 font-bold text-sm transition-all focus:outline-none focus:ring-4 focus:ring-red-500/20 cursor-pointer',
