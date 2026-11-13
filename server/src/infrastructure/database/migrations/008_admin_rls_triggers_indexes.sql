@@ -126,3 +126,8 @@ WHERE i.name = d.name
 
 CREATE UNIQUE INDEX IF NOT EXISTS uq_categories_name_type ON categories (name, type);
 CREATE UNIQUE INDEX IF NOT EXISTS uq_issuers_name ON issuers (name);
+
+-- ---------------------------------------------------------------------------
+-- 6. Make PostgREST (Data API) pick up the new tables/policies immediately
+-- ---------------------------------------------------------------------------
+NOTIFY pgrst, 'reload schema';

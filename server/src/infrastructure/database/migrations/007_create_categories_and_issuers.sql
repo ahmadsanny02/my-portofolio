@@ -14,6 +14,11 @@ CREATE TABLE IF NOT EXISTS issuers (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
+-- Explicit grants: projects with "auto-expose new tables" disabled in the
+-- Data API settings otherwise get "Could not find the table in the schema cache".
+GRANT SELECT ON categories, issuers TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON categories, issuers TO authenticated, service_role;
+
 -- RLS policies (allow read to public, manage to authenticated users)
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE issuers ENABLE ROW LEVEL SECURITY;
