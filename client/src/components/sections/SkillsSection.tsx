@@ -3,6 +3,7 @@
 import { motion, Variants } from 'framer-motion';
 import { Database, Layout, Server, Cloud } from 'lucide-react';
 import { useSkills } from '@/hooks/useSkills';
+import type { Skill } from 'types';
 
 const getCategoryIcon = (category: string) => {
   switch (category.toLowerCase()) {
@@ -44,8 +45,8 @@ const categoryVariants: Variants = {
   }
 };
 
-export default function SkillsSection() {
-  const { skills, loading } = useSkills();
+export default function SkillsSection({ initialSkills }: { initialSkills?: Skill[] }) {
+  const { skills, loading } = useSkills({ initialData: initialSkills });
 
   // Group skills by category
   const groupedSkills = skills.reduce((acc, skill) => {
@@ -68,7 +69,7 @@ export default function SkillsSection() {
   const categories = Object.keys(groupedSkills);
 
   return (
-    <section id="skills" className="py-24 bg-background">
+    <section id="skills" className="py-24 bg-surface/30">
       <div className="container mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
           <div className="max-w-2xl">
@@ -83,11 +84,11 @@ export default function SkillsSection() {
         {loading ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="p-8 bg-surface rounded-[32px] border border-secondary/10 animate-pulse min-h-[220px]" />
+              <div key={i} className="p-8 bg-surface rounded-card border border-secondary/10 animate-pulse min-h-[220px]" />
             ))}
           </div>
         ) : categories.length === 0 ? (
-          <div className="text-center text-secondary py-12 bg-surface/30 rounded-[32px] border border-secondary/10 w-full">
+          <div className="text-center text-secondary py-12 bg-surface/30 rounded-card border border-secondary/10 w-full">
             No skills uploaded yet.
           </div>
         ) : (
@@ -103,7 +104,7 @@ export default function SkillsSection() {
                 key={category}
                 variants={categoryVariants}
                 whileHover={{ y: -6, scale: 1.01 }}
-                className="p-8 bg-surface/40 backdrop-blur-md rounded-[32px] border border-secondary/10 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/[0.02] transition-all duration-300 group"
+                className="p-8 bg-surface/40 backdrop-blur-md rounded-card border border-secondary/10 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/[0.02] transition-all duration-300 group"
               >
                 <div className="mb-6 p-4 bg-background w-fit rounded-2xl group-hover:rotate-12 transition-transform duration-300 shadow-sm border border-secondary/5">
                   {getCategoryIcon(category)}

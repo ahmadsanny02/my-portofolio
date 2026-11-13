@@ -2,6 +2,8 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/layout/Navbar';
 import HeroSection from '@/components/sections/HeroSection';
 import { Github, Instagram, Linkedin } from 'lucide-react';
+import type { Certificate, Project, Skill } from 'types';
+import { fetchPublicList } from '@/lib/server-api';
 
 const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), { ssr: true });
 const SkillsSection = dynamic(() => import('@/components/sections/SkillsSection'), { ssr: true });
@@ -10,15 +12,22 @@ const CertificatesSection = dynamic(() => import('@/components/sections/Certific
 const ContactSection = dynamic(() => import('@/components/sections/ContactSection'), { ssr: true });
 
 
-export default function Home() {
+export default async function Home() {
+  // Render portfolio content on the server so crawlers and link previews see it
+  const [skills, projects, certificates] = await Promise.all([
+    fetchPublicList<Skill>('/skills'),
+    fetchPublicList<Project>('/projects'),
+    fetchPublicList<Certificate>('/certificates'),
+  ]);
+
   return (
     <main className="min-h-screen">
       <Navbar />
       <HeroSection />
       <AboutSection />
-      <SkillsSection />
-      <ProjectsSection />
-      <CertificatesSection />
+      <SkillsSection initialSkills={skills} />
+      <ProjectsSection initialProjects={projects} />
+      <CertificatesSection initialCertificates={certificates} />
       <ContactSection />
 
       <footer className="py-20 border-t border-secondary/10 bg-surface">
@@ -37,7 +46,7 @@ export default function Home() {
           </a>
           <div className="mt-16 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-secondary text-sm">
-              © 2026 Ahmad Sani Jabarulloh. All rights reserved.
+              © {new Date().getFullYear()} Ahmad Sani Jabarulloh. All rights reserved.
             </p>
             <div className="flex gap-4">
               <a
