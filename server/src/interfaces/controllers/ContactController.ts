@@ -3,6 +3,7 @@ import {
   GetAllContactMessagesUseCase,
   CreateContactMessageUseCase,
   DeleteContactMessageUseCase,
+  MarkContactMessageReadUseCase,
 } from '../../application/use-cases/contact/ContactUseCases';
 
 export class ContactController {
@@ -10,7 +11,19 @@ export class ContactController {
     private getAllMessages: GetAllContactMessagesUseCase,
     private createMessage: CreateContactMessageUseCase,
     private deleteMessage: DeleteContactMessageUseCase,
+    private markReadMessage: MarkContactMessageReadUseCase,
   ) {}
+
+  async markRead(req: Request, res: Response, next: NextFunction) {
+    try {
+      const id = req.params.id as string;
+      const { isRead } = req.body as { isRead: boolean };
+      const message = await this.markReadMessage.execute(id, isRead);
+      res.json({ success: true, data: message });
+    } catch (error) {
+      next(error);
+    }
+  }
 
   async getAll(req: Request, res: Response, next: NextFunction) {
     try {

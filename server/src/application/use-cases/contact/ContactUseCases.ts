@@ -26,3 +26,11 @@ export class DeleteContactMessageUseCase {
     await this.contactRepo.delete(id);
   }
 }
+
+export class MarkContactMessageReadUseCase {
+  constructor(private contactRepo: IContactRepository) {}
+
+  async execute(id: string, isRead = true): Promise<ContactMessage> {
+    return this.contactRepo.setRead(id, isRead);
+  }
+}
