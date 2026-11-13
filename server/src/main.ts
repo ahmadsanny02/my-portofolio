@@ -1,6 +1,7 @@
 import express from 'express';
 
 import helmet from 'helmet';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import projectRoutes from './interfaces/routes/projectRoutes';
 import certificateRoutes from './interfaces/routes/certificateRoutes';
@@ -22,44 +23,36 @@ app.use(
     crossOriginResourcePolicy: { policy: 'cross-origin' },
   }),
 );
+const isProduction = process.env.NODE_ENV === 'production';
+
 const allowedOrigins = process.env.FRONTEND_URL
   ? process.env.FRONTEND_URL.split(',').map((url) =>
       url.trim().replace(/\/$/, ''),
     )
-  : [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'http://localhost:3002',
-      'https://ahmadsanny.vercel.app',
-      'https://ahmadsanny2.vercel.app',
-    ];
+  : ['https://ahmadsanny.vercel.app', 'https://ahmadsanny2.vercel.app'];
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  if (origin) {
-    const isAllowed =
-      allowedOrigins.includes(origin) ||
-      /^http:\/\/localhost:\d+$/.test(origin) ||
-      /^https:\/\/ahmadsanny[a-zA-Z0-9-]*\.vercel\.app$/.test(origin);
+export function isOriginAllowed(origin: string, production = isProduction) {
+  if (allowedOrigins.includes(origin)) return true;
+  // Any localhost port is accepted only outside production
+  return !production && /^http:\/\/localhost:\d+$/.test(origin);
+}
 
-    if (isAllowed) {
-      res.setHeader('Access-Control-Allow-Origin', origin);
-      res.setHeader('Access-Control-Allow-Credentials', 'true');
-    }
-  }
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT,HEAD');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization',
-  );
+// Behind Vercel's proxy: needed so req.ip is the real client IP (rate limiting)
+app.set('trust proxy', 1);
 
-  if (req.method === 'OPTIONS') {
-    res.status(204).end();
-    return;
-  }
-  next();
-});
-app.use(express.json());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Non-browser clients (curl, server-side fetch) send no Origin header
+      if (!origin) return callback(null, true);
+      callback(null, isOriginAllowed(origin));
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  }),
+);
+app.use(express.json({ limit: '100kb' }));
 
 // Routes
 app.use('/api/projects', projectRoutes);
@@ -70,10 +63,14 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/issuers', issuerRoutes);
 
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Unknown routes
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: 'Route not found' });
 });
 
 // Error handling (must be last)
