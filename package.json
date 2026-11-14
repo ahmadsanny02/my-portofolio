@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "pnpm --filter server test",
+    "test": "pnpm --filter server test && pnpm --filter client test",
     "typecheck": "pnpm --filter server typecheck && pnpm --filter client exec tsc --noEmit"
   },
   "keywords": [],
