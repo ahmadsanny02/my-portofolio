@@ -79,3 +79,46 @@ export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
 
 /** Image MIME types accepted by the upload endpoint (SVG deliberately excluded). */
 export const ALLOWED_IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp'] as const;
+
+export interface Education {
+  institution: string;
+  degree: string;
+  field?: string;
+  startYear: number;
+  /** Omit while the programme is still in progress. */
+  endYear?: number;
+  location?: string;
+  description?: string;
+}
+
+/** GitHub contribution intensity bucket: 0 = none, 4 = highest quartile. */
+export type ContributionLevel = 0 | 1 | 2 | 3 | 4;
+
+export interface ContributionDay {
+  /** ISO date (YYYY-MM-DD). */
+  date: string;
+  count: number;
+  level: ContributionLevel;
+}
+
+export interface GithubCommit {
+  sha: string;
+  message: string;
+  /** `owner/name` */
+  repo: string;
+  url: string;
+  /** ISO timestamp. */
+  date: string;
+}
+
+export interface GithubActivity {
+  username: string;
+  profileUrl: string;
+  /** Contributions in the last year; null when the calendar is unavailable (no API token). */
+  totalContributions: number | null;
+  /** Calendar weeks (oldest first), each holding up to 7 days; null when unavailable. */
+  weeks: ContributionDay[][] | null;
+  recentCommits: GithubCommit[];
+  /** ISO timestamp of when the server fetched this snapshot. */
+  fetchedAt: string;
+}
