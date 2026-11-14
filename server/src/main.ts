@@ -10,6 +10,7 @@ import contactRoutes from './interfaces/routes/contactRoutes';
 import uploadRoutes from './interfaces/routes/uploadRoutes';
 import categoryRoutes from './interfaces/routes/categoryRoutes';
 import issuerRoutes from './interfaces/routes/issuerRoutes';
+import githubRoutes from './interfaces/routes/githubRoutes';
 import { errorHandler } from './interfaces/middlewares/errorHandler';
 
 dotenv.config();
@@ -62,6 +63,7 @@ app.use('/api/contact', contactRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/issuers', issuerRoutes);
+app.use('/api/github', githubRoutes);
 
 // Health check
 app.get('/health', (req, res) => {
