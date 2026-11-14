@@ -5,14 +5,17 @@ import Link from 'next/link';
 import { Menu, X, Terminal } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ThemeToggle } from '../theme-toggle';
+import { education, profile } from '@/data/profile';
 
+// Root-relative anchors so the links also work from /projects/[slug]
 const navLinks = [
   { name: 'Home', href: '/' },
-  { name: 'About', href: '#about' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Certificates', href: '#certificates' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'About', href: '/#about' },
+  { name: 'Skills', href: '/#skills' },
+  { name: 'Projects', href: '/#projects' },
+  { name: 'Certificates', href: '/#certificates' },
+  ...(education.length > 0 ? [{ name: 'Education', href: '/#education' }] : []),
+  { name: 'Contact', href: '/#contact' },
 ];
 
 export default function Navbar() {
@@ -41,7 +44,7 @@ export default function Navbar() {
             <Terminal size={20} className="text-white" />
           </div>
           <span className="text-xl font-bold tracking-tight">
-            San<span className="text-primary"> Dev</span>
+            {profile.brand.primary}<span className="text-primary"> {profile.brand.accent}</span>
           </span>
         </Link>
 

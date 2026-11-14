@@ -3,6 +3,13 @@
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
 import { ArrowRight, Download, Github, Instagram, Linkedin } from 'lucide-react';
+import { profile } from '@/data/profile';
+
+const socialLinks = [
+  { href: profile.socials.github, label: 'GitHub Profile', Icon: Github },
+  { href: profile.socials.linkedin, label: 'LinkedIn Profile', Icon: Linkedin },
+  { href: profile.socials.instagram, label: 'Instagram Profile', Icon: Instagram },
+];
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -80,7 +87,7 @@ export default function HeroSection() {
               variants={itemVariants} 
               className="text-5xl md:text-8xl font-black mb-6 leading-tight tracking-tighter text-foreground"
             >
-              Ahmad <span className="text-primary bg-clip-text">Sani</span> Jabarulloh<span className="text-primary">.</span>
+              {profile.name.first} <span className="text-primary bg-clip-text">{profile.name.highlight}</span> {profile.name.last}<span className="text-primary">.</span>
             </motion.h1>
             
             {/* Tagline */}
@@ -88,11 +95,14 @@ export default function HeroSection() {
               variants={itemVariants} 
               className="text-secondary text-lg md:text-2xl mb-10 max-w-4xl leading-relaxed font-medium"
             >
-              Frontend Developer specializing in{' '}
-              <span className="text-foreground font-bold border-b border-primary/20">React.js</span>,{' '}
-              <span className="text-foreground font-bold border-b border-primary/20">Next.js</span>, and{' '}
-              <span className="text-foreground font-bold border-b border-primary/20">Node.js</span>. I transform
-              complex ideas into elegant, high-performance web experiences.
+              {profile.role} specializing in{' '}
+              {profile.specialties.map((specialty, index) => (
+                <React.Fragment key={specialty}>
+                  {index > 0 && (index === profile.specialties.length - 1 ? ', and ' : ', ')}
+                  <span className="text-foreground font-bold border-b border-primary/20">{specialty}</span>
+                </React.Fragment>
+              ))}
+              . {profile.taglineSuffix}
             </motion.p>
 
             {/* Buttons */}
@@ -106,7 +116,7 @@ export default function HeroSection() {
                 Explore Projects <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </motion.a>
               <motion.a
-                href="../CV/CV-Ahmad_Sani_Jabarulloh-Web_Developer.pdf"
+                href={profile.cvUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.03, y: -2 }}
@@ -124,13 +134,9 @@ export default function HeroSection() {
               </span>
               <div className="h-px w-12 bg-secondary/30" />
               <div className="flex gap-4">
-                {[
-                  { href: "https://github.com/ahmadsanny2", label: "GitHub Profile", Icon: Github },
-                  { href: "https://linkedin.com/in/ahmadsanny02", label: "LinkedIn Profile", Icon: Linkedin },
-                  { href: "https://instagram.com/ahmadsanny02", label: "Instagram Profile", Icon: Instagram },
-                ].map(({ href, label, Icon }, i) => (
+                {socialLinks.map(({ href, label, Icon }) => (
                   <motion.a
-                    key={i}
+                    key={label}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
