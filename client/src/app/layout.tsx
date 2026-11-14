@@ -14,6 +14,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const NO_SCRIPT_CSS = '[style*="opacity:0"]{opacity:1!important;transform:none!important}';
+
 export const metadata: Metadata = {
   title: "Ahmad Sani Jabarulloh | Frontend Developer",
   description: "Personal portfolio of Ahmad Sani Jabarulloh, a Frontend Developer specialized in React.js and Next.js.",
@@ -37,6 +39,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} scroll-smooth`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Entrance animations are server-rendered in their hidden start state;
+            without JavaScript nothing would ever reveal them. */}
+        <noscript>
+          <style>{NO_SCRIPT_CSS}</style>
+        </noscript>
+      </head>
       <body className="antialiased selection:bg-primary/30 selection:text-primary overflow-x-clip">
         <ThemeProvider>
           <Toaster position="bottom-right" />
