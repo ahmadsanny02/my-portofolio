@@ -102,3 +102,83 @@ label[for] {
   cursor: pointer;
 }
 
+
+/* ── 3D experience shell ─────────────────────────────────────────────────────
+   <html data-xp="3d"> is set before first paint by the boot script (and kept
+   in sync by <Experience>). Everything below is inert without it, so the
+   classic page renders normally for crawlers, no-JS and no-WebGL visitors. */
+
+.xp-classic {
+  position: relative;
+  z-index: 10;
+  background: var(--background);
+  outline: none;
+}
+
+html[data-xp='3d'] .xp-classic {
+  min-height: 100dvh;
+}
+
+/* In the room the portfolio content is not rendered at all */
+html[data-xp='3d'] .xp-classic[data-overlay='closed'] {
+  display: none;
+}
+
+/* No document scrolling or rubber-banding while walking around */
+html[data-xp='3d']:not([data-xp-view='portfolio']),
+html[data-xp='3d']:not([data-xp-view='portfolio']) body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.xp-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Fully covered by the overlay: skip compositing the (paused) canvas */
+.xp-stage[data-covered] {
+  visibility: hidden;
+}
+
+.xp-canvas {
+  position: absolute !important;
+  inset: 0;
+}
+
+.xp-cover {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: var(--background);
+  color: var(--foreground);
+  transition: opacity 0.5s ease, visibility 0s linear 0s;
+}
+
+html[data-xp='3d'] .xp-cover {
+  display: flex;
+}
+
+.xp-cover[data-state='hidden'] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.5s ease, visibility 0s linear 0.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xp-cover,
+  .xp-cover[data-state='hidden'] {
+    transition: none;
+  }
+}

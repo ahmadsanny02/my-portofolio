@@ -1,16 +1,8 @@
-import dynamic from 'next/dynamic';
-import Navbar from '@/components/layout/Navbar';
-import HeroSection from '@/components/sections/HeroSection';
-import { Github, Instagram, Linkedin } from 'lucide-react';
 import type { Certificate, Project, Skill } from 'types';
+import { BOOT_SCRIPT } from '@/components/experience/boot';
+import ClassicView from '@/components/experience/ClassicView';
+import Experience from '@/components/experience/Experience';
 import { fetchPublicList } from '@/lib/server-api';
-
-const AboutSection = dynamic(() => import('@/components/sections/AboutSection'), { ssr: true });
-const SkillsSection = dynamic(() => import('@/components/sections/SkillsSection'), { ssr: true });
-const ProjectsSection = dynamic(() => import('@/components/sections/ProjectsSection'), { ssr: true });
-const CertificatesSection = dynamic(() => import('@/components/sections/CertificatesSection'), { ssr: true });
-const ContactSection = dynamic(() => import('@/components/sections/ContactSection'), { ssr: true });
-
 
 export default async function Home() {
   // Render portfolio content on the server so crawlers and link previews see it
@@ -21,65 +13,12 @@ export default async function Home() {
   ]);
 
   return (
-    <main className="min-h-screen">
-      <Navbar />
-      <HeroSection />
-      <AboutSection />
-      <SkillsSection initialSkills={skills} />
-      <ProjectsSection initialProjects={projects} />
-      <CertificatesSection initialCertificates={certificates} />
-      <ContactSection />
-
-      <footer className="py-20 border-t border-secondary/10 bg-surface">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Let&apos;s build something amazing together
-          </h2>
-          <p className="text-secondary mb-10">
-            Currently open for new opportunities and collaborations.
-          </p>
-          <a
-            href="mailto:ahmadsanijabarulloh.02@gmail.com"
-            className="sm:text-xl md:text-2xl font-bold text-primary hover:underline underline-offset-8 transition-all"
-          >
-            ahmadsanijabarulloh.02@gmail.com
-          </a>
-          <div className="mt-16 pt-8 border-t border-secondary/10 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-secondary text-sm">
-              © {new Date().getFullYear()} Ahmad Sani Jabarulloh. All rights reserved.
-            </p>
-            <div className="flex gap-4">
-              <a
-                href="https://github.com/ahmadsanny2"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub Profile"
-                className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
-              >
-                <Github size={18} />
-              </a>
-              <a
-                href="https://linkedin.com/in/ahmadsanny02"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn Profile"
-                className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
-              >
-                <Linkedin size={18} />
-              </a>
-              <a
-                href="https://instagram.com/ahmadsanny02"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram Profile"
-                className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center bg-background rounded-lg hover:text-primary transition-all border border-secondary/5"
-              >
-                <Instagram size={18} />
-              </a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </main>
+    <>
+      {/* Render-blocking on purpose: decides the initial presentation before first paint */}
+      <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
+      <Experience>
+        <ClassicView skills={skills} projects={projects} certificates={certificates} />
+      </Experience>
+    </>
   );
 }
